@@ -1,0 +1,27 @@
+:root {
+
+    --header-height : 50px;
+    --button-height: 48px;
+
+    --request-dialog-width: 833px;
+
+
+    --z-index-header: 9;
+    --z-index-dropdown-select: 10;
+    --z-index-error-label: 5;
+
+
+    --primary-color: #238de6;
+    --secondary-color: #2589DF;
+
+
+    --border-button-color: #CFCFCF;
+    --border-input-color: #e0e5e9;
+    --border-table-color: #e2e8ef;
+
+    --background-color: #f4f7fa;
+    
+    --primary-blue-color: #0073e6;
+
+    --link-default-color: #0073e6;
+}
