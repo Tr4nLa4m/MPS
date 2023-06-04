@@ -1,5 +1,8 @@
 <template>
-    <h1>ProjectPage</h1>
+    <HeaderLayout />
+    <div class="container">
+      <router-view></router-view>
+    </div>
   </template>
   
   <style scoped></style>
