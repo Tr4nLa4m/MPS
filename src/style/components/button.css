@@ -1,8 +1,6 @@
 
 
 .m-button{
-    height: var(--button-height);
-    line-height: var(--button-height);
     cursor: pointer;
     border: 0;
     outline: 0;
@@ -43,5 +41,41 @@
     cursor: none;
     pointer-events: none;
     opacity: 0.5;
+}
+
+.m-button-xl{
+    height: var(--button-height-xl);
+    line-height: var(--button-height-xl);
+}
+
+.m-button-m{
+    height: var(--button-height-m) !important;
+    line-height: var(--button-height-m) !important;
+}
+
+.m-split-button{
+    border: 0;
+    outline: 0;
+    color: #fff;
+    padding: 4px 0;
+    border-radius: 24px;
+}
+
+.m-split-button.m-btn-primary{
+    background: rgb(33, 147, 243);
+}
+
+.m-split-button.m-button-m .text{
+    font-size: 13px;
+}
+
+.m-split-button .divider{
+    width: 1px;
+    height: 100%;
+    background-color: #fff;
+}
+
+
+.m-split-button .icon-after{
 }
 

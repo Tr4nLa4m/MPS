@@ -2,8 +2,8 @@
 /******
     Flex class section
 *******/
-.dflex{
-    display: flex;
+.d-flex{
+    display: flex !important;
 }
 
 .flex-inline{
@@ -54,6 +54,18 @@
 
 .inline{
     display: inline-block;
+}
+
+.none{
+    display: none;
+}
+
+.block{
+    display: block;
+}
+
+.pointer{
+    cursor: pointer;
 }
 
 /******
@@ -137,6 +149,22 @@
     margin-bottom: 16px;
 }
 
+.m-mr16 {
+    margin-right: 16px;
+}
+
+.m-ml16 {
+    margin-left: 16px;
+}
+
+.m-mr32{
+    margin-right: 32px;
+}
+
+.m-ml32{
+    margin-left: 32px;
+}
+
 /***********
     DIMENSION SECTION
 ************/
@@ -149,8 +177,16 @@
     height: 16px;
 }
 
+.m-h32{
+    height: 32px;
+}
+
 .m-w100{
     width: 100% !important;
+}
+
+.m-w1{
+    width: 1px;
 }
 
 

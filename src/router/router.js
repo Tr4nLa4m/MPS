@@ -34,6 +34,26 @@ const routes = [
           anonymous: true
         },
         component: () => import("../views/pages/project/Index.vue"),
+        children: [
+          {
+            path: "board",
+            name: "board",
+            meta: {
+              subSystemCode: MConstant.SubSystemCode.M_Project_Board,
+              anonymous: true
+            },
+            component: () => import("../views/pages/project/Board.vue"),
+          },
+          {
+            path: "gantt",
+            name: "gantt",
+            meta: {
+              subSystemCode: MConstant.SubSystemCode.M_Project_Gantt,
+              anonymous: true
+            },
+            component: () => import("../views/pages/project/Gantt.vue"),
+          },
+        ]
       },
     ],
   },

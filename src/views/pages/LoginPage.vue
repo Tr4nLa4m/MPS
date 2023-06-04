@@ -44,6 +44,7 @@
           :text="'Đăng nhập'"
           :title="'Đăng nhập'"
           :tag="'Login'"
+          :classCustom="'m-button-xl'"
           />
         </div>
 
@@ -59,8 +60,11 @@
   </div>
 </template>
 
-<style>
+<style scoped>
 @import url(../../style/pages/login-page.css);
+.m-main-layout * , .m-main-layout div, .m-main-layout button{
+  font-family: Roboto , Helvetica, Arial, sans-serif !important;
+}
 </style>
 
 <script src="../../scripts/pages/login/LoginPage.js"></script>

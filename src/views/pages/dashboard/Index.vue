@@ -1,5 +1,9 @@
 <template>
-    <h1>Dashboard Page</h1>
+  <HeaderLayout />
+
+  <div class="container m-dashboard">
+    <SideBarLayout />
+  </div>
   </template>
   
   <style scoped></style>
