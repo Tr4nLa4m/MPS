@@ -1,7 +1,7 @@
 import { onMounted } from "vue";
-import HeaderLayout from "@/views/layouts/HeaderLayout.vue";
+import HeaderProjectLayout from "@/views/layouts/HeaderProjectLayout.vue";
 export default {
-    components : {HeaderLayout},
+    components : {HeaderProjectLayout},
     setup(props) {
         // lifecycle hooks
         onMounted(() => {
