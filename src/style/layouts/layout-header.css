@@ -20,12 +20,35 @@
     color: #000;
 }
 
+.m-header-left .icon-wrapper, .m-header-project .icon-wrapper{
+    border-right: 1px solid #e0e0e0;
+}
+
+.m-header-project{
+    text-decoration: none;
+    color: #343a40;
+}
+
+.m-header-project .icon-project .icon-project-wrapper{
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background-color: rgb(33, 150, 243);
+}
+
+.m-header-project .name-project{
+    max-width: 250px;
+    font-weight: 500;
+}
+
+
+
 .m-header-right{
 
 }
 
 
-.m-header-right .m-icon-btn{
+.m-icon-btn{
     cursor: pointer;
     background: rgb(97, 97, 97);
 }

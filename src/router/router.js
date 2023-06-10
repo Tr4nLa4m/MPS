@@ -45,6 +45,15 @@ const routes = [
             component: () => import("../views/pages/project/Board.vue"),
           },
           {
+            path: "list",
+            name: "list",
+            meta: {
+              subSystemCode: MConstant.SubSystemCode.M_Project_List,
+              anonymous: true
+            },
+            component: () => import("../views/pages/project/Board.vue"),
+          },
+          {
             path: "gantt",
             name: "gantt",
             meta: {

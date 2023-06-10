@@ -12,6 +12,10 @@ export function useRoutePath(props ) {
         router.push(config.Path.PROJECT);
     }
 
+    const goToProjectChild = (route) => {
+        router.push(route);
+    }
+
     const goTo = (path) => {
         router.push(path);
     }
@@ -20,6 +24,7 @@ export function useRoutePath(props ) {
     return{
         goTo,
         goToDashboard,
+        goToProjectChild,
         goToProject
     }
   }

@@ -1,4 +1,5 @@
 <template>
+    
     <h1>Gantt Page Here</h1>
   </template>
   

@@ -40,6 +40,25 @@
   background: url(@/assets/icon/icon.svg) -608px -64px no-repeat;
 }
 
+.mi-carret-down{
+  -webkit-mask-image: url(@/assets/icon/icon.svg);
+  -moz-mask-image: url(@/assets/icon/icon.svg);
+  -ms-mask-image: url(@/assets/icon/icon.svg);
+  -o-mask-image: url(@/assets/icon/icon.svg);
+  mask-image: url(@/assets/icon/icon.svg);
+  -webkit-mask-position: -232px -104px;
+  -moz-mask-position: -232px -104px;
+  -ms-mask-position: -232px -104px;
+  -o-mask-position: -232px -104px;
+  mask-position: -232px -104px;
+  -webkit-mask-repeat: no-repeat;
+  -moz-mask-repeat: no-repeat;
+  -ms-mask-repeat: no-repeat;
+  -o-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  background-color: #666666;
+}
+
 .mi-carret-down-white {
   -webkit-mask-image: url(@/assets/icon/icon.svg);
   -moz-mask-image: url(@/assets/icon/icon.svg);
@@ -207,7 +226,7 @@
   -ms-mask-repeat: no-repeat;
   -o-mask-repeat: no-repeat;
   mask-repeat: no-repeat;
-  background-color: #ffffff;
+  background-color: #666666;
 }
 
 .mi-my-task {
@@ -268,10 +287,32 @@
   -ms-mask-repeat: no-repeat;
   -o-mask-repeat: no-repeat;
   mask-repeat: no-repeat;
-  background-color: #eeeeef;
+  background-color: #666666;
 }
 
 .mi-search-before{
     background:url("@/assets/icon/icon2.svg") no-repeat -992px -360px;
 }
+
+
+
+.mi-project-personal {
+  -webkit-mask-image: url('https://amismisa.misacdn.net/apps/task/assets/images/icon_project_new.svg?v=20230512');
+  -moz-mask-image: url('https://amismisa.misacdn.net/apps/task/assets/images/icon_project_new.svg?v=20230512');
+  -ms-mask-image: url('https://amismisa.misacdn.net/apps/task/assets/images/icon_project_new.svg?v=20230512');
+  -o-mask-image: url('https://amismisa.misacdn.net/apps/task/assets/images/icon_project_new.svg?v=20230512');
+  mask-image: url('https://amismisa.misacdn.net/apps/task/assets/images/icon_project_new.svg?v=20230512');
+  -webkit-mask-position: -15px -49px;
+  -moz-mask-position: -15px -49px;
+  -ms-mask-position: -15px -49px;
+  -o-mask-position: -15px -49px;
+  mask-position: -15px -49px;
+  -webkit-mask-repeat: no-repeat;
+  -moz-mask-repeat: no-repeat;
+  -ms-mask-repeat: no-repeat;
+  -o-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  background-color: #616161;
+}
+
 

@@ -136,6 +136,10 @@
     padding-left: 24px !important;
 }
 
+.m-pr24{
+    padding-right: 24px !important;
+}
+
 /******
     Margin Section
 *******/
@@ -175,6 +179,14 @@
 
 .m-ml16 {
     margin-left: 16px;
+}
+
+.m-mr24 {
+    margin-right: 24px;
+}
+
+.m-ml24 {
+    margin-left: 24px;
 }
 
 .m-mr32{
@@ -231,7 +243,7 @@
     border: none !important;
 }
 
-.m-color-white{
+.m-bg-white{
     background-color: #fff;
 }
 
@@ -271,6 +283,13 @@
 
 .fs-12{
     font-size: 12px !important;
+}
+
+.text-overflow{
+    width: auto;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 
