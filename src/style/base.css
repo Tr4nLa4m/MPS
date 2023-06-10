@@ -43,6 +43,9 @@
 .flex-1 {
     flex: 1;
 }
+.flex-wrap {
+    flex-wrap: wrap;
+}
 
 /************** 
     DISPLAY SECTION

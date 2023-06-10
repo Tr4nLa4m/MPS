@@ -1,14 +1,14 @@
 <template>
-  <HeaderLayout />
+  <HeaderLayout/>
 
   <div class="container m-dashboard">
-    <SideBarLayout />
+    <SideBarLayout/>
   </div>
-  </template>
-  
-  <style scoped></style>
-  
-  <script src="../../../scripts/pages/dashboard/DashboardPage.js"></script>
+</template>
+
+<style scoped></style>
+
+<script src="../../../scripts/pages/dashboard/DashboardPage.js"></script>
   
   
   
