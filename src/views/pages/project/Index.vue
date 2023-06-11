@@ -1,6 +1,6 @@
 <template>
     <HeaderLayout />
-    <div class="container">
+    <div class="pt-[56px]" style="height: calc(100vh - var(--layout-header-height))">
       <router-view></router-view>
     </div>
   </template>
