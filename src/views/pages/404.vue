@@ -4,7 +4,7 @@
   
   <style scoped></style>
   
-  <script src="../../../scripts/pages/dashboard/DashboardPage.js"></script>
+  <script src="@/scripts/pages/dashboard/DashboardPage"></script>
   
   
   
