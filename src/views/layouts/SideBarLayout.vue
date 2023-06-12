@@ -112,5 +112,5 @@ export default {
 };
 </script>
 <style>
-@import url("@/style/layouts/sidebar-layout.css");
+@import url("@/assets/style/layouts/sidebar-layout.css");
 </style>

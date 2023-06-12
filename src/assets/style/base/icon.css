@@ -297,11 +297,11 @@
 
 
 .mi-project-personal {
-  -webkit-mask-image: url('https://amismisa.misacdn.net/apps/task/assets/images/icon_project_new.svg?v=20230512');
-  -moz-mask-image: url('https://amismisa.misacdn.net/apps/task/assets/images/icon_project_new.svg?v=20230512');
-  -ms-mask-image: url('https://amismisa.misacdn.net/apps/task/assets/images/icon_project_new.svg?v=20230512');
-  -o-mask-image: url('https://amismisa.misacdn.net/apps/task/assets/images/icon_project_new.svg?v=20230512');
-  mask-image: url('https://amismisa.misacdn.net/apps/task/assets/images/icon_project_new.svg?v=20230512');
+  -webkit-mask-image: url('@/assets/icon/icon.svg');
+  -moz-mask-image: url('@/assets/icon/icon.svg');
+  -ms-mask-image: url('@/assets/icon/icon.svg');
+  -o-mask-image: url('@/assets/icon/icon.svg');
+  mask-image: url('@/assets/icon/icon.svg');
   -webkit-mask-position: -15px -49px;
   -moz-mask-position: -15px -49px;
   -ms-mask-position: -15px -49px;
@@ -315,4 +315,35 @@
   background-color: #616161;
 }
 
+
+.mi-modify-column {
+  -webkit-mask-image: url(@/assets/icon/icon.svg);
+    -moz-mask-image: url(@/assets/icon/icon.svg);
+    -ms-mask-image: url(@/assets/icon/icon.svg);
+    -o-mask-image: url(@/assets/icon/icon.svg);
+    mask-image: url(@/assets/icon/icon.svg);
+    -webkit-mask-position: -484px -164px;
+    -moz-mask-position: -484px -164px;
+    -ms-mask-position: -484px -164px;
+    -o-mask-position: -484px -164px;
+    mask-position: -484px -164px;
+    -webkit-mask-repeat: no-repeat;
+    -moz-mask-repeat: no-repeat;
+    -ms-mask-repeat: no-repeat;
+    -o-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    background-color: #616161;
+}
+
+.mi-grid-filter{
+  background: url(@/assets/icon/icon.svg) -40px -425px no-repeat;
+}
+
+.mi-grid-status-done{
+  background: url(@/assets/icon/icon.svg) -72px -425px no-repeat;
+}
+
+.mi-grid-sort{
+  background: url(@/assets/icon/icon.svg) -104px -423px no-repeat;
+}
 

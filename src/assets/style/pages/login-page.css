@@ -3,8 +3,8 @@
     display: flex;
     justify-content: center;
     height: 100vh;
-    background-image: url('../../assets/background/login.jpg');
-    background-position: center;
+    background-image: url('@/assets/background/login.jpg');
+    background-position: center center;
     background-size: cover;
     position: relative;
 }

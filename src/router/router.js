@@ -51,7 +51,7 @@ const routes = [
               subSystemCode: MConstant.SubSystemCode.M_Project_List,
               anonymous: true
             },
-            component: () => import("../views/pages/project/Board.vue"),
+            component: () => import("../views/pages/project/List.vue"),
           },
           {
             path: "gantt",

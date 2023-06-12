@@ -109,5 +109,5 @@ export default defineComponent({
 </script>
 
 <style scoped>
-@import url(../../style/components/tree.css);
+@import url(../../assets/style/components/tree.css);
 </style>

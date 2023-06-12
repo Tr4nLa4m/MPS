@@ -1,3 +1,34 @@
+<script>
+import MSplitButton from "@/components/button/MSplitButton.vue";
+import {ref, inject} from "vue";
+import { useRoutePath } from "@/utils/uses/router/useRoutePath.js";
+import { useConfigStore } from "@/store/configStore";
+export default {
+  name: "HeaderProjectLayout",
+  components: { MSplitButton },
+  setup(props) {
+    const MConstant = inject('MConstant');
+    const CommonFn = inject('CommonFn');
+    const { goToProjectChild, getCurrentProjectTab } = useRoutePath();
+
+    const configStore = useConfigStore();
+
+    const selectedTabName = getCurrentProjectTab(configStore.ConfigTab.state.tabs).name;
+
+    const handleTabClick = (tabName) => {
+      let projectPath = CommonFn.getObjectValueByProps(MConstant.ProjectTab, 'name', tabName, 'path');
+      goToProjectChild(projectPath);
+    }
+
+    return {
+      selectedTabName,
+      handleTabClick
+    }
+  }
+};
+</script>
+
+
 <template>
   <header>
     <div class="m-header d-flex flex-align-center">
@@ -22,7 +53,7 @@
           </div>
         </div>
 
-        <div class="icon-wrapper m-pr24 m-pl24">
+        <div class="icon-wrapper d-flex flex-align-center m-pr24 m-pl24">
           <div class="mi-24 mi-setting m-mr6 m-ml6"></div>
         </div>
 
@@ -64,34 +95,9 @@
   </header>
 </template>
 
-<script>
-import MSplitButton from "@/components/button/MSplitButton.vue";
-import {ref, inject} from "vue";
-import { useRoutePath } from "@/utils/uses/router/useRoutePath.js"
-export default {
-  name: "HeaderProjectLayout",
-  components: { MSplitButton },
-  setup(props) {
-    const MConstant = inject('MConstant');
-    const CommonFn = inject('CommonFn');
-    const { goToProjectChild } = useRoutePath();
 
-    const selectedTabName = ref(MConstant.ProjectTab.Board.name);
-
-    const handleTabClick = (tabName) => {
-      let projectPath = CommonFn.getObjectValueByProps(MConstant.ProjectTab, 'name', tabName, 'path');
-      goToProjectChild(projectPath);
-    }
-
-    return {
-      selectedTabName,
-      handleTabClick
-    }
-  }
-};
-</script>
 <style>
-@import url("@/style/layouts/layout-header.css");
+@import url("@/assets/style/layouts/layout-header.css");
 
 .custom-tabs {
   --n-tab-font-weight-active: 500 !important;

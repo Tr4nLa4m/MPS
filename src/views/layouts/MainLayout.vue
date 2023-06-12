@@ -34,6 +34,6 @@ export default defineComponent({
 
 <style>
 .m-main-layout * {
-  font-family: "GoogleSans-Medium", Helvetica, Arial, sans-serif;
+  font-family: "GoogleSans-Regular", Arial, Helvetica, sans-serif !important;
 }
 </style>

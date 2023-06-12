@@ -51,5 +51,5 @@ import MSplitButton from '@/components/button/MSplitButton.vue'
   };
   </script>
     <style>
-  @import url('@/style/layouts/layout-header.css');
+  @import url('@/assets/style/layouts/layout-header.css');
   </style>

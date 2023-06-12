@@ -116,5 +116,5 @@ export const ButtonType = {
 </script>
 
 <style scoped>
-@import url(../../style/components/button.css);
+@import url(../../assets/style/components/button.css);
 </style>

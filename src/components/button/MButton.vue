@@ -6,6 +6,7 @@
       text ? '' : 'only-icon',
       border ? 'm-btn-border' : '',
       classCustom,
+      leftIcon || rightIcon ? 'd-flex flex-align-center' : '',
     ]"
     :title="title"
     :tag="tag"
@@ -18,7 +19,7 @@
     </div>
     <div
       class="text"
-      :class="[{ 'pl-0': leftIcon, 'pr-0': rightIcon }]"
+      :class="[{ 'm-ml8': leftIcon, 'm-mr8': rightIcon }]"
       v-if="text"
     >
       {{ text }}
@@ -104,5 +105,5 @@ export const ButtonType = {
 </script>
 
 <style scoped>
-@import url(../../style/components/button.css);
+@import url(../../assets/style/components/button.css);
 </style>

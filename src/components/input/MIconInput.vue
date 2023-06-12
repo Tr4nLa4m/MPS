@@ -148,5 +148,5 @@ export default {
 </script>
 
 <style scoped>
-@import url(../../style/components/input.css);
+@import url(../../assets/style/components/input.css);
 </style>

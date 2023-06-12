@@ -12,23 +12,28 @@ export default {
     ProjectTab: {
         Board : {
             name: 'Bảng',
-            path: '/project/board'
+            path: '/project/board',
+            key: 1
         },
         List : {
             name: 'Danh sách',
-            path: '/project/list'
+            path: '/project/list',
+            key: 2
         },
         Gantt : {
             name: 'Gantt',
-            path: '/project/gantt'
+            path: '/project/gantt',
+            key: 3
         },
         Calendar : {
             name: 'Lịch',
-            path: '/project/calendar'
+            path: '/project/calendar',
+            key: 4
         },
         File : {
             name: 'Tài liệu & Liên kết',
-            path: '/project/file'
+            path: '/project/file',
+            key: 5
         },
     },
 
@@ -36,3 +41,5 @@ export default {
         Auth : "Authenticate"
     }
 }
+
+export const CONFIG_STORE = 'ConfigStore';

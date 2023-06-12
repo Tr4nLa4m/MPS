@@ -81,4 +81,8 @@ h6 {
 
 .container{
   background: url(@/assets/background/dashboard-bg-1.jpg) -0 -40px no-repeat;
+  background-position: center center;
+  background-size: cover;
+  max-width: unset;
+  
 }

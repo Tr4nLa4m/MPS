@@ -61,7 +61,7 @@
 </template>
 
 <style scoped>
-@import url(../../style/pages/login-page.css);
+@import url(../../assets/style/pages/login-page.css);
 .m-main-layout * , .m-main-layout div, .m-main-layout button{
   font-family: Roboto , Helvetica, Arial, sans-serif !important;
 }

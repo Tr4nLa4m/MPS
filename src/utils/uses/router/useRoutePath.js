@@ -1,4 +1,4 @@
-import { useRouter } from "vue-router";
+import { useRouter, useRoute } from "vue-router";
 import config from "../../../common/config/config";
 
 export function useRoutePath(props ) {
@@ -20,11 +20,17 @@ export function useRoutePath(props ) {
         router.push(path);
     }
 
+    const getCurrentProjectTab = (tabs) => {
+        let route = useRoute();
+        return tabs.find((tab) => route.fullPath.includes(tab.path));
+    }
+
 
     return{
         goTo,
         goToDashboard,
         goToProjectChild,
-        goToProject
+        goToProject,
+        getCurrentProjectTab
     }
   }
