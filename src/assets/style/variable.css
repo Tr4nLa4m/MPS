@@ -3,18 +3,25 @@
     --header-height : 50px;
     --layout-header-height: 56px;
     --button-height-xl: 48px;
+    --button-height-l: 40px;
     --button-height-m: 32px;
 
+    --input-height: 36px;
+    --input-height-l: 40px;
+
     --request-dialog-width: 833px;
+    
 
 
     --z-index-header: 9;
     --z-index-dropdown-select: 10;
     --z-index-error-label: 5;
 
+    --text-color-default: #1f1f1f;
 
-    --primary-color: #238de6;
+    --primary-color: #2196f3 ;
     --secondary-color: #2589DF;
+
 
 
     --border-button-color: #CFCFCF;
@@ -22,10 +29,16 @@
     --border-table-color: #e2e8ef;
 
     --background-color: #f4f7fa;
+
+    --background-hover-color-1: #e1eeff;
+    --background-hover-color-2: #2a7efc;
     
     --primary-blue-color: #0073e6;
+    --border-focus-color: #2196f3 !important;
 
     --link-default-color: #0073e6;
+
+    --border-default-color: #efefef;
 
     --surface-a: #ffffff;
     --surface-b: #f8f9fa;
@@ -188,7 +201,7 @@
     --success: #28a745;
     --info: #17a2b8;
     --warning: #ffc107;
-    --danger: #dc3545;
+    --danger: #ff0000;
     --light: #f8f9fa;
     --dark: #343a40;
     --breakpoint-xs: 0;

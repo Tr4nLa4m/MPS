@@ -18,7 +18,6 @@ export default {
 
     const registerEvent = () => {
       var me = this;
-      debugger
     }
 
     return { init}

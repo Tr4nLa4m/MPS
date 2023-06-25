@@ -1,13 +1,22 @@
 <template>
-  <MainLayout />
+  <n-message-provider>
+    <MainLayout />
+
+    <ModalsContainer />
+  </n-message-provider>
 </template>
 
-<script setup>
-import MainLayout from './views/layouts/MainLayout.vue';
-
-
+<script>
+import MainLayout from "./views/layouts/MainLayout.vue";
+import { ModalsContainer } from "vue-final-modal";
+import { defineComponent } from "vue";
+export default defineComponent({
+  name: "App",
+  components: {
+    ModalsContainer,
+    MainLayout,
+  },
+});
 </script>
 
-<style>
-
-</style>
+<style></style>

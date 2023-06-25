@@ -43,8 +43,25 @@
 
 
 
-.m-header-right{
 
+
+.m-header-right{
+    padding-right: 16px;
+}
+
+.m-header-right .avatar{
+    height: 32px;
+    width: 32px;
+    border-radius: 50%;
+
+}
+
+.m-header-right .avatar img{
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    object-position: center center;
 }
 
 

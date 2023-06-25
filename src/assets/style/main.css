@@ -1,14 +1,16 @@
 @import url(./base/icon.css);
+@import url(./typography.css);
 
 * {
   box-sizing: border-box;
 }
 
 body {
-  color: black;
-  font-size: 16px;
-  font-family: Roboto, Helvetica, Arial, sans-serif !important;
+  color: var(--text-color-default);
+  font-size: 15px;
+  font-family: "GoogleSans-Regular" ,Roboto, Helvetica, Arial, sans-serif !important;
   overflow: hidden;
+  line-height: 1.5;
   margin: 0;
   padding: 0;
 }
@@ -72,7 +74,6 @@ h6 {
   src: url("@/assets/fonts/GoogleSans-Bold.otf");
   /* Add additional formats if necessary */
 }
-
 
 .container{
   margin-top: var(--layout-header-height);

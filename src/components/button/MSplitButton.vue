@@ -13,6 +13,7 @@
       :tag="tag"
       style="background-color: transparent;"
       class="m-button m-pl8 m-pr8 flex-center"
+      @click="onClick($event)"
     >
       <div
         :class="[
@@ -101,12 +102,26 @@ export default defineComponent({
       type: String,
       default: null,
     },
+
+    disabled: false
   },
   computed: {
     buttonTypeClass() {
       return `m-btn-${this.type}`;
     },
   },
+
+  setup(props, {emit}) {
+    
+    const onClick = (event) => {
+
+      emit('onClick', event);
+    };
+
+    return {
+      onClick
+    }
+  }
 });
 
 export const ButtonType = {

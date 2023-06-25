@@ -1,13 +1,37 @@
+<script setup>
+import { onMounted, ref } from "vue";
+import { useRoutePath } from "@/utils/uses/router/useRoutePath";
+import { useStore, mapActions } from "vuex";
+import { ModuleUser } from "@/store/moduleConstant";
+
+let username = ref("");
+let password = ref("");
+const tfUsername = ref(null);
+
+const store = useStore();
+const { goToDashboard } = useRoutePath();
+
+const btnLogin_click = async (event) => {
+  let data = {
+    Username: username.value,
+    Password: password.value,
+  };
+
+  // if(window._bypassLogin){
+  //   debugger
+  //   goToDashboard();
+  // }
+
+  const user = await store.dispatch( ModuleUser +  "/login", data);
+  if(user){
+    
+  }
+  goToDashboard();
+};
+</script>
+
 <template>
   <div class="m-login-wrapper" itemid="pnContainer">
-    <!-- Toast Message -->
-    <!-- <ToastNotifer
-        v-if="showToast"
-        :toastText="toast.toastText"
-        :toastType="toast.toastType"
-        @onCloseToast="showToast = false"
-        /> -->
-    <!-- End Toast Message -->
 
     <!-- Login Form  -->
     <div class="m-login-form">
@@ -23,6 +47,8 @@
           :name="'username'"
           :placeholder="'Tên tài khoản'"
           :textMessage="'Tài khoản không được để trống'"
+          ref="tfUsername"
+          class="input-xl"
         />
 
         <MInput
@@ -32,22 +58,23 @@
           :name="'password'"
           :placeholder="'Mật khẩu'"
           :textMessage="'Mật khẩu không được để trống'"
+          class="input-xl"
         />
 
         <div class="text-left flex m-mb16 fs-14">
           <router-link to="/forgot-password">Quên mật khẩu</router-link>
-          <div class="flex-1" ></div>
+          <div class="flex-1"></div>
         </div>
 
         <div class="m-row-input m-pt16 text-center">
           <MButton
-          :text="'Đăng nhập'"
-          :title="'Đăng nhập'"
-          :tag="'Login'"
-          :classCustom="'m-button-xl'"
+            :text="'Đăng nhập'"
+            :title="'Đăng nhập'"
+            :tag="'Login'"
+            :classCustom="'m-button-xl m-w100'"
+            @click="btnLogin_click"
           />
         </div>
-
       </div>
 
       <!-- <div class="m-login-form__footer">Copyright © 2020 MISA JSC</div> -->
@@ -60,11 +87,12 @@
   </div>
 </template>
 
-<style scoped>
+<style>
 @import url(../../assets/style/pages/login-page.css);
-.m-main-layout * , .m-main-layout div, .m-main-layout button{
-  font-family: Roboto , Helvetica, Arial, sans-serif !important;
+.m-main-layout *,
+.m-main-layout div,
+.m-main-layout button {
+  font-family: Roboto, Helvetica, Arial, sans-serif !important;
 }
-</style>
 
-<script src="../../scripts/pages/login/LoginPage.js"></script>
+</style>

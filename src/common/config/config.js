@@ -2,7 +2,8 @@ export default {
     APIEndPoint: {
         LOGIN: 'login',
         AUTH: 'auth',
-        LOGOUT: 'logout'
+        LOGOUT: 'logout',
+        GET_PROJECT_BY_EMPLOYEE: "employee"
     },
 
     Authentication: {
@@ -12,6 +13,6 @@ export default {
     Path : {
         LOGIN : "/login",
         DASHBOARD : "/dashboard",
-        PROJECT: "project",
+        PROJECT: "/project",
     }
 }

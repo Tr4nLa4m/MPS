@@ -1,5 +1,11 @@
 <template>
-  <div class="m-row-input d-flex m-input-border" :class="customClass">
+  <div
+    class="m-row-input d-flex"
+    :class="[customClass, 
+    border ? 'm-input-border' : 'no-border',
+    notvalid ? 'invalid' : ''
+    ]"
+  >
     <div class="m-input-wrapper">
       <input
         :type="type"
@@ -23,6 +29,7 @@
 </template>
 
 <script>
+import { ref } from 'vue'
 export default {
   name: "MInput",
   props: {
@@ -49,6 +56,11 @@ export default {
     // Placeholder của input
     placeholder: String,
 
+    border: {
+      type: Boolean,
+      default: true,
+    },
+
     autocomplete: String,
 
     // Custom class
@@ -71,26 +83,34 @@ export default {
     },
 
     enableBlur: {
-        type: Boolean,
-        default : false
-    }
+      type: Boolean,
+      default: false,
+    },
   },
 
   setup(props, context) {
+
+    const notvalid = ref(false);
     /**
      * Xử lý sau khi blur
      * @author : TNLAM (30-09-2022)
      * @param {Any} newValue giá trị mới
      * @return {}
      */
-    const handleBlurElement = (event) => {
+    const handleBlurElement = ($event) => {
       // Format lại dữ liệu số - Hiện đang lỗi
       // let currentValue = Number(this.modelValue).toLocaleString("vi-VI");
       // this.$emit('update:modelValue', currentValue);
+      const target = $event.target || $event.currentTarget;
+      if(props.require){
+        if(!target.value){
+          invalid();
+        }
+      }
 
       // Thực hiện gọi hàm ở component cha
-      if(props.enableBlur){
-        context.emit("onValidateInput", event);
+      if (props.enableBlur) {
+        context.emit("onValidateInput", $event);
       }
     };
 
@@ -103,14 +123,14 @@ export default {
     const handleUpdateModelValue = ($event) => {
       // Set giá trị nhỏ nhất là 0
       const target = $event.target || $event.currentTarget;
-      const boundElement = target.closest(".m-input-border");
+      const boundElement = target.closest(".m-row-input");
       // Nếu input đang invalid thì bỏ nó
       if (
-        boundElement.hasAttribute("invalid") &&
-        target.hasAttribute("required") &&
+        notvalid.value &&
+        props.require &&
         target.value
       ) {
-        boundElement.removeAttribute("invalid");
+        notvalid.value = false;
       }
 
       // if(target.type == "email" && target.value && validate.isEmailValid(target.value)){
@@ -120,9 +140,15 @@ export default {
       context.emit("update:modelValue", target.value);
     };
 
+    const invalid = () => {
+      notvalid.value = true;
+    };
+
     return {
+      notvalid,
       handleBlurElement,
       handleUpdateModelValue,
+      invalid
     };
   },
 

@@ -1,40 +1,92 @@
-<script>
+<script setup>
 import MSplitButton from "@/components/button/MSplitButton.vue";
-import {ref, inject} from "vue";
+import { ref, inject, computed, h, onMounted } from "vue";
 import { useRoutePath } from "@/utils/uses/router/useRoutePath.js";
-import { useConfigStore } from "@/store/configStore";
-export default {
-  name: "HeaderProjectLayout",
-  components: { MSplitButton },
-  setup(props) {
-    const MConstant = inject('MConstant');
-    const CommonFn = inject('CommonFn');
-    const { goToProjectChild, getCurrentProjectTab } = useRoutePath();
+import { useStore } from "vuex";
+import {
+  ModuleConfig,
+  ModuleProject,
+  ModuleUser,
+} from "@/store/moduleConstant";
+import DropdownUserInfo from "@/views/pages/common/dropdown/DropdownUserInfo.vue";
+import { useModal } from "vue-final-modal";
+import AddTaskForm from "@/views/popup/form/AddTask.vue";
+import { useRoute } from "vue-router";
 
-    const configStore = useConfigStore();
+const MConstant = inject("MConstant");
+const CommonFn = inject("CommonFn");
+const { goToProjectChild, getCurrentProjectTab, goToDashboard } =
+  useRoutePath();
 
-    const selectedTabName = getCurrentProjectTab(configStore.ConfigTab.state.tabs).name;
+const store = useStore();
+const route = useRoute();
 
-    const handleTabClick = (tabName) => {
-      let projectPath = CommonFn.getObjectValueByProps(MConstant.ProjectTab, 'name', tabName, 'path');
-      goToProjectChild(projectPath);
-    }
+const project = computed(() => store.state[ModuleProject]?.project);
+const projectTabs = computed(() => store.state[ModuleConfig]?.projectTabs);
+const user = computed(() => store.state[ModuleUser]?.user);
+const employee = computed(() => store.state[ModuleUser]?.employee);
+const selectedTabName = getCurrentProjectTab(projectTabs.value)?.name;
 
-    return {
-      selectedTabName,
-      handleTabClick
-    }
+const { open, close } = useModal({
+  component: AddTaskForm,
+  attrs: {
+    onCloseModal() {
+      close();
+    },
+  },
+});
+
+const renderDropdownUser = () => {
+  return h(DropdownUserInfo, {
+    user: {
+      Avatar: user?.value.Avatar,
+      FullName: employee?.value.FullName,
+      Email: employee?.value.Email,
+    },
+  });
+};
+
+const dropdownUserOptiops = CommonFn.initDropdownOptions(renderDropdownUser);
+
+const handleTabClick = (tabName) => {
+  let projectPath = CommonFn.getObjectValueByProps(
+    MConstant.ProjectTab,
+    "name",
+    tabName,
+    "path"
+  );
+
+  if (projectPath) {
+    goToProjectChild(projectPath);
+  }
+};
+
+onMounted(() => {
+  let params = {
+    TabPath: route.name,
+  };
+  let res = store.dispatch(ModuleConfig + "/setActiveProjectTab", params);
+});
+
+const btnHome_click = () => {
+  goToDashboard();
+};
+
+const onClickBtn = (event) => {
+  try {
+    open();
+  } catch (error) {
+    console.log(error);
   }
 };
 </script>
-
 
 <template>
   <header>
     <div class="m-header d-flex flex-align-center">
       <div class="m-header-left">
-        <div class="icon-wrapper">
-          <div class="m-icon-btn mi-24 mi-home m-ml16 m-mr16"></div>
+        <div class="icon-wrapper" @click="btnHome_click">
+          <div class="m-icon-btn mi-24 mi-home m-ml16 m-mr16 pointer"></div>
         </div>
       </div>
 
@@ -47,7 +99,9 @@ export default {
               </div>
             </div>
 
-            <div class="name-project m-mr4">Công việc cá nhân</div>
+            <div class="name-project m-mr4">
+              {{ project.ProjectName || "" }}
+            </div>
 
             <div class="mi-16 mi-carret-down"></div>
           </div>
@@ -58,13 +112,17 @@ export default {
         </div>
 
         <div class="tab-panel m-ml16">
-          <n-tabs type="bar" class="custom-tabs" :default-value="selectedTabName" @update:value="handleTabClick">
+          <n-tabs
+            type="bar"
+            class="custom-tabs"
+            :default-value="selectedTabName"
+            @update:value="handleTabClick"
+          >
             <n-tab name="Bảng"></n-tab>
             <n-tab name="Danh sách"></n-tab>
             <n-tab name="Gantt"></n-tab>
             <n-tab name="Lịch"></n-tab>
             <n-tab name="Tài liệu & Liên kết"></n-tab>
-
           </n-tabs>
         </div>
       </div>
@@ -75,6 +133,7 @@ export default {
           :title="'Thêm công việc'"
           :classCustom="'m-button-m'"
           :leftIcon="'mi-24 mi-plus-white'"
+          @onClick="onClickBtn"
         />
 
         <div class="divider m-mr32 m-w1"></div>
@@ -89,22 +148,29 @@ export default {
 
         <div class="m-icon-btn mi-24 mi-show-detail m-mr32"></div>
 
-        <div class="m-icon-btn avatar m-mr8"></div>
+        <n-dropdown
+          trigger="click"
+          :options="dropdownUserOptiops"
+          :show-arrow="true"
+        >
+          <div class="m-icon-btn avatar m-mr8">
+            <img :src="user.Avatar" />
+          </div>
+        </n-dropdown>
       </div>
     </div>
   </header>
 </template>
-
 
 <style>
 @import url("@/assets/style/layouts/layout-header.css");
 
 .custom-tabs {
   --n-tab-font-weight-active: 500 !important;
-  --n-tab-gap : 24px !important;
+  --n-tab-gap: 24px !important;
 }
 
-.custom-tabs .n-tabs-tab__label{
+.custom-tabs .n-tabs-tab__label {
   font-size: 15px !important;
   font-family: "GoogleSans-Regular", Arial, Helvetica, sans-serif !important;
 }

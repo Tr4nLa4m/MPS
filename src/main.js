@@ -1,32 +1,34 @@
-import { createApp } from 'vue'
-import App from './App.vue';
-import router from './router/router';
-import store from './store/store';
+import { createApp } from "vue";
+import App from "./App.vue";
+import router from "./router/router";
+import store from "./store/store";
 import naive from "naive-ui";
 import MConstant from "@/common/consts/MConstant";
 import commonFn from "@/utils/helper/commonFn.js";
-import { configStore } from '@/store/configStore';
-
-
+import { createVfm } from 'vue-final-modal'
 // Import CSS
 import "./assets/style/main.css";
 import "./assets/style/variable.css";
 import "./assets/style/base.css";
-import { CONFIG_STORE } from './common/consts/MConstant';
+import 'vue-final-modal/style.css'
+import VueClickAway from "vue3-click-away";
 // import "@/assets/style/customize.css";
-
-
 const myApp = createApp(App);
 
-myApp.provide('MConstant', MConstant);
-myApp.provide('CommonFn', commonFn);
+// Globally Registered Components
+import { useComponents } from '@/utils/globalComponents.js';
+useComponents(myApp);
 
-myApp.provide(CONFIG_STORE, configStore);
+myApp.provide("MConstant", MConstant);
+myApp.provide("CommonFn", commonFn);
 
 
+const vfm = createVfm()
 
 myApp.use(router);
+myApp.use(VueClickAway) 
+myApp.use(vfm);
+
 myApp.use(store);
 myApp.use(naive);
 myApp.mount("#app");
-

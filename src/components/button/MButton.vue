@@ -1,6 +1,7 @@
 <template>
   <button
     class="m-button"
+    :title="title"
     :class="[
       buttonTypeClass,
       text ? '' : 'only-icon',
@@ -8,18 +9,18 @@
       classCustom,
       leftIcon || rightIcon ? 'd-flex flex-align-center' : '',
     ]"
-    :title="title"
     :tag="tag"
+    :style="style"
   >
     <div
-      :class="['icon-24 icon-left', leftIcon, disabled ? 'disabled-icon' : '']"
+      :class="['mi-24 icon-left', leftIcon, disable ? 'disabled-icon' : '']"
       v-if="leftIcon"
     >
       &nbsp;
     </div>
     <div
       class="text"
-      :class="[{ 'm-ml8': leftIcon, 'm-mr8': rightIcon }]"
+      :class="[{ 'm-ml8': leftIcon, 'm-mr8': rightIcon }, classText]"
       v-if="text"
     >
       {{ text }}
@@ -69,6 +70,8 @@ export default defineComponent({
     // Class custom cho button
     classCustom: String,
 
+    classText: String,
+
     // Border của button
     border: {
       type: Boolean,
@@ -82,14 +85,21 @@ export default defineComponent({
     },
 
     tag: {
-      type : String,
-      default: null
+      type: String,
+      default: null,
     },
 
     title: {
       type: String,
-      default: null
-    }
+      default: null,
+    },
+
+    style: {
+      type: Object,
+      default: null,
+    },
+
+    disabled: false
   },
   computed: {
     buttonTypeClass() {

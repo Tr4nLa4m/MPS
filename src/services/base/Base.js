@@ -3,14 +3,11 @@ import {httpClient} from "./httpClient"
 const baseUrl = `${import.meta.env.VITE_DOMAIN_BE}/api/v1`;
 
 class BaseRepository extends httpClient{
-    //#region Propertiesa
-	resource;
-    //#endregion
 
     //#region Constructor
     constructor(resource, baseDomain = baseUrl){
 		super(baseDomain);
-        this.resource = resource;
+        this._controller = resource;
     }
     //#endregion
 
@@ -37,8 +34,10 @@ class BaseRepository extends httpClient{
 	 * @returns Promise chứa data để tiếp tục xử lý
 	 */
 	async getById(id, onSuccess, onFailure) {
-		let url = `${this.resource}/${id}`;
-		return await this._repository.get(url, onSuccess, onFailure);
+		let config = {
+			url : `${this._controller}/${id}`
+		}
+		return await this.getAsync(config, onSuccess, onFailure);
 	}
 
     /**
@@ -47,8 +46,11 @@ class BaseRepository extends httpClient{
 	 * @param
 	 * @returns Promise chứa data để tiếp tục xử lý
 	 */
-	async getAll() {
-		return await this._repository.get(`${this.resource}/all`);
+	async getAll(onSuccess, onFailure) {
+		let config = {
+			url: [this._controller , 'all'].join('/')
+		}
+		return await this.getAsync(config, onSuccess, onFailure);
 	}
 
     /**
@@ -57,8 +59,12 @@ class BaseRepository extends httpClient{
 	 * @param {Object} dataObject cần tạo
 	 * @returns Promise chứa data để tiếp tục xử lý
 	 */
-	create(dataObject) {
-		return this._repository.post(`${this.resource}`, dataObject);
+	create(dataObject, onSuccess, onFailure) {
+		let config = {
+			url: [this._controller].join('/'),
+			data: dataObject
+		}
+		return this.postAsync(config, onSuccess, onFailure);
 	}
 
     /**
@@ -67,8 +73,12 @@ class BaseRepository extends httpClient{
 	 * @param {Object} dataObject cần sửa
 	 * @returns Promise chứa data để tiếp tục xử lý
 	 */
-	update(dataObject) {
-		return this._repository.put(`${this.resource}`, dataObject);
+	update(dataObject, onSuccess, onFailure) {
+		let config = {
+			url: [this._controller].join('/'),
+			data: dataObject
+		}
+		return this.putAsync(config, onSuccess, onFailure);
 	}
 
     /**
@@ -77,8 +87,11 @@ class BaseRepository extends httpClient{
 	 * @param {String} id dataObject cần xóa
 	 * @returns Promise chứa data để tiếp tục xử lý
 	 */
-	delete(id) {
-		return this._repository.delete(`${this.resource}/${id}`);
+	delete(id, onSuccess, onFailure) {
+		let config = {
+			url: [this._controller, id].join('/'),
+		}
+		return this.deleteAsync(config, onSuccess, onFailure);
 	}
 
     //#endregion

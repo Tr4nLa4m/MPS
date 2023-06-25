@@ -4,7 +4,7 @@ import baseRouter from "./baseRouter";
 import auth from "../utils/helper/auth";
 
 const LAYOUT_NAME = "MainLayout";
-const PAGE_NOT_FOUND_ROUTE = {
+export const PAGE_NOT_FOUND_ROUTE = {
   path: "/page-not-found",
 };
 
@@ -27,14 +27,20 @@ const routes = [
         component: () => import("../views/pages/dashboard/Index.vue"),
       },
       {
-        path: "project",
+        path: "project/:ProjectID",
         name: "project",
+        props: (route) => ({ ProjectID: route.params.ProjectID}),
         meta: {
           subSystemCode: MConstant.SubSystemCode.M_Project,
           anonymous: true
         },
         component: () => import("../views/pages/project/Index.vue"),
         children: [
+          {
+            path: '', // Empty path for the child route
+            name: 'no-tab',
+            redirect: { name: 'board' } // Redirect to a fallback route if no child routes are defined
+          },
           {
             path: "board",
             name: "board",
@@ -61,6 +67,25 @@ const routes = [
               anonymous: true
             },
             component: () => import("../views/pages/project/Gantt.vue"),
+          },
+          {
+            path: "calendar",
+            name: "calendar",
+            meta: {
+              subSystemCode: MConstant.SubSystemCode.M_Project_Gantt,
+              anonymous: true
+            },
+            component: () => import("../views/pages/project/Test.vue"),
+          },
+
+          {
+            path: "file",
+            name: "file",
+            meta: {
+              subSystemCode: MConstant.SubSystemCode.M_Project_File,
+              anonymous: true
+            },
+            component: () => import("../views/pages/project/Test.vue"),
           },
         ]
       },
@@ -188,3 +213,4 @@ const getDefaultRoute = (to) => {
 };
 
 export default router;
+

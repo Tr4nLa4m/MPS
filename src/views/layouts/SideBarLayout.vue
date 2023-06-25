@@ -28,89 +28,129 @@
         <MIconInput
           :placeholder="'Tìm kiếm'"
           :iconLeft="'mi-18 mi-search-before'"
-          :customClass="'no-border m-m0 m-pl24'"
-          :inputClass="'no-border m-white m-h32 fs-14 m-pl4 m-pt8 m-pr8 m-pb8'"
+          :customClass="'m-m0 m-ml16 search-projects'"
+          :inputClass="'m-h32 fs-14 m-pl4 m-pt8 m-pr8 m-pb8 transparent m-white'"
           v-model="searchProjectText"
         />
 
-        <div class="mi-24 mi-collapse pointer m-mr16"></div>
+        <div class="mi-24 mi-collapse pointer m-mr16" title="Thu gọn" @click="btnCollapse_click"></div>
 
         <div class="mi-24 mi-setting pointer m-mr16"></div>
       </div>
 
-      <div class="m-department-list">
-        <MTreeView :items="filteredData" :searchProjectText="searchProjectText" />
+      <div class="m-department-list m-pl16">
+        <n-tree
+          block-line
+          label-field="ProjectName"
+          key-field="ProjectID"
+          children-field="Projects"
+          :data="filteredData"
+          :default-expanded-keys="defaultExpandedKeys"
+          :node-props="nodeProps"
+          class="sidebar-projects"
+        />
       </div>
     </div>
   </aside>
 </template>
 
-<script>
-import MSplitButton from "@/components/button/MSplitButton.vue";
-import MTreeView from "@/components/treeview/MTreeView.vue";
+<script setup>
 import MIconInput from "@/components/input/MIconInput.vue";
-import { ref, computed } from "vue";
-export default {
-  name: "SideBarLayout",
-  components: { MSplitButton, MTreeView, MIconInput },
-  setup(props, context) {
-    const searchProjectText = ref("");
-    const myData = [
-      {
-        id: 1,
-        text: "Cá nhân",
-        children: [
-          { id: 2, text: "Công việc cá nhân" },
-          { id: 3, text: "Coffee" },
-        ],
-      },
-      {
-        id: 4,
-        text: "Phòng quản trị",
-        children: [{ id: 5, text: "Dự án Max" }],
-      },
-    ];
+import { ref, computed, onMounted, defineProps } from "vue";
+import { useRoutePath } from "@/utils/uses/router/useRoutePath";
 
-    const filteredData = computed(() => {
-      if (!searchProjectText.value) {
-        return myData;
-      }
+const props = defineProps({
+  projects: [],
+});
 
-      console.log(1);
+const departmentKeyPrefix = "DEPARTMENT_"
 
-      const filterText = searchProjectText.value.toLowerCase();
+const searchProjectText = ref("");
 
-      const filterChildren = (items) => {
-        const filteredItems = [];
-        for (const item of items) {
-          if (item.text.toLowerCase().includes(filterText)) {
-            filteredItems.push(item);
-            continue;
-          }
-          if (item.children) {
-            const matchingChildren = filterChildren(item.children);
-            if (matchingChildren.length > 0) {
-              filteredItems.push({
-                ...item,
-                children: matchingChildren,
-              });
-            }
-          }
-        }
-        return filteredItems;
-      };
+const defaultExpandedKeys = ref([]);
 
+const { goToProject } = useRoutePath();
 
-      return filterChildren(myData);
-    });
-
+const filteredData = computed(() => {
+  let rawData = props.projects?.map((x) => {
     return {
-      searchProjectText,
-      filteredData,
+      ...x,
+      ProjectID: departmentKeyPrefix + x.DepartmentID,
+      ProjectName: x.DepartmentName,
     };
-  },
+  });
+  if (!searchProjectText.value) {
+    updateExpandedKey(rawData);
+    return rawData;
+  }
+
+  console.log(rawData);
+
+  const filterText = searchProjectText.value.toLowerCase();
+
+  const filterChildren = (items) => {
+    const filteredItems = [];
+    for (const item of items) {
+      if (item.ProjectName?.toLowerCase().includes(filterText)) {
+        filteredItems.push(item);
+        continue;
+      }
+      if (item.Projects && item.Projects.length > 0) {
+        const matchingChildren = filterChildren(item.Projects);
+        if (matchingChildren.length > 0) {
+          filteredItems.push({
+            ...item,
+            children: matchingChildren,
+          });
+        }
+      }
+    }
+    return filteredItems;
+  };
+
+
+  let data = filterChildren(rawData);
+  updateExpandedKey(data);
+  return data;
+
+});
+
+
+
+const btnCollapse_click = () => {
+  updateExpandedKey([]);
+}
+
+const updateExpandedKey = (projectList) => {
+  defaultExpandedKeys.value = projectList?.map(x => x.ProjectID);
+}
+
+const nodeProps = ({ option }) => {
+  return {
+    onClick() {
+      if(!option.ProjectID?.includes(departmentKeyPrefix)){
+        goToProject(option.ProjectID);
+      }
+    },
+  };
 };
 </script>
 <style>
 @import url("@/assets/style/layouts/sidebar-layout.css");
+
+.sidebar-projects {
+  --n-node-text-color: #fff !important;
+  --n-arrow-color: #fff !important;
+  --n-node-color-active: rgba(53, 159, 245, 0.1);
+  --n-node-color-hover: var(--surface-900) !important;
+  --n-node-color-pressed: var(--surface-800) !important;
+}
+
+.search-projects{
+  border-top: 0 !important;
+  border-left: 0 !important;
+  border-right: 0 !important;
+  border-radius: 0px !important;
+}
+
 </style>

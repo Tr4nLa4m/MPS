@@ -4,6 +4,7 @@ export default {
         M_Dashboard : "M_Dashboard",
         M_Project : "M_Project",
         M_Project_Board : "M_Project_Board",
+        M_Project_Calendar : "M_Project_Calendar",
         M_Project_List: "M_Project_List",
         M_Project_Gantt : "M_Project_Gantt",
         M_Project_File : "M_Project_File",
@@ -12,33 +13,37 @@ export default {
     ProjectTab: {
         Board : {
             name: 'Bảng',
-            path: '/project/board',
+            path: '/board',
             key: 1
         },
         List : {
             name: 'Danh sách',
-            path: '/project/list',
+            path: '/list',
             key: 2
         },
         Gantt : {
             name: 'Gantt',
-            path: '/project/gantt',
+            path: '/gantt',
             key: 3
         },
         Calendar : {
             name: 'Lịch',
-            path: '/project/calendar',
+            path: '/calendar',
             key: 4
         },
         File : {
             name: 'Tài liệu & Liên kết',
-            path: '/project/file',
+            path: '/file',
             key: 5
         },
     },
 
     Services: {
-        Auth : "Authenticate"
+        Auth : "Authenticate",
+        Employee: "Employee",
+        User: "User",
+        Task: "Task",
+        Project: "Project",
     }
 }
 

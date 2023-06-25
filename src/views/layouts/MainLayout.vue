@@ -4,15 +4,18 @@
       <router-view></router-view>
     </div>
   </NConfigProvider>
+
+  <MLoader />
 </template>
 
 <script>
 import { defineComponent } from "vue";
 import { NConfigProvider } from "naive-ui";
+import  MLoader  from '@/components/loader/MLoader.vue';
 
 export default defineComponent({
   name: "MainLayout",
-  components: { NConfigProvider },
+  components: { NConfigProvider, MLoader },
   setup() {
     const themeOverrides = {
       common: {
