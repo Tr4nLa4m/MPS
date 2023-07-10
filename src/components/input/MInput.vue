@@ -5,6 +5,7 @@
     border ? 'm-input-border' : 'no-border',
     notvalid ? 'invalid' : ''
     ]"
+    ref="tfInputWrapper"
   >
     <div class="m-input-wrapper">
       <input
@@ -20,7 +21,7 @@
         @blur="handleBlurElement($event)"
         :placeholder="placeholder"
         :style="{ width: width + 'px' }"
-        class="m-input"
+        :class="['m-input', inputClass ]"
       />
     </div>
 
@@ -66,6 +67,8 @@ export default {
     // Custom class
     customClass: String,
 
+    inputClass: String,
+
     disable: {
       type: Boolean,
       default: false,
@@ -86,10 +89,15 @@ export default {
       type: Boolean,
       default: false,
     },
+
+    enableChange: {
+      type: Boolean,
+      default: false,
+    }
   },
 
   setup(props, context) {
-
+    const tfInputWrapper = ref(null);
     const notvalid = ref(false);
     /**
      * Xử lý sau khi blur
@@ -110,7 +118,7 @@ export default {
 
       // Thực hiện gọi hàm ở component cha
       if (props.enableBlur) {
-        context.emit("onValidateInput", $event);
+        context.emit("onBlur", $event);
       }
     };
 
@@ -138,6 +146,9 @@ export default {
       // }
 
       context.emit("update:modelValue", target.value);
+      if(props.enableChange){
+        context.emit("onTextChange", target.value);
+      }
     };
 
     const invalid = () => {
@@ -148,11 +159,11 @@ export default {
       notvalid,
       handleBlurElement,
       handleUpdateModelValue,
-      invalid
+      invalid,
     };
   },
 
-  emits: ["update:modelValue"],
+  emits: ["update:modelValue", "onTextChange", "onBlur"],
 
   computed: {},
 };

@@ -22,6 +22,8 @@
     --primary-color: #2196f3 ;
     --secondary-color: #2589DF;
 
+    --danger-color: #e8384f;
+
 
 
     --border-button-color: #CFCFCF;
@@ -29,6 +31,7 @@
     --border-table-color: #e2e8ef;
 
     --background-color: #f4f7fa;
+    --background-comment: #f1f1f1;
 
     --background-hover-color-1: #e1eeff;
     --background-hover-color-2: #2a7efc;

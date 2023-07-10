@@ -1,46 +1,52 @@
-<script>
-import { defineComponent, h, ref, computed, reactive, nextTick } from "vue";
+<script setup>
+import { ModuleProject } from "@/store/moduleConstant";
+import { defineProps, h, onMounted, ref, computed, reactive, nextTick } from "vue";
+import { useStore } from "vuex";
 
-export default defineComponent({
-  name: "FilterEmployeeForm",
-  setup(props, { emit }) {
-    const data = [
-      {
-        avatar: new URL("@/assets/image/avt.jpg", import.meta.url),
-        name: "Trần Ngọc Lâm",
-        email: "tranlamiter@gmail.com",
-      },
-      {
-        avatar: new URL("@/assets/image/avt.jpg", import.meta.url),
-        name: "Trần Văn Sơn",
-        email: "tranlamiter@gmail.com",
-      },
-    ];
-
-    const searchText = ref("");
-
-    const getFilterEmployee = computed(() => {
-      if (!searchText.value) {
-        return data;
-      }
-
-      let n_text = searchText.value.toLowerCase();
-
-      return data.filter(
-        (item) =>
-          item.name.toLowerCase().includes(n_text) ||
-          item.email.toLowerCase().includes(n_text)
-      );
-    });
-
-
-    return {
-      data,
-      searchText,
-      getFilterEmployee,
-    };
-  },
+const props = defineProps({
+  project: {
+    type: Object,
+    default: {}
+  }
 });
+
+const emits = defineEmits(['closeModal', 'chooseEmployee']);
+
+const store = useStore();
+const searchText = ref("");
+
+
+const employees = computed(() => store.state[ModuleProject]?.employees);
+
+const getFilterEmployee = computed(() => {
+  if (!searchText.value) {
+    return employees.value;
+  }
+
+  let n_text = searchText.value.toLowerCase();
+
+  return employees.value.filter(
+    (item) =>
+      item.FullName.toLowerCase().includes(n_text) ||
+      item.Email.toLowerCase().includes(n_text)
+  );
+});
+
+onMounted(async () => {
+  let param = {
+    ProjectID: props.project?.ProjectID
+  }
+  // lấy danh sách nhân viên theo project
+  await store.dispatch(ModuleProject + "/getEmployees", param)
+})
+
+
+
+
+const btnChooseEmployee_click = (employee) => {
+  emits('chooseEmployee', employee);
+  emits('closeModal');
+}
 </script>
 
 <template>
@@ -61,26 +67,29 @@ export default defineComponent({
           />
         </div>
 
-        <div class="search-item-list">
-          <div
-            v-for="item in getFilterEmployee"
-            class="flex-row search-item flex-align-center"
-          >
-            <div class="search-item-avt">
-              <img :src="item.avatar" />
-            </div>
-
-            <div class="flex-column">
-              <div class="search-item-title text-medium line-small">
-                {{ item.name }}
+        <n-scrollbar trigger="hover" style="max-height: 270px">
+          <div class="search-item-list">
+            <div
+              v-for="item in getFilterEmployee"
+              class="flex-row search-item flex-align-center pointer"
+              @click="btnChooseEmployee_click(item)"
+            >
+              <div class="search-item-avt">
+                <img :src="item.Avatar || ''" />
               </div>
 
-              <div class="search-item-subtitle text-small line-small">
-                {{ item.email }}
+              <div class="flex-column">
+                <div class="search-item-title text-medium line-small">
+                  {{ item.FullName || ''}}
+                </div>
+
+                <div class="search-item-subtitle text-small line-small">
+                  {{ item.Email || '' }}
+                </div>
               </div>
             </div>
           </div>
-        </div>
+        </n-scrollbar>
       </div>
     </template>
   </VModal>
@@ -92,6 +101,7 @@ export default defineComponent({
 }
 
 .search-item-list {
+  min-height: 162px;
 }
 
 .search-item-list .search-item {

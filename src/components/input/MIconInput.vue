@@ -1,8 +1,11 @@
 <template>
-  <div class="m-row-input d-flex" :class="[customClass, border ? 'm-input-border' : 'no-border']">
+  <div
+    class="m-row-input d-flex"
+    :class="[customClass, border ? 'm-input-border' : 'no-border']"
+  >
     <div class="m-input-wrapper d-flex flex-align-center">
-      <div class="input-icon pointer" v-if="iconLeft">
-        <div :class="[iconLeft]" ></div>
+      <div class="input-icon pointer" v-if="iconLeft" @click="btnIcon_click">
+        <div :class="[iconLeft]"></div>
       </div>
       <input
         :type="type"
@@ -17,13 +20,13 @@
         @blur="handleBlurElement($event)"
         :placeholder="placeholder"
         :style="{ width: width + 'px' }"
-        :class="['m-input m-w100', inputClass ]"
+        :class="['m-input m-w100', inputClass]"
+        @keydown="handleKeyDown"
       />
 
-      <div class="input-icon pointer" v-if="iconRight">
-        <div :class="[iconRight ]" ></div>
+      <div class="input-icon pointer" v-if="iconRight" @click="btnIcon_click">
+        <div :class="[iconRight]"></div>
       </div>
-
     </div>
     <div class="m-input-error-label">{{ textMessage }}</div>
   </div>
@@ -65,7 +68,7 @@ export default {
 
     border: {
       default: true,
-      type:Boolean
+      type: Boolean,
     },
 
     disable: {
@@ -90,13 +93,18 @@ export default {
     },
 
     iconLeft: {
-      type: String,
+      type: Array || String,
       default: null,
     },
 
     iconRight: {
-      type: String,
+      type: Array || String,
       default: null,
+    },
+
+    submitOnKeydown: {
+      type: Boolean,
+      default: false,
     },
   },
 
@@ -144,13 +152,30 @@ export default {
       context.emit("update:modelValue", target.value);
     };
 
+    const handleKeyDown = (e) => {
+      if (props.submitOnKeydown) {
+        if (e.keyCode == 13) {
+          const target = e.target || e.currentTarget;
+          context.emit("onEnter", target.value);
+        }
+      }
+    };
+
+    const btnIcon_click = (e) => {
+      if(props.iconLeft || props.iconRight){
+        context.emit("onIconClick");
+      }
+    }
+
     return {
       handleBlurElement,
       handleUpdateModelValue,
+      handleKeyDown,
+      btnIcon_click,
     };
   },
 
-  emits: ["update:modelValue"],
+  emits: ["update:modelValue", "onEnter", "onIconClick"],
 
   computed: {},
 };
@@ -159,7 +184,7 @@ export default {
 <style scoped>
 @import url(../../assets/style/components/input.css);
 
-.input-icon{
+.input-icon {
   padding: 4px 8px;
 }
 </style>

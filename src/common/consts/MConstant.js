@@ -44,7 +44,13 @@ export default {
         User: "User",
         Task: "Task",
         Project: "Project",
+        TaskGroup: "TaskGroup",
+        Department: "Department",
+        PermissionGroup: 'PermissionGroup',
+        TaskComment: 'TaskComment',
+        TaskActivity: 'TaskActivity'
     }
 }
 
 export const CONFIG_STORE = 'ConfigStore';
+export const GUID_EMPTY = '00000000-0000-0000-0000-000000000000';

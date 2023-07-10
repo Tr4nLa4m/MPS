@@ -1,5 +1,6 @@
 import auth from "@/services/Auth";
 import Employee from "@/services/Employee";
+import PermissionGroup from "@/services/PermissionGroup";
 import { useRouter } from "vue-router";
 
 // initial state
@@ -31,22 +32,28 @@ const state = {
     "Level": null
   }
    */
-  bypassLogin: false
+  bypassLogin: false,
+
+  permissionGroups: [
+    // {
+    //   "PermissionGroupID": "aabd7d56-1822-11ee-9a50-0242ac130002",
+    //   "PermissionGroupName": "Toàn quyền",
+    //   "ProjectID": null,
+    //   "Description": "Toàn quyền với Dự án/Nhóm",
+    //   "CreatedDate": "2023-06-30T00:00:00",
+    //   "CreatedBy": null
+    // }
+  ]
 }
 
 // getters
 const getters = {
-  // cartProducts: (state, getters, rootState) => {
-  //   return state.items.map(({ id, quantity }) => {
-  //     const product = rootState.products.all.find(product => product.id === id)
-  //     return {
-  //       id: product.id,
-  //       title: product.title,
-  //       price: product.price,
-  //       quantity
-  //     }
-  //   })
-  // },
+  getUserInfo: (state, getters, rootState) => {
+    return {
+      ...state.user,
+      ...state.employee
+    }
+  },
 
   // cartTotalPrice: (state, getters) => {
   //   return getters.cartProducts.reduce((total, product) => {
@@ -85,6 +92,24 @@ const actions = {
     let res = await Employee.getById(payload?.EmployeeID);
     commit('SET_EMPLOYEE', res.Data);
     return res.Data;
+  },
+
+  async getInitPermissionGroups({ commit, state }, payload){
+    let res = await PermissionGroup.getAll();
+    if (res?.Success) {
+      if(payload?.onSuccess){
+        payload.onSuccess();
+      }
+
+      commit('SET_PERMISSION_GROUPS', res.Data);
+    }
+    else{
+      if(payload?.onFailure){
+        payload.onFailure();
+      }
+    }
+
+    return res.Data;
   }
 
   // addProductToCart ({ state, commit }, product) {
@@ -112,7 +137,9 @@ const mutations = {
     state.employee = data;
   }, 
 
-  
+  SET_PERMISSION_GROUPS(state, data){
+    state.permissionGroups = data;
+  }
 }
 
 export default {

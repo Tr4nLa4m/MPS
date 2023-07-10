@@ -12,6 +12,7 @@ export default {
       background: "non-interactive",
       lockScroll: true,
       swipeToClose: "none",
+      contentClass: "dynamic-modal-content",
       customClass: ''
     };
 

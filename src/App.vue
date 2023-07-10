@@ -1,5 +1,5 @@
 <template>
-  <n-message-provider>
+  <n-message-provider placement="top-right">
     <MainLayout />
 
     <ModalsContainer />

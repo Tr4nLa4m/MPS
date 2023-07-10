@@ -1,0 +1,63 @@
+.n-input {
+  --n-border-hover: 1px solid var(--primary-color) !important;
+  --n-border-focus: 1px solid var(--primary-color) !important;
+  --n-font-size: 15px !important;
+}
+
+
+
+.n-base-selection{
+  --n-border-active: 1px solid var(--primary-color) !important;
+  --n-border-focus: 1px solid var(--primary-color) !important;
+  --n-border-hover: 1px solid var(--primary-color) !important;
+  --n-caret-color: var(--primary-color) !important;
+
+  
+  --n-color-disabled: transparent !important;
+  --n-text-color-disabled: rgb(51, 54, 57) !important;
+  --n-arrow-color-disabled: rgba(194, 194, 194, 1) !important;
+}
+
+.m-tabs{
+  --n-bar-color: var(--primary-color) !important;
+  --n-tab-text-color-active: var(--primary-color) !important;
+  --n-tab-text-color-hover: var(--primary-color) !important;
+  --n-tab-font-weight-active: 600 !important;
+  --n-tab-gap: 24px !important;
+}
+
+
+.n-tabs-tab-wrapper{
+  cursor: pointer;
+}
+
+.n-tabs-tab__label {
+  font-family: "GoogleSans-Regular", Arial, Helvetica, sans-serif !important;
+}
+
+.n-slider{
+  --n-fill-color: var(--primary-color) !important;
+  --n-fill-color-hover: var(--primary-color) !important;
+  --n-dot-border-active: 2px solid var(--primary-color) !important;
+}
+
+.n-tree-select-menu  .v-vl{
+  --n-node-text-color-disabled: rgb(51, 54, 57) !important;
+}
+
+
+/* tinyMCE  */
+
+.tox-tinymce .tox-editor-container{
+
+}
+
+#tinymce p{
+  background-color: aliceblue;
+
+}
+
+p{
+  margin-block-start: 0;
+  margin-block-end: 0;
+}

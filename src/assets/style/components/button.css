@@ -60,7 +60,6 @@
 }
 
 .m-split-button{
-    border: 0;
     outline: 0;
     color: #fff;
     padding: 4px 0;
@@ -88,5 +87,21 @@
 .m-button.btn-transparent, .m-button.btn-transparent:hover{
     color: var(--border-focus-color);
     background-color: #fff;
+}
+
+.btn-split{
+    height: 100%;
+}
+
+.btn-split:hover{
+    box-shadow: none !important;
+}
+
+.btn-danger{
+    background-color: var(--danger-color) !important;
+}
+
+.btn-danger:hover{
+    background-color: #ff1d1d !important;
 }
 

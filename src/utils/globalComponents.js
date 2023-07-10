@@ -7,6 +7,7 @@ import MButtonIcon from '@/components/button/MButtonIcon.vue';
 import MSplitButton from '@/components/button/MSplitButton.vue';
 import MInput from '@/components/input/MInput.vue';
 import MIconInput from '@/components/input/MIconInput.vue';
+import MTreeSelect from "@/components/treeview/MTreeSelect.vue";
 
 import VModal from "@/views/popup/VModal.vue";
 
@@ -17,6 +18,7 @@ export function useComponents(app) {
   app.component(MSplitButton.name, MSplitButton);
   app.component(MInput.name, MInput);
   app.component(MIconInput.name, MIconInput);
+  app.component(MTreeSelect.name, MTreeSelect);
 
   app.component('VModal', VModal);
 

@@ -5,6 +5,7 @@ import store from "./store/store";
 import naive from "naive-ui";
 import MConstant from "@/common/consts/MConstant";
 import commonFn from "@/utils/helper/commonFn.js";
+import models from "@/utils/helper/models";
 import { createVfm } from 'vue-final-modal'
 // Import CSS
 import "./assets/style/main.css";
@@ -21,6 +22,7 @@ useComponents(myApp);
 
 myApp.provide("MConstant", MConstant);
 myApp.provide("CommonFn", commonFn);
+myApp.provide("Model", models);
 
 
 const vfm = createVfm()

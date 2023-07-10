@@ -11,6 +11,7 @@ import {
 import DropdownUserInfo from "@/views/pages/common/dropdown/DropdownUserInfo.vue";
 import { useModal } from "vue-final-modal";
 import AddTaskForm from "@/views/popup/form/AddTask.vue";
+import ConfigProjectForm from "@/views/popup/form/ConfigurationProject.vue";
 import { useRoute } from "vue-router";
 
 const MConstant = inject("MConstant");
@@ -36,6 +37,15 @@ const { open, close } = useModal({
   },
 });
 
+const configProjectModal = useModal({
+  component: ConfigProjectForm,
+  attrs: {
+    onCloseModal() {
+      configProjectModal.close();
+    },
+  }
+})
+
 const renderDropdownUser = () => {
   return h(DropdownUserInfo, {
     user: {
@@ -46,7 +56,47 @@ const renderDropdownUser = () => {
   });
 };
 
+const renderIcon = (icon) => {
+  return () => {
+    return h(
+    "div",
+    {
+      class: "",
+    },
+    [h("div", { class: "mi-24 " + icon })]
+  );
+  }
+};
+
 const dropdownUserOptiops = CommonFn.initDropdownOptions(renderDropdownUser);
+
+const dropdownProjectOptions = [
+  {
+    label: "Thông tin dự án/nhóm",
+    key: "key_projectInfo",
+    icon: renderIcon("mi-infomation"),
+  },
+  {
+    label: "Phân quyền",
+    key: "key_authentication",
+    icon: renderIcon("mi-edit-role"),
+  },
+  {
+    label: "Lưu trữ",
+    key: "key_storageProject",
+    icon: renderIcon("mi-project-archive"),
+  },
+  {
+    label: "Rời khỏi dự án",
+    key: "key_leaveProject",
+    icon: renderIcon("mi-leave-project"),
+  },
+  {
+    label: () => h('div', {class : 'danger'}, "Xoá"),
+    key: "key_deleteProject",
+    icon: renderIcon("mi-delete-close"),
+  },
+];
 
 const handleTabClick = (tabName) => {
   let projectPath = CommonFn.getObjectValueByProps(
@@ -60,6 +110,17 @@ const handleTabClick = (tabName) => {
     goToProjectChild(projectPath);
   }
 };
+
+const handleSelectDropdownProject = (key, option) => {
+  switch (key) {
+    case 'key_projectInfo':
+    configProjectModal.open();
+      break;
+  
+    default:
+      break;
+  }
+}
 
 onMounted(() => {
   let params = {
@@ -107,14 +168,22 @@ const onClickBtn = (event) => {
           </div>
         </div>
 
+        <n-dropdown
+          trigger="click"
+          :options="dropdownProjectOptions"
+          :show-arrow="true"
+          @select="handleSelectDropdownProject"
+          size="large"
+        >
         <div class="icon-wrapper d-flex flex-align-center m-pr24 m-pl24">
           <div class="mi-24 mi-setting m-mr6 m-ml6"></div>
         </div>
+      </n-dropdown>
 
         <div class="tab-panel m-ml16">
           <n-tabs
             type="bar"
-            class="custom-tabs"
+            class="m-tabs header-tabs"
             :default-value="selectedTabName"
             @update:value="handleTabClick"
           >
@@ -165,13 +234,9 @@ const onClickBtn = (event) => {
 <style>
 @import url("@/assets/style/layouts/layout-header.css");
 
-.custom-tabs {
-  --n-tab-font-weight-active: 500 !important;
-  --n-tab-gap: 24px !important;
-}
 
-.custom-tabs .n-tabs-tab__label {
+
+.header-tabs .n-tabs-tab__label {
   font-size: 15px !important;
-  font-family: "GoogleSans-Regular", Arial, Helvetica, sans-serif !important;
 }
 </style>

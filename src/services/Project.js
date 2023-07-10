@@ -7,13 +7,38 @@ class ProjectRepository extends BaseRepository {
     super(context.Services.Project);
   }
 
-  async getByEmployee(employeeID, onSuccess, onFailure){
+  async getByEmployee(employeeID, onSuccess, onFailure) {
     let config = {
-        url: [this._controller, MConfig.APIEndPoint.GET_PROJECT_BY_EMPLOYEE, employeeID].join('/'),
-      }
-      return this.getAsync(config, onSuccess, onFailure);
+      url: [
+        this._controller,
+        MConfig.APIEndPoint.PROJECT.GET_PROJECT_BY_EMPLOYEE,
+        employeeID,
+      ].join("/"),
+    };
+    return this.getAsync(config, onSuccess, onFailure);
   }
-  
+
+  async getEmployees(projectID, onSuccess, onFailure) {
+    let config = {
+      url: [
+        this._controller,
+        MConfig.APIEndPoint.PROJECT.GET_EMPLOYEES,
+        projectID,
+      ].join("/"),
+    };
+    return this.getAsync(config, onSuccess, onFailure);
+  }
+
+  async insertProject(data, onSuccess, onFailure) {
+    let config = {
+      url: [
+        this._controller,
+        MConfig.APIEndPoint.PROJECT.INSERT_V2,
+      ].join("/"),
+      data
+    };
+    return this.postAsync(config, onSuccess, onFailure);
+  }
 }
 
 export default new ProjectRepository();

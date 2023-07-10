@@ -85,6 +85,13 @@
 .absolute {
   position: absolute;
 }
+
+.inset-0 {
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
 /******
     Padding Section
 *******/
@@ -193,6 +200,10 @@
   margin-left: 0 !important;
 }
 
+.m-mb2 {
+  margin-bottom: 2px !important;
+}
+
 .m-ml4 {
   margin-left: 4px !important;
 }
@@ -290,7 +301,7 @@
 *********************/
 
 .border {
-  border: 1px solid #000;
+  border: 1px solid var(--border-default-color);
 }
 
 .m-border-y {
@@ -311,8 +322,8 @@
   background-color: #fff;
 }
 
-.transparent{
-  background-color: transparent;
+.transparent {
+  background-color: transparent !important;
 }
 
 .m-white {
@@ -333,10 +344,6 @@
 
 .text-right {
   text-align: right !important;
-}
-
-.text-bold {
-  font-weight: bold;
 }
 
 .fs-16 {
@@ -371,4 +378,21 @@
 
 .line {
   border-top: 1px solid var(--surface-300);
+}
+
+.overflow-auto {
+  overflow: auto;
+}
+
+.danger {
+  color: var(--danger-color);
+}
+
+.fade {
+  color: #696969 !important;
+}
+
+.icon-disable {
+  opacity: 0.3;
+  pointer-events: none;
 }

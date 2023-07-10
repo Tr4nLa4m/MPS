@@ -9,7 +9,7 @@
 </template>
 
 <script>
-import { defineComponent } from "vue";
+import { defineComponent, onMounted } from "vue";
 import { NConfigProvider } from "naive-ui";
 import  MLoader  from '@/components/loader/MLoader.vue';
 
@@ -27,6 +27,10 @@ export default defineComponent({
         }),
       },
     };
+
+    onMounted(() => {
+      console.log(1);
+    });
 
     return {
       themeOverrides,

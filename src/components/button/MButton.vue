@@ -26,11 +26,7 @@
       {{ text }}
     </div>
     <div
-      :class="[
-        'icon-24 icon-right',
-        rightIcon,
-        disabled ? 'disabled-icon' : '',
-      ]"
+      :class="['mi-24 icon-right', rightIcon, disabled ? 'disabled-icon' : '']"
       v-if="rightIcon"
     />
   </button>
@@ -38,6 +34,8 @@
 
 <script>
 import { defineComponent } from "vue";
+import { getCurrentInstance } from "vue";
+
 export default defineComponent({
   name: "MButton",
   props: {
@@ -99,12 +97,23 @@ export default defineComponent({
       default: null,
     },
 
-    disabled: false
+    disabled: false,
   },
   computed: {
     buttonTypeClass() {
       return `m-btn-${this.type}`;
     },
+  },
+  setup(props) {
+    const { proxy } = getCurrentInstance();
+
+    const click = () => {
+      proxy.$el.click();
+    };
+
+    return {
+      click,
+    };
   },
 });
 

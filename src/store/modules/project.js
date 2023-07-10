@@ -1,4 +1,5 @@
 import Project from "@/services/Project";
+import Employee from "@/services/Employee";
 import commonFn from "@/utils/helper/commonFn";
 
 // initial state
@@ -35,6 +36,19 @@ const state = {
   */
 
   project: {},
+
+  // danh sách nhân viên trong dự án
+  employees: [
+    /** 
+  {
+    UserID: "00000000-0000-0000-0000-000000000000"
+    Avatar: "https://lh3.googleusercontent.com/a/AAcHTte7c6WXWPi4DFYDRRXFjOxHixHA--UZAsu5NFbE_g=s360-c-no"
+    EmployeeID: "53da58f8-ef0d-11ed-ae2b-0242ac130002"
+    Username: "B-1179,
+    Email
+  }
+  */
+  ]
 };
 
 // getters
@@ -70,7 +84,37 @@ const actions = {
     }
     return null;
 
+  },
+
+  async getEmployees({ commit, state }, payload){
+    let res = await Project.getEmployees(payload?.ProjectID);
+
+    if(res?.Success){
+      commit("SET_EMPLOYEES", res.Data);
+      return res.Data;
+    }
+
+    return null;
+  },
+
+  async insertProject({ commit, state }, payload){
+    let res = await Project.insertProject(payload?.data);
+
+    if (res?.Success) {
+      if(payload?.onSuccess){
+        payload.onSuccess();
+      }
+    }
+    else{
+      if(payload?.onFailure){
+        payload.onFailure();
+      }
+    }
+
+    return res.Data;
   }
+
+
 };
 
 // mutations
@@ -81,6 +125,10 @@ const mutations = {
 
   SET_PROJECT(state, data) {
     state.project = data;
+  },
+
+  SET_EMPLOYEES(state, data){
+    state.employees = data;
   },
 };
 

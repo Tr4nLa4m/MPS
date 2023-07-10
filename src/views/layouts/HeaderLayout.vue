@@ -18,6 +18,8 @@
           :title="'Thêm công việc'"
           :classCustom="'m-button-m'"
           :leftIcon="'mi-24 mi-plus-white'"
+          :options="dropdownAddTaskOptions"
+          @onOptionClick="onOptionClick"
           @onClick="onClickBtn"
         />
 
@@ -33,11 +35,15 @@
 
         <div class="m-icon-btn mi-24 mi-show-detail m-mr32"></div>
 
-        <n-dropdown trigger="click" :options="dropdownUserOptiops" :show-arrow="true">
-        <div class="m-icon-btn avatar m-mr8">
-          <img :src="user.Avatar" />
-        </div>
-      </n-dropdown>
+        <n-dropdown
+          trigger="click"
+          :options="dropdownUserOptiops"
+          :show-arrow="true"
+        >
+          <div class="m-icon-btn avatar m-mr8">
+            <img :src="user.Avatar" />
+          </div>
+        </n-dropdown>
       </div>
     </div>
   </header>
@@ -45,9 +51,10 @@
 
 <script setup>
 import MSplitButton from "@/components/button/MSplitButton.vue";
-import { getCurrentInstance, inject, computed, h } from "vue";
+import { getCurrentInstance, inject, computed, h, ref } from "vue";
 import { useModal } from "vue-final-modal";
 import AddTaskForm from "@/views/popup/form/AddTask.vue";
+import AddProjectForm from "@/views/popup/form/AddProject.vue";
 import DropdownUserInfo from "@/views/pages/common/dropdown/DropdownUserInfo.vue";
 import { useStore } from "vuex";
 import { ModuleUser } from "@/store/moduleConstant";
@@ -63,14 +70,27 @@ const renderDropdownUser = () => {
     user: {
       Avatar: user?.value.Avatar,
       FullName: employee?.value.FullName,
-      Email: employee?.value.Email
-    }
+      Email: employee?.value.Email,
+    },
   });
-}
+};
 
 const dropdownUserOptiops = commonFn.initDropdownOptions(renderDropdownUser);
 
-
+const dropdownAddTaskOptions = ref([
+  {
+    label: "Thêm dự án/nhóm",
+    key: "AddProject",
+  },
+  {
+    label: "Thêm phòng ban",
+    key: "AddDepartment",
+  },
+  {
+    label: "Thêm nhân viên vào phòng ban/dự án",
+    key: "AddEmployee",
+  },
+]);
 
 const { open, close } = useModal({
   component: AddTaskForm,
@@ -81,6 +101,15 @@ const { open, close } = useModal({
   },
 });
 
+const modalAddProject = useModal({
+  component: AddProjectForm,
+  attrs: {
+    onCloseModal() {
+      modalAddProject.close();
+    },  
+  },
+})
+
 const onClickBtn = (event) => {
   try {
     open();
@@ -88,6 +117,10 @@ const onClickBtn = (event) => {
     console.log(error);
   }
 };
+
+const onOptionClick = (key) => {
+  modalAddProject.open();
+}
 </script>
 <style>
 @import url("@/assets/style/layouts/layout-header.css");

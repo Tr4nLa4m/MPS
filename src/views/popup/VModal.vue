@@ -1,10 +1,16 @@
 <script setup>
 import { VueFinalModal } from "vue-final-modal";
 import globalPopup from "@/utils/globalPopup.js";
-import { ref } from 'vue'
+import { ref , defineProps, defineEmits} from 'vue'
 
-const config = ref(globalPopup.getInitialConfig());
 const emit = defineEmits("closeModal");
+const props = defineProps({
+  config: {
+    type: Object,
+    default: {}
+  }
+})
+const config = ref(globalPopup.getInitialConfig(props.config));
 
 </script>
 
@@ -13,7 +19,7 @@ const emit = defineEmits("closeModal");
     v-model="config.modelValue"
     class="dynamic-modal"
     :class="[config.customClass]"
-    content-class="dynamic-modal-content"
+    :content-class="config.contentClass"
     :display-directive="config.displayDirective"
     :hide-overlay="config.hideOverlay"
     :overlay-transition="config.overlayTransition"
@@ -53,9 +59,6 @@ const emit = defineEmits("closeModal");
   padding: 0 8px;
   border: 1px solid;
   border-radius: 0.5rem;
-}
-.dark .dynamic-modal-content {
-  background: #000;
 }
 
 .dynamic-modal-content button {

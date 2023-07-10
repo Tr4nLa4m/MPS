@@ -3,14 +3,17 @@
     :class="[classCustom, 'btn-icon']"
     :title="title"
     :tag="tag"
-    :leftIcon="icon"
+    :rightIcon="icon"
     :type="type"
     :border="border"
     :disable="disable"
+    :text="text"
+    :classText="classText"
   />
 </template>
 
 <script>
+import { getCurrentInstance } from "vue";
 import { defineComponent } from "vue";
 export default defineComponent({
   name: "MButtonIcon",
@@ -54,7 +57,30 @@ export default defineComponent({
       type: String,
       default: null,
     },
+
+    text: {
+      type: String,
+      default: null,
+    },
+
+    classText: {
+      type: String,
+      default: null,  
+    }
   },
+  setup(props){
+
+    const { proxy } = getCurrentInstance();
+
+    const click = () => {
+      proxy.$el.click();
+    }
+
+    return {
+      click
+    }
+
+  }
 
 });
 </script>

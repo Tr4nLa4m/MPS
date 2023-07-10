@@ -10,6 +10,8 @@ services:
       MYSQL_USER: 'tranlam'
       MYSQL_PASSWORD: 'Calendar20'
       LANG: C.UTF-8
+      TZ: Asia/Bangkok
+      
     ports:
       - 6306:3306
 
