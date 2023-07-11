@@ -14,6 +14,8 @@ import "./assets/style/base.css";
 import 'vue-final-modal/style.css'
 import VueClickAway from "vue3-click-away";
 // import "@/assets/style/customize.css";
+
+
 const myApp = createApp(App);
 
 // Globally Registered Components

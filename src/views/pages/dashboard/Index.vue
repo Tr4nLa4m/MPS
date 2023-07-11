@@ -20,7 +20,7 @@ onMounted(async () => {
 </script>
 
 <template>
-  <HeaderLayout />
+  <HeaderLayout/>
 
   <div class="container m-dashboard">
     <SideBarLayout v-if="departmentProjects" :projects="departmentProjects" />
