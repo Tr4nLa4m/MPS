@@ -1,6 +1,6 @@
 <template>
-  <aside>
-    <div class="m-sidebar">
+  <MSideBarLayout>
+    <template #default>
       <div class="m-tab-list">
         <router-link to="/dashboard" class="m-tab-item m-pt8 m-pb8">
           <div class="m-tab-item-wrapper d-flex flex-align-center">
@@ -24,7 +24,7 @@
         </router-link>
       </div>
 
-      <div class="m-department-tool flex-jsp m-mt16 m-mb16">
+      <div class="m-department-tool flex-row flex-align-center m-mt16 m-mb16">
         <MIconInput
           :placeholder="'Tìm kiếm'"
           :iconLeft="'mi-18 mi-search-before'"
@@ -33,9 +33,12 @@
           v-model="searchProjectText"
         />
 
-        <div class="mi-24 mi-collapse pointer m-mr16" title="Thu gọn" @click="btnCollapse_click"></div>
+        <div
+          class="mi-24 mi-collapse pointer m-ml16 m-mr16"
+          title="Thu gọn"
+          @click="btnCollapse_click"
+        ></div>
 
-        <div class="mi-24 mi-setting pointer m-mr16"></div>
       </div>
 
       <div class="m-department-list m-pl16">
@@ -50,20 +53,21 @@
           class="sidebar-projects"
         />
       </div>
-    </div>
-  </aside>
+    </template>
+  </MSideBarLayout>
 </template>
 
 <script setup>
 import MIconInput from "@/components/input/MIconInput.vue";
 import { ref, computed, onMounted, defineProps } from "vue";
 import { useRoutePath } from "@/utils/uses/router/useRoutePath";
+import MSideBarLayout from "./MSideBarLayout.vue";
 
 const props = defineProps({
   projects: [],
 });
 
-const departmentKeyPrefix = "DEPARTMENT_"
+const departmentKeyPrefix = "DEPARTMENT_";
 
 const searchProjectText = ref("");
 
@@ -108,27 +112,23 @@ const filteredData = computed(() => {
     return filteredItems;
   };
 
-
   let data = filterChildren(rawData);
   updateExpandedKey(data);
   return data;
-
 });
-
-
 
 const btnCollapse_click = () => {
   updateExpandedKey([]);
-}
+};
 
 const updateExpandedKey = (projectList) => {
-  defaultExpandedKeys.value = projectList?.map(x => x.ProjectID);
-}
+  defaultExpandedKeys.value = projectList?.map((x) => x.ProjectID);
+};
 
 const nodeProps = ({ option }) => {
   return {
     onClick() {
-      if(!option.ProjectID?.includes(departmentKeyPrefix)){
+      if (!option.ProjectID?.includes(departmentKeyPrefix)) {
         goToProject(option.ProjectID);
       }
     },
@@ -146,11 +146,10 @@ const nodeProps = ({ option }) => {
   --n-node-color-pressed: var(--surface-800) !important;
 }
 
-.search-projects{
+.search-projects {
   border-top: 0 !important;
   border-left: 0 !important;
   border-right: 0 !important;
   border-radius: 0px !important;
 }
-
 </style>

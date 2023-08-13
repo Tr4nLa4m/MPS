@@ -1,7 +1,7 @@
 <script>
 import { defineComponent } from 'vue'
 export default defineComponent({
-  name: "EmployeeCardV2",
+  name: "EmployeeCard",
   props: {
     item: {
       type: Object,

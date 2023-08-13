@@ -1,4 +1,4 @@
-import { GUID_EMPTY } from "@/common/consts/MConstant";
+import MConstant, { GUID_EMPTY } from "@/common/consts/MConstant";
 
 class UpdateTaskFieldParam {
   constructor(
@@ -8,7 +8,7 @@ class UpdateTaskFieldParam {
     OldValue = "",
     TypeValue = "",
     CreatedBy = "",
-    ActionType = 2,
+    ActionType = MConstant.FieldTaskType.Update,
     OldTextValue = '',
     NewTextValue = '',
     ComponentID = null

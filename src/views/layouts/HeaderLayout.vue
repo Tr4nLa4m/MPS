@@ -6,7 +6,7 @@
           <div class="m-header-left-logo__icon mi-32">
             <img src="@/assets/logo/logo.png" title="Công việc" alt="logo" />
           </div>
-          <div class="m-header-left-logo__brand">Công việc</div>
+          <div class="m-header-left-logo__brand">MPS Project</div>
         </div>
       </div>
 
@@ -29,11 +29,11 @@
 
         <div class="m-icon-btn mi-24 mi-notification m-mr32"></div>
 
-        <div class="m-icon-btn mi-24 mi-question m-mr32"></div>
+        <!-- <div class="m-icon-btn mi-24 mi-question m-mr32"></div> -->
 
-        <div class="m-icon-btn mi-24 mi-book m-mr32"></div>
+        <!-- <div class="m-icon-btn mi-24 mi-book m-mr32"></div> -->
 
-        <div class="m-icon-btn mi-24 mi-show-detail m-mr32"></div>
+        <!-- <div class="m-icon-btn mi-24 mi-show-detail m-mr32"></div> -->
 
         <n-dropdown
           trigger="click"
@@ -41,7 +41,7 @@
           :show-arrow="true"
         >
           <div class="m-icon-btn avatar m-mr8">
-            <img :src="user.Avatar" />
+            <img :src="employee.Avatar" />
           </div>
         </n-dropdown>
       </div>
@@ -53,22 +53,26 @@
 import MSplitButton from "@/components/button/MSplitButton.vue";
 import { getCurrentInstance, inject, computed, h, ref } from "vue";
 import { useModal } from "vue-final-modal";
-import AddTaskForm from "@/views/popup/form/AddTask.vue";
-import AddProjectForm from "@/views/popup/form/AddProject.vue";
-import DropdownUserInfo from "@/views/pages/common/dropdown/DropdownUserInfo.vue";
+import AddTaskForm from "@/components/popup/form/AddTask.vue";
+import AddProjectForm from "@/components/popup/form/AddProject.vue";
+import AddIssue from "@/components/popup/form/AddIssue.vue";
+import AddDepartment from "@/components/popup/form/AddDepartment.vue";
+import DropdownUserInfo from "@/components/dropdown/DropdownUserInfo.vue";
 import { useStore } from "vuex";
-import { ModuleUser } from "@/store/moduleConstant";
+import { ModuleContext } from "@/store/moduleConstant";
+import eventBus from "@/utils/helper/eventBus";
+import MConstant from "@/common/consts/MConstant";
+import AddPost from "@/components/popup/form/AddPost.vue";
+import AddEmployee from "@/components/popup/form/AddEmployee.vue";
 
 const store = useStore();
 const commonFn = inject("CommonFn");
 
-const user = computed(() => store.state[ModuleUser]?.user);
-const employee = computed(() => store.state[ModuleUser]?.employee);
-
+const employee = computed(() => store.state[ModuleContext]?.employee);
 const renderDropdownUser = () => {
   return h(DropdownUserInfo, {
     user: {
-      Avatar: user?.value.Avatar,
+      Avatar: employee?.value.Avatar,
       FullName: employee?.value.FullName,
       Email: employee?.value.Email,
     },
@@ -90,6 +94,14 @@ const dropdownAddTaskOptions = ref([
     label: "Thêm nhân viên vào phòng ban/dự án",
     key: "AddEmployee",
   },
+  {
+    label: "Thêm vấn đề mới vào dự án",
+    key: "AddIssue",
+  },
+  {
+    label: "Thêm bài viết mới vào dự án",
+    key: "AddPost",
+  },
 ]);
 
 const { open, close } = useModal({
@@ -106,9 +118,45 @@ const modalAddProject = useModal({
   attrs: {
     onCloseModal() {
       modalAddProject.close();
-    },  
+    },
   },
-})
+});
+
+const modalAddEmployee = useModal({
+  component: AddEmployee,
+  attrs: {
+    onCloseModal() {
+      modalAddEmployee.close();
+    },
+  },
+});
+
+const modalAddIssue = useModal({
+  component: AddIssue,
+  attrs: {
+    onCloseModal() {
+      modalAddIssue.close();
+    },
+  },
+});
+
+const modalAddPost = useModal({
+  component: AddPost,
+  attrs: {
+    onCloseModal() {
+      modalAddPost.close();
+    },
+  },
+});
+
+const modalAddDepartment = useModal({
+  component: AddDepartment,
+  attrs: {
+    onCloseModal() {
+      modalAddDepartment.close();
+    },
+  },
+});
 
 const onClickBtn = (event) => {
   try {
@@ -119,8 +167,26 @@ const onClickBtn = (event) => {
 };
 
 const onOptionClick = (key) => {
-  modalAddProject.open();
-}
+  switch (key) {
+    case "AddProject":
+      modalAddProject.open();
+      break;
+    case "AddIssue":
+      modalAddIssue.open();
+      break;
+    case "AddDepartment":
+      modalAddDepartment.open();
+      break;
+    case "AddPost":
+      modalAddPost.open();
+      break;
+    case "AddEmployee":
+      modalAddEmployee.open();
+      break;
+    default:
+      break;
+  }
+};
 </script>
 <style>
 @import url("@/assets/style/layouts/layout-header.css");

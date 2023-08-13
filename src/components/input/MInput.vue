@@ -1,13 +1,13 @@
 <template>
-  <div
-    class="m-row-input d-flex"
-    :class="[customClass, 
-    border ? 'm-input-border' : 'no-border',
-    notvalid ? 'invalid' : ''
-    ]"
-    ref="tfInputWrapper"
-  >
-    <div class="m-input-wrapper">
+  <div class="m-row-input flex-column" ref="tfInputWrapper">
+    <div
+      class="m-input-wrapper"
+      :class="[
+        customClass,
+        border ? 'm-input-border' : 'no-border',
+        notvalid ? 'invalid' : '',
+      ]"
+    >
       <input
         :type="type"
         :value="modelValue"
@@ -17,20 +17,21 @@
         :id="refName"
         :tag="tag"
         :required="require"
-        :readonly="disable"
+        :readonly="disable ? true : false"
+        :disabled="disable"
         @blur="handleBlurElement($event)"
         :placeholder="placeholder"
-        :style="{ width: width + 'px' }"
-        :class="['m-input', inputClass ]"
+        :style="{ width: width + 'px'}"
+        :class="['m-input', inputClass]"
       />
     </div>
 
-    <div class="m-input-error-label">{{ textMessage }}</div>
+    <div class="m-input-error-label" :style="{display: notvalid ? 'block' : 'none' }">{{ textMessage }}</div>
   </div>
 </template>
 
 <script>
-import { ref } from 'vue'
+import { ref } from "vue";
 export default {
   name: "MInput",
   props: {
@@ -93,7 +94,7 @@ export default {
     enableChange: {
       type: Boolean,
       default: false,
-    }
+    },
   },
 
   setup(props, context) {
@@ -110,8 +111,8 @@ export default {
       // let currentValue = Number(this.modelValue).toLocaleString("vi-VI");
       // this.$emit('update:modelValue', currentValue);
       const target = $event.target || $event.currentTarget;
-      if(props.require){
-        if(!target.value){
+      if (props.require) {
+        if (!target.value) {
           invalid();
         }
       }
@@ -133,11 +134,7 @@ export default {
       const target = $event.target || $event.currentTarget;
       const boundElement = target.closest(".m-row-input");
       // Nếu input đang invalid thì bỏ nó
-      if (
-        notvalid.value &&
-        props.require &&
-        target.value
-      ) {
+      if (notvalid.value && props.require && target.value) {
         notvalid.value = false;
       }
 
@@ -146,7 +143,7 @@ export default {
       // }
 
       context.emit("update:modelValue", target.value);
-      if(props.enableChange){
+      if (props.enableChange) {
         context.emit("onTextChange", target.value);
       }
     };

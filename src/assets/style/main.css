@@ -83,6 +83,11 @@ h6 {
   height: calc(100vh - var(--layout-header-height));
 }
 
+.project-container{
+  width: 100%;
+  height: calc(100vh - var(--layout-header-height));
+}
+
 .container{
   background: url(@/assets/background/dashboard-bg-1.jpg) -0 -40px no-repeat;
   background-position: center center;

@@ -39,6 +39,38 @@ class TaskRepository extends BaseRepository {
     }
     return this.putAsync(config, onSuccess, onFailure);
   }
+
+  async deleteChecklist(data, onSuccess, onFailure){
+    let config = {
+      url: [this._controller, MConfig.APIEndPoint.TASK.DELETE_CHECKLIST].join('/'),
+      data
+    }
+    return this.postAsync(config, onSuccess, onFailure);
+  }
+
+  async insertChecklist(payload, onSuccess, onFailure){
+    let config = {
+      url: [this._controller, MConfig.APIEndPoint.TASK.INSERT_CHECKLIST].join('/'),
+      data: payload
+    }
+    return this.postAsync(config, onSuccess, onFailure);
+  }
+
+  async insertSubtask(payload, onSuccess, onFailure){
+    let config = {
+      url: [this._controller, MConfig.APIEndPoint.TASK.INSERT_SUBTASKS].join('/'),
+      data: payload
+    }
+    return this.postAsync(config, onSuccess, onFailure);
+  }
+
+  async deleteTaskV2(payload, onSuccess, onFailure){
+    let config = {
+      url: [this._controller, MConfig.APIEndPoint.TASK.DELETE_V2].join('/'),
+      data: payload
+    }
+    return this.postAsync(config, onSuccess, onFailure);
+  }
   
 }
 

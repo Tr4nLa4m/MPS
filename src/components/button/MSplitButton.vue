@@ -151,11 +151,11 @@ export default defineComponent({
 
 
     const handleSelect = (key) => {
-      emit("onOptionClick", key)
+      showDropdown.value = false;
+      emit("onOptionClick", key);
     };
 
     const handleClickShowDropdown = () => {
-      debugger
       showDropdown.value = !showDropdown.value;
     }
 

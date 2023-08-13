@@ -116,8 +116,16 @@
     padding-bottom: 8px;
 }
 
+.m-pl12{
+    padding-left: 12px !important;
+}
+
 .m-pt16{
     padding-top: 16px !important;
+}
+
+.m-pb16{
+    padding-bottom: 16px !important;
 }
 
 /******
@@ -160,6 +168,8 @@
     margin-left: 16px;
 }
 
+
+
 .m-mr32{
     margin-right: 32px;
 }
@@ -191,6 +201,7 @@
 .m-w1{
     width: 1px;
 }
+
 
 
 
@@ -229,6 +240,12 @@
 
 .text-right {
     text-align: right !important;
+}
+
+.ellipsis{
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 .text-bold{

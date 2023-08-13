@@ -18,8 +18,9 @@
     --z-index-error-label: 5;
 
     --text-color-default: #1f1f1f;
+    --text-color-blue-grey: #172b4d;
 
-    --primary-color: #2196f3 ;
+    --primary-color: #2196f3;
     --secondary-color: #2589DF;
 
     --danger-color: #e8384f;
@@ -35,6 +36,8 @@
 
     --background-hover-color-1: #e1eeff;
     --background-hover-color-2: #2a7efc;
+
+    --background-tab-active-color: #3498db5c;
     
     --primary-blue-color: #0073e6;
     --border-focus-color: #2196f3 !important;

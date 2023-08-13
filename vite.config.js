@@ -11,7 +11,8 @@ export default defineConfig({
   resolve: {
     alias: {
       '@': resolve(__dirname, 'src'),
-      '#root': resolve(__dirname)
+      '#root': resolve(__dirname),
+      "devextreme/ui": 'devextreme/esm/ui'
     }
   },
 })

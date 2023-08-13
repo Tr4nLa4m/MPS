@@ -1,74 +1,92 @@
 import { ref } from "vue";
 import { useMessages } from "./useMessages";
+import { useStore } from "vuex";
+import { ModuleFile } from "@/store/moduleConstant";
 
+export function useUploadFile(props = {}, methods = {}) {
+  const fileList = ref([]);
+  const initFileList = ref([]);
+  const UPLOAD_DOMAIN = `${import.meta.env.VITE_DOMAIN_BE}/api/v1/File`;
 
+  const callBackOnFinish = methods.onFinish || null;
+  const callBackOnRemove = methods.onRemove || null;
 
-export function useUploadFile(props = {}, methods = {}){
+  const { warning, error } = useMessages();
+  const store = useStore();
 
-    const fileList = ref([]);
-
-    const callBackOnFinish = methods.onFinish || null;
-    const callBackOnRemove = methods.onRemove || null;
-
-    const { warning, error } = useMessages();
-
-    const beforeUploadFile = (file) => {
-        // Check if file size exceeds the limit (in bytes)
-      const maxSize = 4 * 1024 * 1024; // 10 MB
-      if (file.size > maxSize) {
-        warning('File size exceeds the limit');
-        return false; // Prevent the file from being uploaded
-      }
-
-      // File size is within the limit
-      return true; // Proceed with the file upload
+  const beforeUploadFile = (file) => {
+    // Check if file size exceeds the limit (in bytes)
+    const maxSize = 4 * 1024 * 1024; // 10 MB
+    if (file.size > maxSize) {
+      warning("File size exceeds the limit");
+      return false; // Prevent the file from being uploaded
     }
 
-    const finishUploadFile = ({file, event}) => {
-        let response = JSON.parse(event.currentTarget?.response);
-        let blobFile = response.Data?.Blob;
-        file.url = blobFile.Uri;
-        file.OriginalName = blobFile.Name;
+    // File size is within the limit
+    return true; // Proceed with the file upload
+  };
 
-        if(callBackOnFinish){
-            callBackOnFinish(file, response);
+  const finishUploadFile = ({ file, event }) => {
+    let response = JSON.parse(event.currentTarget?.response);
+    let blobFile = response.Data?.Blob;
+    file.url = blobFile.Uri;
+    file.OriginalName = blobFile.Name;
+
+    const newFile = {
+        ID: file.id,
+        FileName: file.name,
+        Type: file.type,
+        Size: file?.file.size,
+        OriginalName: blobFile.Name,
+        Url: blobFile.Uri,
+      };
+
+    if (callBackOnFinish) {
+        if(response.Success){
+            callBackOnFinish(newFile, response);
         }
-        fileList.value.push({
-            ID: file.id,
-            FileName: file.name,
-            Type: file.type,
-            Size: file?.file.size,
-            OriginalName : blobFile.Name,
-            Url: blobFile.Uri
-        })
-      }
+    }
+    fileList.value.push(newFile);
+  };
 
-    const errorUploadFile = ({file, event}) => {
-        debugger
-        error(`Có lỗi khi tải file ${file.name}`)
+  const errorUploadFile = ({ file, event }) => {
+    error(`Có lỗi khi tải file ${file.name}`);
+  };
+
+  const removeFile = async ({ file, listFile }) => {
+    
+    let index = fileList.value.findIndex((item) => item.ID == file.id);
+    let deleteFile;
+    if (index < 0) {
+      return;
+    }
+    deleteFile = fileList.value[index];
+    fileList.value.splice(index, 1);
+
+    if (callBackOnRemove) {
+      callBackOnRemove(deleteFile);
     }
 
-    const removeFile = ({file, listFile}) => {
-        if(callBackOnRemove) {
-            callBackOnRemove(file);
-        }
-        debugger
+    try {
+      let param = {
+        data: {
+          FileName: deleteFile.OriginalName,
+        },
+      };
 
-        let index = fileList.value.findIndex((item) => item.ID == file.id);
-        if(index >=0){
-            fileList.value.splice(index, 1);
-        }
+      await store.dispatch(ModuleFile + "/removeFile", param);
+    } catch (error) {}
 
-        return true;
-    }
+    return true;
+  };
 
-
-
-    return {
-        fileList,
-        beforeUploadFile,
-        finishUploadFile,
-        errorUploadFile,
-        removeFile
-    }
+  return {
+    UPLOAD_DOMAIN,
+    fileList,
+    initFileList,
+    beforeUploadFile,
+    finishUploadFile,
+    errorUploadFile,
+    removeFile,
+  };
 }

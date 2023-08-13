@@ -180,6 +180,10 @@
   padding: 16px !important;
 }
 
+.m-pt24 {
+  padding-top: 24px !important;
+}
+
 .m-pl24 {
   padding-left: 24px !important;
 }
@@ -188,6 +192,10 @@
   padding-right: 24px !important;
 }
 
+
+.m-pl40{
+  padding-left: 40px !important;
+}
 /******
     Margin Section
 *******/
@@ -264,12 +272,24 @@
   margin-left: 24px !important;
 }
 
+.m-mb24{
+  margin-bottom: 24px;
+}
+
 .m-mr32 {
   margin-right: 32px !important;
 }
 
 .m-ml32 {
   margin-left: 32px !important;
+}
+
+.m-ml40{
+  margin-left: 40px !important;
+}
+
+.m-ml80{
+  margin-left: 80px !important;
 }
 
 /***********
@@ -294,6 +314,10 @@
 
 .m-w1 {
   width: 1px;
+}
+
+.fit-content{
+  width: fit-content;
 }
 
 /************** 
@@ -346,6 +370,12 @@
   text-align: right !important;
 }
 
+.ellipsis{
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 .fs-16 {
   font-size: 16px;
 }
@@ -378,6 +408,10 @@
 
 .line {
   border-top: 1px solid var(--surface-300);
+}
+
+.line-bottom{
+  border-bottom: 1px solid var(--surface-300);
 }
 
 .overflow-auto {

@@ -11,7 +11,9 @@ import { createVfm } from 'vue-final-modal'
 import "./assets/style/main.css";
 import "./assets/style/variable.css";
 import "./assets/style/base.css";
-import 'vue-final-modal/style.css'
+import './style/index.css';
+import 'vue-final-modal/style.css';
+import 'devextreme/dist/css/dx.light.css';
 import VueClickAway from "vue3-click-away";
 // import "@/assets/style/customize.css";
 

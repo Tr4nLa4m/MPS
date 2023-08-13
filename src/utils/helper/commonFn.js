@@ -1,3 +1,10 @@
+import MConstant, {
+  DEPARTMENT_KEY_PREFIX,
+  GUID_EMPTY,
+  PERMISSION_KEY_PREFIX,
+} from "@/common/consts/MConstant";
+import { keyStore } from "@/store/store";
+import { cloneDeep } from "lodash";
 import { useMessage } from "naive-ui";
 
 export default {
@@ -58,7 +65,7 @@ export default {
     if (typeof date != "Date") {
       date = new Date(date);
     }
-    
+
     var day = date.getDate();
     var month = date.getMonth() + 1; // Months are zero-based
     var year = date.getFullYear();
@@ -91,6 +98,16 @@ export default {
     return arrSource.filter((element) => !arrDelMap.includes(element[props]));
   },
 
+  addElementsInArrayIfNotExist(arrSource, arrAdd, props) {
+    arrAdd.forEach((item) => {
+      let exitsItem = arrSource.find((x) => x[props] == item[props]);
+      if (!exitsItem) {
+        arrSource.push(item);
+      }
+    });
+    return arrSource;
+  },
+
   getDepartmentProject(projects) {
     const outputArray = [];
     projects.forEach((obj) => {
@@ -102,10 +119,48 @@ export default {
       if (existingObj) {
         existingObj.Projects.push(project);
       } else {
+        let projects = [];
+        if (project.ProjectID != null && project.ProjectID != GUID_EMPTY) {
+          projects.push(project);
+        }
         outputArray.push({
           DepartmentID,
           DepartmentName,
-          Projects: [project],
+          ProjectID: DEPARTMENT_KEY_PREFIX + DepartmentID,
+          ProjectName: DepartmentName,
+          disabled: true,
+          Projects: projects,
+        });
+      }
+    });
+
+    return outputArray;
+  },
+
+  getRoleProject(permissions) {
+    const outputArray = [];
+    permissions.forEach((obj) => {
+      const { Component, ...permission } = obj;
+      debugger;
+      const existingObj = outputArray.find(
+        (item) => item.Component === Component
+      );
+
+      if (existingObj) {
+        existingObj.Permissions.push(obj);
+      } else {
+        let Permissions = [];
+        if (
+          permission.PermissionID != null &&
+          permission.PermissionID != GUID_EMPTY
+        ) {
+          Permissions.push(obj);
+        }
+        outputArray.push({
+          PermissionID: PERMISSION_KEY_PREFIX + Component,
+          PermissionName: MConstant.PermissionGroups[Component] || "",
+          Component,
+          Permissions,
         });
       }
     });
@@ -192,4 +247,134 @@ export default {
 
     return res;
   },
+
+  removeItemLocalStorage(key) {
+    localStorage.removeItem(key);
+  },
+
+  getItemLocalStorage(prop) {
+    let item = localStorage.getItem(keyStore);
+    if (!item) {
+      return null;
+    }
+    let context = JSON.parse(item);
+    return context.context[prop];
+  },
+
+  getRawTextFromHTML(htmlString) {
+    var tempDiv = document.createElement("div");
+    tempDiv.innerHTML = htmlString;
+    return tempDiv.textContent || tempDiv.innerText || "";
+  },
+
+  truncateString(inputString, length) {
+    if (inputString.length > length) {
+      return inputString.substring(0, length);
+    } else {
+      return inputString;
+    }
+  },
+
+  getFilterDateOptions() {
+    let filterDateObj = MConstant.FilterDate;
+  },
+
+  getTimestamp(date) {
+    if (!date) {
+      return null;
+    }
+    if (typeof date != "Date") {
+      date = new Date(date);
+    }
+
+    return date.getTime();
+  },
+
+  hasPermissionInProject(userPermissions, projectID, permission) {
+    let permissions = cloneDeep(userPermissions);
+    let projectPermissions = userPermissions.filter(
+      (permission) => permission.ProjectID == projectID
+    );
+    let projectPermissionCodes = projectPermissions.map(
+      (x) => x.PermissionCode
+    );
+
+    return projectPermissionCodes.includes(permission);
+  },
+
+  getFieldValueByType(fieldValue) {
+    let value;
+    switch (typeof fieldValue) {
+      case "number":
+        value = "" + fieldValue;
+        break;
+      case "object":
+        if(fieldValue instanceof Date){
+          value = fieldValue.toISOString();
+        }
+        break;
+      default:
+        value = fieldValue;
+        break;
+    }
+
+    return value;
+  },
+
+  getFieldValueText(fieldValue) {
+    let value;
+    switch (typeof fieldValue) {
+      case "number":
+        value = "" + fieldValue;
+        break;
+      case "object":
+        if(fieldValue instanceof Date){
+          value = fieldValue.toISOString();
+        }
+        break;
+      default:
+        value = fieldValue;
+        break;
+    }
+
+    return value;
+  },
+
+  getTaskActivityValueText(activity, isOldText){
+    let arr = [MConstant.TaskFields.Checklists, MConstant.TaskFields.Subtasks, MConstant.TaskFields.Performer, MConstant.TaskFields.TaskGroup];
+    let field;
+    debugger
+    if(arr.includes(activity.Column)){
+      field = isOldText ? 'OldTextValue' : 'NewTextValue';
+    }
+    else{
+      field = isOldText ? 'OldValue' : 'NewValue';
+    }
+
+    if(!activity[field]){
+      return '';
+    }
+    return '<b>' + activity[field] + '</b>'
+  },
+
+  checkIsImageLink(type){
+    let listImage = ['image', 'png', 'jpeg', 'jpg', 'gif'];
+    let res = false;
+    listImage.forEach((imageType) => {
+      if(type.includes(imageType)){
+        res = true;
+        return;
+      }
+    })
+    return res;
+  },
+
+  getIconFileType(type){
+    return 'mi-file-icon';
+  },
+
+  convertToMB(byte){
+    var megabytes  = byte / 1024;
+    return megabytes.toFixed(1) + 'KB';
+  }
 };

@@ -7,6 +7,7 @@ class httpClient {
   _repository;
   _router;
   _controller;
+  _token;
   //#endregion
 
   //#region Constructor
@@ -14,14 +15,23 @@ class httpClient {
     this._router = useRouter();
     this._repository = axios.create({ 
       baseURL: url ,
-
     });
 
   }
   //#endregion
 
-  setAuthorizationToken(token) {
-    this._repository.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+  // setAuthorizationToken(token) {
+  //   this._repository.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+  //   debugger
+  //   this._token = token;
+  // }
+
+  _processHeader(){
+    delete this._repository.defaults.headers.common['Authorization'];
+    let token = commonFn.getItemLocalStorage('token');
+    if(token){
+      this._repository.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+    }
   }
 
   //#region Methods
@@ -29,7 +39,8 @@ class httpClient {
   //getter
 
   async getAsync(config, onSuccess, onFailure) {
-    let {url, notLoading} = config;
+    let {url, notLoading, isRaw} = config;
+    this._processHeader();
     if(!notLoading){
       commonFn.mask();
     }
@@ -40,6 +51,9 @@ class httpClient {
         onSuccess(response);
       }
       commonFn.unmask();
+      if(isRaw){
+        return response;
+      }
       return response.data;
     } catch (error) {
       this.handleOnError(error, onFailure);
@@ -48,6 +62,7 @@ class httpClient {
 
   async postAsync(config, onSuccess, onFailure) {
     let {url, data, notLoading} = config;
+    this._processHeader();
     if(!notLoading){
       commonFn.mask();
     }
@@ -66,6 +81,7 @@ class httpClient {
 
   async putAsync(config, onSuccess, onFailure) {
     let {url, data, notLoading} = config;
+    this._processHeader();
     if(!notLoading){
       commonFn.mask();
     }
@@ -84,6 +100,7 @@ class httpClient {
 
   async deleteAsync(config, onSuccess, onFailure) {
     let {url, notLoading} = config;
+    this._processHeader();
     if(!notLoading){
       commonFn.mask();
     }

@@ -34,6 +34,10 @@
     transition: all .5s;
 }
 
+.m-btn-secondary {
+    background-color: var(--primary-color) !important;
+}
+
 .m-button.m-button-icon:hover {
     background-color: #D6E9F6;
 }
@@ -105,3 +109,8 @@
     background-color: #ff1d1d !important;
 }
 
+.btn-disabled{
+    pointer-events: none;
+    cursor: not-allowed !important;
+    opacity: 0.7;
+}

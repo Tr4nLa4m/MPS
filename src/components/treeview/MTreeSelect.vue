@@ -24,9 +24,24 @@ export default defineComponent({
       default: "children",
     },
 
+    isExpandAll: {
+      type: Boolean,
+      default: false,
+    },
+
+    disabled: {
+      type: Boolean,
+      default: false,
+    },
+
     enableChange: {
       type: Boolean,
       default: false,
+    },
+
+    customClass: {
+      type: String, 
+      default: ''
     },
 
     modelValue: null,
@@ -57,6 +72,9 @@ export default defineComponent({
     :key-field="keyField"
     :value="modelValue"
     :children-field="childrenField"
+    :default-expand-all="isExpandAll"
     @update:value="handleUpdateValue"
+    :class="customClass"
+    :disabled="disabled"
   />
 </template>

@@ -69,13 +69,42 @@ const routes = [
             component: () => import("../views/pages/project/Gantt.vue"),
           },
           {
-            path: "calendar",
-            name: "calendar",
+            path: "phase",
+            name: "phase",
             meta: {
-              subSystemCode: MConstant.SubSystemCode.M_Project_Gantt,
+              subSystemCode: MConstant.SubSystemCode.M_Project_Phase,
               anonymous: true
             },
-            component: () => import("../views/pages/project/Test.vue"),
+            component: () => import("@/views/pages/project/phase/Index.vue"),
+          },
+          {
+            path: "report",
+            name: "report",
+            meta: {
+              subSystemCode: MConstant.SubSystemCode.M_Project_Report,
+              anonymous: true
+            },
+            component: () => import("@/views/pages/project/report/Index.vue"),
+            children: [
+              {
+                path: '',
+                name: 'projectOverviewReport', 
+                meta: {
+                  subSystemCode: MConstant.SubSystemCode.M_Project_Report,
+                  anonymous: true
+                },
+                component: () => import("@/views/pages/project/report/ProjectOverviewReport.vue"),
+              },
+              {
+                path: 'task-employee',
+                name: 'projectTaskByEmployeeReport',
+                meta: {
+                  subSystemCode: MConstant.SubSystemCode.M_Project_Report,
+                  anonymous: true
+                },
+                component: () => import("@/views/pages/project/report/ProjectTaskByEmployeeReport.vue"),
+              }
+            ]
           },
 
           {
@@ -85,7 +114,141 @@ const routes = [
               subSystemCode: MConstant.SubSystemCode.M_Project_File,
               anonymous: true
             },
-            component: () => import("../views/pages/project/Test.vue"),
+            component: () => import("@/views/pages/project/File.vue"),
+            
+          },
+
+          {
+            path: "issue",
+            name: "issue",
+            meta: {
+              subSystemCode: MConstant.SubSystemCode.M_Project_Issue,
+              anonymous: true
+            },
+            component: () => import("@/views/pages/project/issue/Index.vue"),
+            children: [
+              {
+                path: '',
+                name: 'allIssues', 
+                meta: {
+                  subSystemCode: MConstant.SubSystemCode.M_Project_Issue,
+                  anonymous: true
+                },
+                component: () => import("@/views/pages/project/issue/ListIssue.vue"),
+              },
+              {
+                path: 'my-issue',
+                name: 'myIssue',
+                meta: {
+                  subSystemCode: MConstant.SubSystemCode.M_Project_Issue,
+                  anonymous: true
+                },
+                component: () => import("@/views/pages/project/issue/MyIssue.vue"),
+              },
+              {
+                path: 'watch-issue',
+                name: 'watchIssue',
+                meta: {
+                  subSystemCode: MConstant.SubSystemCode.M_Project_Issue,
+                  anonymous: true
+                },
+                component: () => import("@/views/pages/project/issue/WatchIssue.vue"),
+              },
+              {
+                path: 'detail/:IssueID',
+                name: 'issue-detail', 
+                meta: {
+                  subSystemCode: MConstant.SubSystemCode.M_Project_Issue,
+                  anonymous: true
+                },
+                component: () => import("@/views/pages/project/issue/Detail.vue"),
+              },
+              {
+                path: 'recently',
+                name: 'issue-recently', 
+                meta: {
+                  subSystemCode: MConstant.SubSystemCode.M_Project_Issue,
+                  anonymous: true
+                },
+                component: () => import("@/views/pages/project/issue/RecentlyIssue.vue"),
+              },
+              {
+                path: 'relates',
+                name: 'issue-relates', 
+                meta: {
+                  subSystemCode: MConstant.SubSystemCode.M_Project_Issue,
+                  anonymous: true
+                },
+                component: () => import("@/views/pages/project/issue/RelateIssue.vue"),
+              },
+            ]
+          },
+
+          {
+            path: "post",
+            name: "post",
+            meta: {
+              subSystemCode: MConstant.SubSystemCode.M_Project_File,
+              anonymous: true
+            },
+            component: () => import("@/views/pages/project/post/Index.vue"),
+            children: [
+              {
+                path: '',
+                name: 'allPosts', 
+                meta: {
+                  subSystemCode: MConstant.SubSystemCode.M_Project_Issue,
+                  anonymous: true
+                },
+                component: () => import("@/views/pages/project/post/ListPost.vue"),
+              },
+              {
+                path: 'filter',
+                name: 'filter', 
+                meta: {
+                  subSystemCode: MConstant.SubSystemCode.M_Project_Issue,
+                  anonymous: true
+                },
+                component: () => import("@/views/pages/project/post/Filter.vue"),
+                props: (route) => ({ category: route.query.category, tag: route.query.tag })
+              },
+              {
+                path: 'my-post',
+                name: 'myPosts',
+                meta: {
+                  subSystemCode: MConstant.SubSystemCode.M_Project_Issue,
+                  anonymous: true
+                },
+                component: () => import("@/views/pages/project/post/MyPost.vue"),
+              },
+              {
+                path: 'bookmarks',
+                name: 'bookmarks',
+                meta: {
+                  subSystemCode: MConstant.SubSystemCode.M_Project_Issue,
+                  anonymous: true
+                },
+                component: () => import("@/views/pages/project/post/Bookmarks.vue"),
+              },
+              {
+                path: 'config',
+                name: 'config',
+                meta: {
+                  subSystemCode: MConstant.SubSystemCode.M_Project_Issue,
+                  anonymous: true
+                },
+                component: () => import("@/views/pages/project/post/ConfigPost.vue"),
+              },
+              {
+                path: 'detail/:PostID',
+                name: 'post-detail', 
+                meta: {
+                  subSystemCode: MConstant.SubSystemCode.M_Project_Issue,
+                  anonymous: true
+                },
+                component: () => import("@/views/pages/project/post/Detail.vue"),
+              },
+            ]
           },
         ]
       },
@@ -118,7 +281,6 @@ router.beforeEach((to, from, next) => {
   // hide all popup
   // TODO => Ẩn tất cả popup ở đây
   // popupUtil.hideAll()
-
   // trang không authen
   if (to.meta.anonymous) {
     next();

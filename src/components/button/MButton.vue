@@ -8,12 +8,13 @@
       border ? 'm-btn-border' : '',
       classCustom,
       leftIcon || rightIcon ? 'd-flex flex-align-center' : '',
+      disabled ? 'btn-disabled' : '',
     ]"
     :tag="tag"
     :style="style"
   >
     <div
-      :class="['mi-24 icon-left', leftIcon, disable ? 'disabled-icon' : '']"
+      :class="['mi-24 icon-left', leftIcon, disabled ? 'disabled-icon' : '']"
       v-if="leftIcon"
     >
       &nbsp;
@@ -72,12 +73,6 @@ export default defineComponent({
 
     // Border của button
     border: {
-      type: Boolean,
-      default: false,
-    },
-
-    // Trạng thái disable của button
-    disable: {
       type: Boolean,
       default: false,
     },

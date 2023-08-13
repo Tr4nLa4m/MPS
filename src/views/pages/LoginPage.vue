@@ -2,7 +2,7 @@
 import { onMounted, ref } from "vue";
 import { useRoutePath } from "@/utils/uses/router/useRoutePath";
 import { useStore, mapActions } from "vuex";
-import { ModuleUser } from "@/store/moduleConstant";
+import { ModuleContext } from "@/store/moduleConstant";
 
 let username = ref("");
 let password = ref("");
@@ -22,9 +22,8 @@ const btnLogin_click = async (event) => {
   //   goToDashboard();
   // }
 
-  const user = await store.dispatch( ModuleUser +  "/login", data);
-  if(user){
-    
+  const user = await store.dispatch(ModuleContext + "/login", data);
+  if (user) {
   }
   goToDashboard();
 };
@@ -32,12 +31,14 @@ const btnLogin_click = async (event) => {
 
 <template>
   <div class="m-login-wrapper" itemid="pnContainer">
-
     <!-- Login Form  -->
     <div class="m-login-form">
-      <div class="m-login-form__header">
+      <div class="m-login-form__header flex-row flex-align-center">
         <!-- <span class="m-login-title">MISA Promotion Process</span> -->
-        <img src="@/assets/logo/logo1.svg" />
+        <div class="m-header-left-logo__icon mi-48">
+          <img src="@/assets/logo/logo.png" title="Công việc" alt="logo" />
+        </div>
+        <div class="m-header-left-logo__brand text-xl">MPS Project</div>
       </div>
 
       <div class="m-login-form__body">
@@ -61,9 +62,14 @@ const btnLogin_click = async (event) => {
           class="input-xl"
         />
 
-        <div class="text-left flex m-mb16 fs-14">
-          <router-link to="/forgot-password">Quên mật khẩu</router-link>
-          <div class="flex-1"></div>
+        <div class="flex-row flex-jsp">
+          <div class="text-left text-link flex m-mb16 fs-14">
+            <router-link to="/forgot-password">Quên mật khẩu</router-link>
+          </div>
+
+          <div class="text-left text-link flex m-mb16 fs-14">
+            <router-link to="/forgot-password">Đăng ký</router-link>
+          </div>
         </div>
 
         <div class="m-row-input m-pt16 text-center">
@@ -81,9 +87,6 @@ const btnLogin_click = async (event) => {
     </div>
     <!-- End Login Form  -->
 
-    <div class="m-login-form-note">
-      Lưu ý: sử dụng tài khoản MISAJSC để đăng nhập
-    </div>
   </div>
 </template>
 
@@ -94,5 +97,4 @@ const btnLogin_click = async (event) => {
 .m-main-layout button {
   font-family: Roboto, Helvetica, Arial, sans-serif !important;
 }
-
 </style>

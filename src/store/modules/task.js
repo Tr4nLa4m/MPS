@@ -87,15 +87,13 @@ const actions = {
   },
 
   async createTask({commit}, payload){
-    let res = await Task.createV2(payload.Data);
+    let res = await Task.createV2(payload.data);
     if (res?.Success) {
-      commit("SET_TASKGROUPS", res.Data);
       if(payload?.onSuccess){
         payload.onSuccess();
       }
     }
     else{
-      console.log(res);
       if(payload?.onFailure){
         payload.onFailure();
       }
@@ -238,6 +236,70 @@ const actions = {
 
   async deleteTask({commit}, payload){
     let res = await Task.delete(payload?.data?.TaskID);
+    if (res?.Success) {
+      if(payload?.onSuccess){
+        payload.onSuccess(res);
+      }
+    }
+    else{
+      if(payload?.onFailure){
+        payload.onFailure();
+      }
+    }
+
+    return res.Data;
+  },
+
+  async deleteTaskV2({commit}, payload){
+    let res = await Task.deleteTaskV2(payload?.data);
+    if (res?.Success) {
+      if(payload?.onSuccess){
+        payload.onSuccess(res);
+      }
+    }
+    else{
+      if(payload?.onFailure){
+        payload.onFailure();
+      }
+    }
+
+    return res.Data;
+  },
+
+  async deleteChecklist({commit}, payload){
+    let res = await Task.deleteChecklist(payload.data);
+    if (res?.Success) {
+      if(payload?.onSuccess){
+        payload.onSuccess(res);
+      }
+    }
+    else{
+      if(payload?.onFailure){
+        payload.onFailure();
+      }
+    }
+
+    return res.Data;
+  },
+
+  async insertChecklist({commit}, payload){
+    let res = await Task.insertChecklist(payload.data);
+    if (res?.Success) {
+      if(payload?.onSuccess){
+        payload.onSuccess(res);
+      }
+    }
+    else{
+      if(payload?.onFailure){
+        payload.onFailure();
+      }
+    }
+
+    return res.Data;
+  },
+
+  async insertSubtask({commit}, payload){
+    let res = await Task.insertSubtask(payload.data);
     if (res?.Success) {
       if(payload?.onSuccess){
         payload.onSuccess(res);

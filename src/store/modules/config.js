@@ -23,7 +23,9 @@ const state = {
   */
   projectTabs: ProjectTabs,
 
-  
+  issueSidebarWidth: 260,
+
+  reportSidebarWidth: 320
 }
 
 // getters
@@ -51,6 +53,20 @@ const actions = {
     }
 
     return activeTab;
+  },
+
+  setIssueSidebarWidth({ commit, state }, payload){
+    let sideBarWidth = payload.sideBarWidth;
+    if(sideBarWidth){
+      commit("SET_ISSUE_SIDEBAR_WIDTH", sideBarWidth);
+    }
+  },
+
+  setReportSidebarWidth({ commit, state }, payload){
+    let sideBarWidth = payload.sideBarWidth;
+    if(sideBarWidth){
+      commit("SET_REPORT_SIDEBAR_WIDTH", sideBarWidth);
+    }
   }
 }
 
@@ -59,6 +75,14 @@ const mutations = {
   SET_PROJECT_TAB(state, data){
     state.projectTab = data;
   },
+
+  SET_ISSUE_SIDEBAR_WIDTH(state, data){
+    state.issueSidebarWidth = data;
+  },
+
+  SET_REPORT_SIDEBAR_WIDTH(state, data){
+    state.reportSidebarWidth = data;
+  }
 
 
   

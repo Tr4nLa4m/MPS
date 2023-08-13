@@ -9,7 +9,7 @@ import MInput from '@/components/input/MInput.vue';
 import MIconInput from '@/components/input/MIconInput.vue';
 import MTreeSelect from "@/components/treeview/MTreeSelect.vue";
 
-import VModal from "@/views/popup/VModal.vue";
+import VModal from "@/components/popup/VModal.vue";
 
 
 export function useComponents(app) {

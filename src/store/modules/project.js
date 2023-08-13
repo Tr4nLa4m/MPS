@@ -1,5 +1,6 @@
 import Project from "@/services/Project";
 import Employee from "@/services/Employee";
+import PermissionGroup from "@/services/PermissionGroup";
 import commonFn from "@/utils/helper/commonFn";
 
 // initial state
@@ -48,7 +49,11 @@ const state = {
     Email
   }
   */
-  ]
+  ],
+
+  roles: [],
+
+  permissions: []
 };
 
 // getters
@@ -61,6 +66,10 @@ const getters = {
   //     return total + product.price * product.quantity
   //   }, 0)
   // }
+
+  roleProjects: (state, getter, rootState) => {
+    return commonFn.getRoleProject(state.permissions);
+  }
 };
 
 // actions
@@ -74,22 +83,20 @@ const actions = {
     return res.Data;
   },
 
-  async getProjectById({ commit, state }, payload){
+  async getProjectById({ commit, state }, payload) {
     let res = await Project.getById(payload?.ProjectID);
 
     if (res?.Success) {
       commit("SET_PROJECT", res.Data);
       return res.Data;
-
     }
     return null;
-
   },
 
-  async getEmployees({ commit, state }, payload){
+  async getEmployees({ commit, state }, payload) {
     let res = await Project.getEmployees(payload?.ProjectID);
 
-    if(res?.Success){
+    if (res?.Success) {
       commit("SET_EMPLOYEES", res.Data);
       return res.Data;
     }
@@ -97,24 +104,308 @@ const actions = {
     return null;
   },
 
-  async insertProject({ commit, state }, payload){
+  async insertProject({ commit, state }, payload) {
     let res = await Project.insertProject(payload?.data);
 
     if (res?.Success) {
-      if(payload?.onSuccess){
+      if (payload?.onSuccess) {
         payload.onSuccess();
       }
+    } else {
+      if (payload?.onFailure) {
+        payload.onFailure();
+      }
     }
-    else{
-      if(payload?.onFailure){
+
+    return res.Data;
+  },
+
+  async deleteProject({ commit, state }, payload) {
+    try {
+      let res = await Project.delete(payload?.data?.ProjectID);
+      if (res?.Success) {
+        if (payload?.onSuccess) {
+          payload.onSuccess();
+        }
+      } else {
+        if (payload?.onFailure) {
+          payload.onFailure();
+        }
+      }
+
+      return res?.Data;
+    } catch (error) {
+      return;
+    }
+  },
+
+  async setEmployeeRole({ commit, state }, payload) {
+    let res = await PermissionGroup.setEmployeeProjectRole(payload?.data);
+
+    if (res?.Success) {
+      if (payload?.onSuccess) {
+        payload.onSuccess();
+      }
+    } else {
+      if (payload?.onFailure) {
+        payload.onFailure();
+      }
+    }
+
+    return res.Data;
+  },
+
+  async removeEmployee({ commit, state }, payload) {
+    let res = await Project.removeEmployee(payload?.data);
+
+    if (res?.Success) {
+      if (payload?.onSuccess) {
+        payload.onSuccess();
+      }
+    } else {
+      if (payload?.onFailure) {
+        payload.onFailure();
+      }
+    }
+
+    return res.Data;
+  },
+
+  async getNumberTaskStatusReport({ commit, state }, payload){
+    try {
+      let res = await Project.getNumberTaskStatusReport(payload?.data);
+      if (res?.Success) {
+        if (payload?.onSuccess) {
+          payload.onSuccess();
+        }
+      } else {
+        if (payload?.onFailure) {
+          payload.onFailure();
+        }
+      }
+
+      return res?.Data;
+    } catch (error) {
+      return;
+    }
+  },
+
+  async getNumberTaskGroupReport({ commit, state }, payload){
+    try {
+      let res = await Project.getNumberTaskGroupReport(payload?.data);
+      if (res?.Success) {
+        if (payload?.onSuccess) {
+          payload.onSuccess();
+        }
+      } else {
+        if (payload?.onFailure) {
+          payload.onFailure();
+        }
+      }
+
+      return res?.Data;
+    } catch (error) {
+      return;
+    }
+  },
+
+  async getNumberTaskStatusByAssigneeReport({ commit, state }, payload){
+    try {
+      let res = await Project.getNumberTaskStatusByAssigneeReport(payload?.data);
+      if (res?.Success) {
+        if (payload?.onSuccess) {
+          payload.onSuccess();
+        }
+      } else {
+        if (payload?.onFailure) {
+          payload.onFailure();
+        }
+      }
+
+      return res?.Data;
+    } catch (error) {
+      return;
+    }
+  },
+
+  async insertEmployees({ commit, state }, payload) {
+    let res = await Project.insertEmployees(payload?.data);
+
+    if (res?.Success) {
+      if (payload?.onSuccess) {
+        payload.onSuccess();
+      }
+    } else {
+      if (payload?.onFailure) {
+        payload.onFailure();
+      }
+    }
+
+    return res.Data;
+  },
+
+  async getProjectRoles({ commit, state }, payload) {
+    let res = await PermissionGroup.getByProject(payload.data?.ProjectID);
+    if (res?.Success) {
+      if (payload?.onSuccess) {
+        payload.onSuccess();
+      }
+
+      commit("SET_ROLES", res.Data);
+    } else {
+      if (payload?.onFailure) {
+        payload.onFailure();
+      }
+    }
+
+    return res.Data;
+  },
+
+  async getProjectPermissions({ commit, state }, payload) {
+    let res = await PermissionGroup.getProjectPermission();
+    if (res?.Success) {
+      if (payload?.onSuccess) {
+        payload.onSuccess();
+      }
+
+      commit("SET_PERMISSIONS", res.Data);
+    } else {
+      if (payload?.onFailure) {
+        payload.onFailure();
+      }
+    }
+
+    return res.Data;
+  },
+
+  async insertProjectRole({ commit, state }, payload) {
+    let res = await PermissionGroup.insertProjectRole(payload.data);
+    if (res?.Success) {
+      if (payload?.onSuccess) {
+        payload.onSuccess();
+      }
+
+    } else {
+      if (payload?.onFailure) {
+        payload.onFailure();
+      }
+    }
+
+    return res.Data;
+  },
+
+  async updateProjectRole({ commit, state }, payload) {
+    let res = await PermissionGroup.updateProjectRole(payload.data);
+    if (res?.Success) {
+      if (payload?.onSuccess) {
+        payload.onSuccess();
+      }
+
+    } else {
+      if (payload?.onFailure) {
+        payload.onFailure();
+      }
+    }
+
+    return res.Data;
+  },
+
+  async deleteProjectRole({ commit, state }, payload) {
+    let res = await PermissionGroup.deleteProjectRole(payload.data);
+    if (res?.Success) {
+      if (payload?.onSuccess) {
+        payload.onSuccess();
+      }
+
+    } else {
+      if (payload?.onFailure) {
+        payload.onFailure();
+      }
+    }
+
+    return res.Data;
+  },
+
+  async getProjectRolePermissions({ commit, state }, payload) {
+    let res = await PermissionGroup.getProjectRolePermissions(payload.data?.PermissionGroupID);
+    if (res?.Success) {
+      if (payload?.onSuccess) {
+        payload.onSuccess();
+      }
+
+    } else {
+      if (payload?.onFailure) {
+        payload.onFailure();
+      }
+    }
+
+    return res.Data;
+  },
+
+  async checkProjectRoleInUse({ commit, state }, payload){
+    let res = await PermissionGroup.checkProjectRoleInUse(payload.data);
+    if (res?.Success) {
+      if (payload?.onSuccess) {
+        payload.onSuccess();
+      }
+
+    } else {
+      if (payload?.onFailure) {
+        payload.onFailure();
+      }
+    }
+
+    return res.Data;
+  },
+
+  async getFilePaging({ commit, state }, payload){
+    let res = await Project.getFilePaging(payload.data);
+    if (res?.Success) {
+      if (payload?.onSuccess) {
+        payload.onSuccess();
+      }
+
+    } else {
+      if (payload?.onFailure) {
+        payload.onFailure();
+      }
+    }
+
+    return res.Data;
+  },
+
+  async uploadFile({ commit, state }, payload){
+    let res = await Project.uploadFileProject(payload.data);
+    if (res?.Success) {
+      if (payload?.onSuccess) {
+        payload.onSuccess();
+      }
+
+    } else {
+      if (payload?.onFailure) {
+        payload.onFailure();
+      }
+    }
+
+    return res.Data;
+  },
+
+
+  async deleteFiles({ commit, state }, payload){
+    let res = await Project.deleteFiles(payload.data);
+    if (res?.Success) {
+      if (payload?.onSuccess) {
+        payload.onSuccess();
+      }
+
+    } else {
+      if (payload?.onFailure) {
         payload.onFailure();
       }
     }
 
     return res.Data;
   }
-
-
 };
 
 // mutations
@@ -127,9 +418,17 @@ const mutations = {
     state.project = data;
   },
 
-  SET_EMPLOYEES(state, data){
+  SET_EMPLOYEES(state, data) {
     state.employees = data;
   },
+
+  SET_ROLES(state, data) {
+    state.roles = data;
+  },
+
+  SET_PERMISSIONS(state, data){
+    state.permissions = data;
+  }
 };
 
 export default {

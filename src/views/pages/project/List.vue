@@ -4,8 +4,8 @@ import { NProgress } from "naive-ui";
 import { useStore } from "vuex";
 import { onMounted, ref } from "vue";
 import { useRoute } from "vue-router";
-import { ModuleTask, ModuleUser } from "@/store/moduleConstant";
-import TaskView from "@/views/popup/form/TaskView.vue";
+import { ModuleTask, ModuleContext } from "@/store/moduleConstant";
+import TaskView from "@/components/popup/form/TaskView.vue";
 import { useModal } from "vue-final-modal";
 import EmployeeCard from "@/components/cards/Employee.vue";
 import DatePickerCard from "@/components/cards/DatePicker.vue";
@@ -15,7 +15,7 @@ const store = useStore();
 const route = useRoute();
 const models = inject("Model");
 const masterParam = reactive(models.createGetPagingTaskByEmployeeParam());
-const employee = computed(() => store.state[ModuleUser]?.employee);
+const employee = computed(() => store.state[ModuleContext]?.employee);
 const totalRecord = ref(0);
 const masterData = ref([]);
 const projectID = ref(route.params.ProjectID);
@@ -60,6 +60,25 @@ const renderCustomHeader = (title) => {
   };
 };
 
+const pageSizes = [
+      {
+        label: '10 bản ghi / trang',
+        value: 10
+      },
+      {
+        label: '20 bản ghi / trang',
+        value: 20
+      },
+      {
+        label: '30 bản ghi / trang',
+        value: 30
+      },
+      {
+        label: '40 bản ghi / trang',
+        value: 40
+      }
+    ]
+
 const columns = ref([
   {
     title: () => h("div", { class: "mi-24 mi-modify-column" }),
@@ -75,14 +94,6 @@ const columns = ref([
     width: 400,
     resizable: true,
     ellipsis: true,
-    // render(row, index) {
-    //   const clickr = () => {
-    //     openTaskView(row.TaskID);
-    //   };
-    //   return h("div", { onClick: clickr, class: "pointer m-w100" }, [
-    //     row.TaskName,
-    //   ]);
-    // },
     cellProps: (row, index) => {
       return {
         style: "cursor: pointer;",
@@ -189,15 +200,6 @@ const columns = ref([
   },
 ]);
 
-const pagination = reactive({
-  page: 1,
-  itemCount: 0,
-  pageSize: 10,
-  onChange: (page) => {
-    pagination.page = page;
-  },
-});
-
 const dropdownQuickFilterOptions = [
   {
     key: "header",
@@ -278,12 +280,12 @@ const dropdownSortOptions = [
       {
         label: "Tăng dần",
         key: "key_CreatedDate_ASC",
-        value: 1
+        value: 1,
       },
       {
         label: "Giảm dần",
         key: "key_CreatedDate_DESC",
-        value: 2
+        value: 2,
       },
     ],
   },
@@ -294,12 +296,12 @@ const dropdownSortOptions = [
       {
         label: "Tăng dần",
         key: "key_StartDate_ASC",
-        value: 3
+        value: 3,
       },
       {
         label: "Giảm dần",
         key: "key_StartDate_DESC",
-        value: 4
+        value: 4,
       },
     ],
   },
@@ -310,12 +312,12 @@ const dropdownSortOptions = [
       {
         label: "Tăng dần",
         key: "key_EndDate_ASC",
-        value: 5
+        value: 5,
       },
       {
         label: "Giảm dần",
         key: "key_EndDate_DESC",
-        value: 6
+        value: 6,
       },
     ],
   },
@@ -326,12 +328,12 @@ const dropdownSortOptions = [
       {
         label: "Tăng dần",
         key: "key_Performer_ASC",
-        value: 7
+        value: 7,
       },
       {
         label: "Giảm dần",
         key: "key_Performer_DESC",
-        value: 8
+        value: 8,
       },
     ],
   },
@@ -342,12 +344,12 @@ const dropdownSortOptions = [
       {
         label: "Tăng dần",
         key: "key_TaskGroup_ASC",
-        value: 9
+        value: 9,
       },
       {
         label: "Giảm dần",
         key: "key_TaskGroup_DESC",
-        value: 10
+        value: 10,
       },
     ],
   },
@@ -377,6 +379,7 @@ const openTaskView = (taskID) => {
   taskViewModal.open();
 };
 
+
 const handleSelectQuickFilter = async (value, option) => {
   masterParam.QuickFilter = option.value;
   quickFilter.text = option.label;
@@ -393,20 +396,34 @@ const handleSelectStatusFilter = async (value, option) => {
   statusFilter.text = `Trạng thái hoàn thành ${option.label}`;
 
   await getData();
-
 };
 
 const handleSelectSortFilter = async (value, option) => {
   masterParam.SortTaskBy = option.value;
   sortFilter.text = `Sắp xếp theo`;
-  let itemSort = dropdownSortOptions.find((item) => option.key.includes(item.key));
-  if(itemSort){
-    sortFilter.text = `Sắp xếp theo ${itemSort.label} (${option.label}) `
+  let itemSort = dropdownSortOptions.find((item) =>
+    option.key.includes(item.key)
+  );
+  if (itemSort) {
+    sortFilter.text = `Sắp xếp theo ${itemSort.label} (${option.label}) `;
   }
 
   await getData();
-
 };
+
+const onPage_change = async (page) => {
+  if(masterParam.PageIndex != page){
+    masterParam.PageIndex = page;
+    await getData();
+  }
+}
+
+const onPageSize_change = async (pageSize) => {
+  if(masterParam.PageSize != pageSize){
+    masterParam.PageSize = pageSize;
+    await getData();
+  }
+}
 
 const initMasterParam = () => {
   masterParam.QuickFilter = 1;
@@ -414,7 +431,7 @@ const initMasterParam = () => {
   masterParam.SortTaskBy = 1;
   masterParam.ProjectID = projectID.value;
   masterParam.PageIndex = 1;
-  masterParam.PageSize = 20;
+  masterParam.PageSize = 10;
   masterParam.EmployeeID = employee.value.EmployeeID;
 };
 
@@ -432,7 +449,6 @@ const getData = async () => {
   let res = await store.dispatch(ModuleTask + "/getTaskByProject", param);
   masterData.value = res.data;
   totalRecord.value = res.totalRecord;
-  pagination.itemCount = res.totalRecord;
 };
 </script>
 
@@ -511,17 +527,38 @@ const getData = async () => {
       </div>
     </div>
 
-    <n-data-table
-      id="resizeMe"
-      class="text-medium"
-      :columns="columns"
-      :data="masterData"
-      :pagination="pagination"
-      :max-height="486"
-      :min-height="486"
-      :single-line="false"
-      :scroll-x="2200"
-    />
+    <div class="data-table">
+      <n-data-table
+        id="resizeMe"
+        class="text-medium"
+        :columns="columns"
+        :data="masterData"
+        :max-height="486"
+        :min-height="480"
+        :single-line="false"
+        :scroll-x="2200"
+      />
+
+      <div class="m-pt8 m-pl16 m-pr16 flex-row flex-align-center">
+
+        <div class="">
+          Tổng cộng : 
+          <span class="text-bold">{{  totalRecord }}</span>
+          bản ghi
+        </div>
+
+        <div class="flex-1"></div>
+
+        <n-pagination
+        v-model:page="masterData.PageIndex"
+        v-model:item-count="totalRecord"
+        :page-sizes="pageSizes"
+        :on-update:page="onPage_change"
+        :on-update:page-size="onPageSize_change"
+        show-size-picker
+      />
+      </div>
+    </div>
   </div>
 </template>
 
@@ -532,10 +569,13 @@ const getData = async () => {
   position: absolute;
   box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
   border-radius: 8px;
-  overflow: hidden;
-  padding-top: 6px;
+  padding: 8px 0;
   height: calc(100vh - 90px);
-  max-width: calc(100vw - 32px);
+  width: calc(100vw - 32px);
+}
+
+.grid-task .data-table {
+  width: inherit;
 }
 
 .grid-task-filter {
@@ -546,9 +586,7 @@ const getData = async () => {
   padding: 8px 12px !important;
 }
 
-.n-progress.n-progress--circle {
-  width: 24px !important;
-}
+
 
 .grid-filter-btn {
   background-color: #fff !important;
