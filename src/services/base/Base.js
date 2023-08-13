@@ -1,6 +1,6 @@
 import {httpClient} from "./httpClient"
 
-const baseUrl = `${import.meta.env.VITE_DOMAIN_BE}/api/v1`;
+const baseUrl = "https://misaweb07api20230813092251.azurewebsites.net/api/v1";
 
 
 class BaseRepository extends httpClient{
