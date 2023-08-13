@@ -1,0 +1,72 @@
+
+.m-header{
+    width: 100%;
+    height: var(--layout-header-height);
+    padding-left: 24px;
+    position: fixed;
+    top: 0;
+    color: #fff;
+}
+
+.m-header-left-logo{
+    max-width: 185px;
+    max-height: 36px;
+}
+
+.m-header-left-logo__brand{
+    font-size: 24px;
+    font-weight: 500;
+    padding-left: 8px;
+    color: #000;
+}
+
+.m-header-left .icon-wrapper, .m-header-project .icon-wrapper{
+    border-right: 1px solid #e0e0e0;
+}
+
+.m-header-project{
+    text-decoration: none;
+    color: #343a40;
+}
+
+.m-header-project .icon-project .icon-project-wrapper{
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background-color: rgb(33, 150, 243);
+}
+
+.m-header-project .name-project{
+    max-width: 230px;
+    font-weight: 500;
+    
+}
+
+
+
+
+
+.m-header-right{
+    padding-right: 16px;
+}
+
+.m-header-right .avatar{
+    height: 32px;
+    width: 32px;
+    border-radius: 50%;
+
+}
+
+.m-header-right .avatar img{
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    object-position: center center;
+}
+
+
+.m-icon-btn{
+    cursor: pointer;
+    background: rgb(97, 97, 97);
+}

@@ -1,0 +1,98 @@
+@import url(./base/icon.css);
+@import url(./typography.css);
+@import url(./customize.css);
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  color: var(--text-color-default);
+  font-size: 15px;
+  font-family: "GoogleSans-Regular" ,Roboto, Helvetica, Arial, sans-serif !important;
+  overflow: hidden;
+  line-height: 1.5;
+  margin: 0;
+  padding: 0;
+}
+
+ul {
+  padding-left: 0;
+  list-style: none;
+  margin: 0;
+}
+
+button,
+input,
+select,
+textarea,
+table {
+  box-sizing: border-box;
+  font-size: 15px;
+  outline: none;
+  border: none;
+}
+
+a {
+  text-decoration: none;
+  color: var(--link-default-color);
+}
+
+label {
+  cursor: pointer;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin-top: 0;
+  margin-bottom: 0;
+  margin-block-start: 0 !important;
+  margin-block-end: 0 !important;
+}
+
+@font-face {
+  font-family: "GoogleSans-Regular";
+  src: url("@/assets/fonts/GoogleSans-Regular.otf");
+  /* Add additional formats if necessary */
+}
+
+@font-face {
+  font-family: "GoogleSans-Medium";
+  src: url("@/assets/fonts/GoogleSans-Medium.otf");
+  /* Add additional formats if necessary */
+}
+
+@font-face {
+  font-family: "GoogleSans-Bold";
+  src: url("@/assets/fonts/GoogleSans-Bold.otf");
+  /* Add additional formats if necessary */
+}
+
+.container{
+  margin-top: var(--layout-header-height);
+  height: calc(100vh - var(--layout-header-height));
+}
+
+.project-container{
+  width: 100%;
+  height: calc(100vh - var(--layout-header-height));
+}
+
+.container{
+  background: url(@/assets/background/dashboard-bg-1.jpg) -0 -40px no-repeat;
+  background-position: center center;
+  background-size: cover;
+  max-width: unset;
+  
+}
+

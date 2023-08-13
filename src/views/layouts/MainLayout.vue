@@ -4,15 +4,18 @@
       <router-view></router-view>
     </div>
   </NConfigProvider>
+
+  <MLoader />
 </template>
 
 <script>
-import { defineComponent } from "vue";
+import { defineComponent, onMounted } from "vue";
 import { NConfigProvider } from "naive-ui";
+import  MLoader  from '@/components/loader/MLoader.vue';
 
 export default defineComponent({
   name: "MainLayout",
-  components: { NConfigProvider },
+  components: { NConfigProvider, MLoader },
   setup() {
     const themeOverrides = {
       common: {
@@ -25,6 +28,10 @@ export default defineComponent({
       },
     };
 
+    onMounted(() => {
+      console.log(1);
+    });
+
     return {
       themeOverrides,
     };
@@ -34,6 +41,6 @@ export default defineComponent({
 
 <style>
 .m-main-layout * {
-  font-family: "GoogleSans-Medium", Helvetica, Arial, sans-serif;
+  font-family: "GoogleSans-Regular", Arial, Helvetica, sans-serif !important;
 }
 </style>

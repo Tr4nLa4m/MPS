@@ -1,34 +1,33 @@
 <template>
   <button
     class="m-button"
+    :title="title"
     :class="[
       buttonTypeClass,
       text ? '' : 'only-icon',
       border ? 'm-btn-border' : '',
       classCustom,
+      leftIcon || rightIcon ? 'd-flex flex-align-center' : '',
+      disabled ? 'btn-disabled' : '',
     ]"
-    :title="title"
     :tag="tag"
+    :style="style"
   >
     <div
-      :class="['icon-24 icon-left', leftIcon, disabled ? 'disabled-icon' : '']"
+      :class="['mi-24 icon-left', leftIcon, disabled ? 'disabled-icon' : '']"
       v-if="leftIcon"
     >
       &nbsp;
     </div>
     <div
       class="text"
-      :class="[{ 'pl-0': leftIcon, 'pr-0': rightIcon }]"
+      :class="[{ 'm-ml8': leftIcon, 'm-mr8': rightIcon }, classText]"
       v-if="text"
     >
       {{ text }}
     </div>
     <div
-      :class="[
-        'icon-24 icon-right',
-        rightIcon,
-        disabled ? 'disabled-icon' : '',
-      ]"
+      :class="['mi-24 icon-right', rightIcon, disabled ? 'disabled-icon' : '']"
       v-if="rightIcon"
     />
   </button>
@@ -36,6 +35,8 @@
 
 <script>
 import { defineComponent } from "vue";
+import { getCurrentInstance } from "vue";
+
 export default defineComponent({
   name: "MButton",
   props: {
@@ -68,32 +69,46 @@ export default defineComponent({
     // Class custom cho button
     classCustom: String,
 
+    classText: String,
+
     // Border của button
     border: {
       type: Boolean,
       default: false,
     },
 
-    // Trạng thái disable của button
-    disable: {
-      type: Boolean,
-      default: false,
-    },
-
     tag: {
-      type : String,
-      default: null
+      type: String,
+      default: null,
     },
 
     title: {
       type: String,
-      default: null
-    }
+      default: null,
+    },
+
+    style: {
+      type: Object,
+      default: null,
+    },
+
+    disabled: false,
   },
   computed: {
     buttonTypeClass() {
       return `m-btn-${this.type}`;
     },
+  },
+  setup(props) {
+    const { proxy } = getCurrentInstance();
+
+    const click = () => {
+      proxy.$el.click();
+    };
+
+    return {
+      click,
+    };
   },
 });
 
@@ -104,5 +119,5 @@ export const ButtonType = {
 </script>
 
 <style scoped>
-@import url(../../style/components/button.css);
+@import url(../../assets/style/components/button.css);
 </style>

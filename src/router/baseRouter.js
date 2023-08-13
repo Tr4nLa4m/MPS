@@ -40,16 +40,6 @@ export default [
     }
   },
   {
-    path: '/account/logout',
-    name: 'logout',
-    component: () =>
-      import(/* webpackChunkName:'logout' */
-        '../views/pages/LoginPage.vue'),
-    meta: {
-      anonymous: true
-    }
-  },
-  {
     path: '/login',
     name: 'login',
     component: () =>

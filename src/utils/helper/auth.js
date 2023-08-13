@@ -1,17 +1,19 @@
-import jwtDecode from "jwt-decode";
-import cookie from "../../common/cookie"
+import commonFn from "./commonFn";
 
 export default {
 
     isAuthenticated : () => {
-        let token = cookie.getCookie('token') || '';
+        let token = commonFn.getItemLocalStorage('token');
+        let tokenExpired = commonFn.getItemLocalStorage('tokenExpired');
         if(!token){
             return false;
         }
 
-        let expiredTokenTime = jwtDecode(token)?.exp;
+        if(new Date(tokenExpired) < new Date()){
+            return false;
+        }
 
-        return false;
+        return true;
 
     }
 }

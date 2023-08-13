@@ -1,7 +1,12 @@
 <template>
-  <div class="m-row-input d-flex m-input-border" :class="customClass">
+  <div
+    class="m-row-input d-flex"
+    :class="[customClass, border ? 'm-input-border' : 'no-border']"
+  >
     <div class="m-input-wrapper d-flex flex-align-center">
-      <div :class="[iconLeft, 'm-mr4 m-ml4', 'pointer']" v-if="iconLeft"></div>
+      <div class="input-icon pointer" v-if="iconLeft" @click="btnIcon_click">
+        <div :class="[iconLeft]"></div>
+      </div>
       <input
         :type="type"
         :value="modelValue"
@@ -15,11 +20,13 @@
         @blur="handleBlurElement($event)"
         :placeholder="placeholder"
         :style="{ width: width + 'px' }"
-        :class="['m-input', inputClass, iconLeft ? 'm-pl0' : '', iconRight ? 'm-pr0' : ''  ]"
+        :class="['m-input m-w100', inputClass]"
+        @keydown="handleKeyDown"
       />
 
-    <div :class="[iconRight, 'm-mr4 m-ml4', 'pointer']" v-if="iconRight"></div>
-
+      <div class="input-icon pointer" v-if="iconRight" @click="btnIcon_click">
+        <div :class="[iconRight]"></div>
+      </div>
     </div>
     <div class="m-input-error-label">{{ textMessage }}</div>
   </div>
@@ -59,6 +66,11 @@ export default {
 
     inputClass: String,
 
+    border: {
+      default: true,
+      type: Boolean,
+    },
+
     disable: {
       type: Boolean,
       default: false,
@@ -81,13 +93,18 @@ export default {
     },
 
     iconLeft: {
-      type: String,
+      type: Array || String,
       default: null,
     },
 
     iconRight: {
-      type: String,
+      type: Array || String,
       default: null,
+    },
+
+    submitOnKeydown: {
+      type: Boolean,
+      default: false,
     },
   },
 
@@ -118,15 +135,15 @@ export default {
     const handleUpdateModelValue = ($event) => {
       // Set giá trị nhỏ nhất là 0
       const target = $event.target || $event.currentTarget;
-      const boundElement = target.closest(".m-input-border");
-      // Nếu input đang invalid thì bỏ nó
-      if (
-        boundElement.hasAttribute("invalid") &&
-        target.hasAttribute("required") &&
-        target.value
-      ) {
-        boundElement.removeAttribute("invalid");
-      }
+      // const boundElement = target.closest(".m-input-border");
+      // // Nếu input đang invalid thì bỏ nó
+      // if (
+      //   boundElement.hasAttribute("invalid") &&
+      //   target.hasAttribute("required") &&
+      //   target.value
+      // ) {
+      //   boundElement.removeAttribute("invalid");
+      // }
 
       // if(target.type == "email" && target.value && validate.isEmailValid(target.value)){
       //   target.removeAttribute("invalid");
@@ -135,18 +152,39 @@ export default {
       context.emit("update:modelValue", target.value);
     };
 
+    const handleKeyDown = (e) => {
+      if (props.submitOnKeydown) {
+        if (e.keyCode == 13) {
+          const target = e.target || e.currentTarget;
+          context.emit("onEnter", target.value);
+        }
+      }
+    };
+
+    const btnIcon_click = (e) => {
+      if(props.iconLeft || props.iconRight){
+        context.emit("onIconClick");
+      }
+    }
+
     return {
       handleBlurElement,
       handleUpdateModelValue,
+      handleKeyDown,
+      btnIcon_click,
     };
   },
 
-  emits: ["update:modelValue"],
+  emits: ["update:modelValue", "onEnter", "onIconClick"],
 
   computed: {},
 };
 </script>
 
 <style scoped>
-@import url(../../style/components/input.css);
+@import url(../../assets/style/components/input.css);
+
+.input-icon {
+  padding: 4px 8px;
+}
 </style>

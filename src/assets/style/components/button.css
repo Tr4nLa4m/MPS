@@ -1,0 +1,116 @@
+
+
+.m-button{
+    cursor: pointer;
+    border: 0;
+    outline: 0;
+    color: #fff;
+}
+
+.m-btn-context{
+    padding: 0 5px;
+}
+
+.m-btn-border{
+    border: 1px solid var(--border-button-color);
+}
+
+
+.m-button.m-btn-primary{
+    position: relative;
+    font-size: 15px;
+    font-family: "GoogleSans-Regular" ,Roboto, Helvetica, Arial, sans-serif !important;
+    font-weight: 500;
+    color: #fff;
+    background-color: var(--primary-blue-color);
+    border-radius: 4px;
+    text-align: center;
+    padding: 0 8px;
+}
+
+.m-button.m-btn-primary:hover{
+    box-shadow: 0 2px 15px rgba(42,126,252,.25);
+    background-color: var(--background-hover-color-2);
+    transition: all .5s;
+}
+
+.m-btn-secondary {
+    background-color: var(--primary-color) !important;
+}
+
+.m-button.m-button-icon:hover {
+    background-color: #D6E9F6;
+}
+
+.m-button.m-button-icon.m-btn-disable{
+    cursor: none;
+    pointer-events: none;
+    opacity: 0.5;
+}
+
+.m-button-xl{
+    height: var(--button-height-xl);
+    line-height: var(--button-height-xl);
+}
+
+.m-button-l{
+    height: var(--button-height-l);
+    line-height: var(--button-height-l);
+}
+
+.m-button-m{
+    height: var(--button-height-m) !important;
+    line-height: var(--button-height-m) !important;
+}
+
+.m-split-button{
+    outline: 0;
+    color: #fff;
+    padding: 4px 0;
+    border-radius: 24px;
+}
+
+.m-split-button.m-btn-primary{
+    background: rgb(33, 147, 243);
+}
+
+.m-split-button.m-button-m .text{
+    font-size: 13px;
+}
+
+.m-split-button .divider{
+    width: 1px;
+    height: 100%;
+    background-color: #fff;
+}
+
+.only-icon{
+    background: transparent !important;
+}
+
+.m-button.btn-transparent, .m-button.btn-transparent:hover{
+    color: var(--border-focus-color);
+    background-color: #fff;
+}
+
+.btn-split{
+    height: 100%;
+}
+
+.btn-split:hover{
+    box-shadow: none !important;
+}
+
+.btn-danger{
+    background-color: var(--danger-color) !important;
+}
+
+.btn-danger:hover{
+    background-color: #ff1d1d !important;
+}
+
+.btn-disabled{
+    pointer-events: none;
+    cursor: not-allowed !important;
+    opacity: 0.7;
+}

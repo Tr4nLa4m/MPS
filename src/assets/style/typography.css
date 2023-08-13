@@ -1,0 +1,131 @@
+.title-medium {
+  font-size: 17px;
+  font-family: "GoogleSans-Bold", Roboto, Helvetica, Arial, sans-serif !important;
+  font-weight: 300;
+  color: var(--text-color-default);
+}
+
+.title-m {
+  font-size: 16px;
+  font-family: "GoogleSans-Bold", Roboto, Helvetica, Arial, sans-serif !important;
+  font-weight: 300;
+  color: var(--text-color-default);
+}
+
+.title-small{
+  font-size: 13px;
+  font-weight: 700;
+  font-family: "GoogleSans-Bold", Roboto, Helvetica, Arial, sans-serif !important;
+}
+
+.text-large {
+  font-size: 20px;
+  font-weight: 700;
+  font-family: "GoogleSans-Bold", Roboto, Helvetica, Arial, sans-serif !important;
+}
+
+.text-xl {
+  font-size: 24px !important;
+  font-weight: 700;
+  font-family: "GoogleSans-Bold", Roboto, Helvetica, Arial, sans-serif !important;
+  color: var(--text-color-default);
+}
+
+.text-default{
+  font-size: 15px !important;
+  font-family: "GoogleSans-Regular", Roboto, Helvetica, Arial, sans-serif !important;
+}
+
+.text-medium {
+  font-size: 15px !important;
+  font-family: "GoogleSans-Regular", Roboto, Helvetica, Arial, sans-serif !important;
+  font-weight: 500 !important;
+  color: var(--text-color-default) !important;
+}
+
+.text-small {
+  font-size: 13px;
+  font-family: "GoogleSans-Regular", Roboto, Helvetica, Arial, sans-serif !important;
+  font-weight: 400;
+  color: var(--text-color-default);
+}
+
+.text-link {
+  font-size: 15px !important;
+  font-family: "GoogleSans-Regular", Roboto, Helvetica, Arial, sans-serif !important;
+  font-weight: 400 !important;
+  color: var(--border-focus-color) !important;
+}
+
+.text-link-small{
+  font-size: 13px;
+  font-weight: 400 !important;
+  color: var(--primary-color);
+}
+
+.text-link-v2{
+  font-family: "GoogleSans-Regular", Roboto, Helvetica, Arial, sans-serif !important;
+  color: var(--text-color-blue-grey) !important;
+}
+
+.text-link-v2:hover{
+  cursor: auto;
+  text-decoration: underline;
+}
+
+.text-link-v3{
+  font-family: "GoogleSans-Regular", Roboto, Helvetica, Arial, sans-serif !important;
+  color: var(--primary-color) !important;
+}
+
+.text-link-v3:hover{
+  cursor: pointer;
+  color: #600 !important;
+  text-decoration: underline;
+}
+
+.text-hover-primary{
+}
+
+.text-hover-primary:hover{
+  color: var(--primary-color);
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.text-input-m {
+  font-size: 15px !important;
+  font-family: "GoogleSans-Regular", Roboto, Helvetica, Arial, sans-serif !important;
+  font-weight: 400 !important;
+  color: var(--text-color-default) !important;
+  line-height: 20px;
+}
+
+.text-primary {
+  color: var(--primary-color);
+}
+
+.text-fade{
+    color: #666666;
+}
+
+.text-bold {
+  font-weight: bold;
+}
+
+.text-bold-l {
+  font-weight: 500;
+}
+
+.line-small {
+  line-height: 1.35715;
+}
+
+.text-hover-link:hover{
+  color: var(--primary-color);
+  
+}
+
+.text-line-throught{
+  text-decoration: line-through;
+}

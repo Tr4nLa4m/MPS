@@ -1,18 +1,20 @@
 {
-    "include": [
-        "./src/**/*"
-    ],
     "compilerOptions": {
-        "module": "es2015",
-        "moduleResolution": "node",
-        "baseUrl": "./",
-        "target": "es5",
-        "sourceMap": true,
-        "allowJs": true,
-        "paths": {
-            "@/*": [
-              "src/*"
-            ]
-        },
+      "target": "es5",
+      "module": "esnext",
+      "baseUrl": "./",
+      "moduleResolution": "node",
+      "paths": {
+        "@/*": [
+          "src/*"
+        ]
+      },
+      "lib": [
+        "esnext",
+        "dom",
+        "dom.iterable",
+        "scripthost"
+      ]
     }
-}
+  }
+  

@@ -43,6 +43,9 @@
 .flex-1 {
     flex: 1;
 }
+.flex-wrap {
+    flex-wrap: wrap;
+}
 
 /************** 
     DISPLAY SECTION
@@ -68,56 +71,41 @@
     cursor: pointer;
 }
 
-
-.relative{
-    position: relative;
-}
-
-.absolute{
-    position: absolute;
-}
 /******
     Padding Section
 *******/
 
-.m-pl0{
-    padding-left: 0px !important;
-}
-
-.m-pr0{
-    padding-right: 0px !important;
-}
 
 .m-pt4 {
-    padding-top: 4px !important;
+    padding-top: 4px;
 }
 
 .m-pb4{
-    padding-bottom: 4px !important;
+    padding-bottom: 4px;
 }
 
 .m-pr4 {
-    padding-right: 4px !important;
+    padding-right: 4px;
 }
 
 .m-pl4 {
-    padding-left: 4px !important;
+    padding-left: 4px;
 }
 
 .m-pr6 {
-    padding-right: 6px !important;
+    padding-right: 6px;
 }
 
 .m-pl6 {
-    padding-left: 6px !important;
+    padding-left: 6px;
 }
 
 .m-pr8{
-    padding-right: 8px !important;
+    padding-right: 8px;
 }
 
 .m-pl8{
-    padding-left: 8px !important;
+    padding-left: 8px;
 }
 
 .m-pt8{
@@ -125,19 +113,19 @@
 }
 
 .m-pb8{
-    padding-bottom: 8px !important;
+    padding-bottom: 8px;
+}
+
+.m-pl12{
+    padding-left: 12px !important;
 }
 
 .m-pt16{
     padding-top: 16px !important;
 }
 
-.m-pl24{
-    padding-left: 24px !important;
-}
-
-.m-pr24{
-    padding-right: 24px !important;
+.m-pb16{
+    padding-bottom: 16px !important;
 }
 
 /******
@@ -147,7 +135,6 @@
 .m-m0{
     margin: 0 !important;
 }
-
 
 .m-ml4 {
     margin-left: 4px;
@@ -181,13 +168,7 @@
     margin-left: 16px;
 }
 
-.m-mr24 {
-    margin-right: 24px;
-}
 
-.m-ml24 {
-    margin-left: 24px;
-}
 
 .m-mr32{
     margin-right: 32px;
@@ -210,7 +191,7 @@
 }
 
 .m-h32{
-    height: 32px !important;
+    height: 32px;
 }
 
 .m-w100{
@@ -220,6 +201,7 @@
 .m-w1{
     width: 1px;
 }
+
 
 
 
@@ -239,16 +221,8 @@
     background-color: #e1e1e1;
 }
 
-.no-border{
-    border: none !important;
-}
-
-.m-bg-white{
+.m-color-white{
     background-color: #fff;
-}
-
-.m-white{
-    color: #fff !important;
 }
 
 
@@ -268,6 +242,12 @@
     text-align: right !important;
 }
 
+.ellipsis{
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
 .text-bold{
     font-weight: bold;
 }
@@ -278,18 +258,11 @@
 }
 
 .fs-14{
-    font-size: 14px !important;
+    font-size: 14px;
 }
 
 .fs-12{
-    font-size: 12px !important;
-}
-
-.text-overflow{
-    width: auto;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+    font-size: 12px;
 }
 
 

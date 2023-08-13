@@ -1,0 +1,21 @@
+.loader-wrapper {
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	z-index: 9999;
+	background: rgba(0, 0, 0, 0.1);
+	display: none;
+	justify-content: center;
+	align-items: center;
+}
+
+.loader-wrapper img {
+    animation: rotate 1.5s linear infinite;
+}
+
+/* ENDLESS ROTATE */
+@keyframes rotate{
+  to{ transform: rotate(360deg); }
+}

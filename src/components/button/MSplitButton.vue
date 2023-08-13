@@ -1,25 +1,22 @@
 <template>
-  <div class="m-split-button flex-center"
-  :title="title"
-  :class="[
-        buttonTypeClass,
-        text ? '' : 'only-icon',
-        border ? 'm-btn-border' : '',
-        classCustom,
-      ]"
-      
+  <div
+    class="m-split-button flex-center"
+    :title="title"
+    :class="[
+      buttonTypeClass,
+      text ? '' : 'only-icon',
+      border ? 'm-btn-border' : '',
+      classCustom,
+    ]"
   >
     <button
       :tag="tag"
-      style="background-color: transparent;"
+      style="background-color: transparent"
       class="m-button m-pl8 m-pr8 flex-center"
+      @click="onClick($event)"
     >
       <div
-        :class="[
-          'icon-left',
-          leftIcon,
-          disabled ? 'disabled-icon' : '',
-        ]"
+        :class="['icon-left', leftIcon, disabled ? 'disabled-icon' : '']"
         v-if="leftIcon"
       >
         &nbsp;
@@ -32,24 +29,34 @@
         {{ text }}
       </div>
       <div
-        :class="[
-          'icon-right',
-          rightIcon,
-          disabled ? 'disabled-icon' : '',
-        ]"
+        :class="['icon-right', rightIcon, disabled ? 'disabled-icon' : '']"
         v-if="rightIcon"
       />
     </button>
+
     <div class="divider"></div>
 
-    <div class="mi-16 mi-carret-down-white icon-after m-mr8 m-ml8" />
+    <n-dropdown
+      :show="showDropdown"
+      :options="options"
+      :show-arrow="true"
+      :on-clickoutside="onClickoutside"
+      @select="handleSelect"
+    >
+      <MButtonIcon
+        :icon="'mi-16 icon-after ' + splitIcon"
+        :classText="splitTextClass"
+        :classCustom="'btn-split ' + splitButtonClass"
+        :text="splitText"
+        @click="handleClickShowDropdown"
+      />
+    </n-dropdown>
   </div>
 </template>
 
 <script>
-import { defineComponent } from "vue";
+import { defineComponent, ref, nextTick } from "vue";
 export default defineComponent({
-  name: "MSButton",
   props: {
     // Nội dung của button
     text: {
@@ -101,11 +108,68 @@ export default defineComponent({
       type: String,
       default: null,
     },
+
+    disabled: false,
+
+    options: {
+      type: Array,
+      default: []
+    },
+
+    splitText: {
+      type: String,
+      default: null,
+    },
+
+    splitTextClass: {
+      type: String,
+      default: null,
+    },
+
+    splitButtonClass: {
+      type: String,
+      default: null,
+    },
+
+    splitIcon: {
+      type: String,
+      default: 'mi-carret-down-white',
+    }
   },
   computed: {
     buttonTypeClass() {
       return `m-btn-${this.type}`;
     },
+  },
+
+  setup(props, { emit }) {
+    const onClick = (event) => {
+      emit("onClick", event);
+    };
+
+    const showDropdown = ref(false);
+
+
+    const handleSelect = (key) => {
+      showDropdown.value = false;
+      emit("onOptionClick", key);
+    };
+
+    const handleClickShowDropdown = () => {
+      showDropdown.value = !showDropdown.value;
+    }
+
+    const onClickoutside = () => {
+      showDropdown.value = false;
+    }
+
+    return {
+      onClick,
+      handleSelect,
+      showDropdown,
+      handleClickShowDropdown,
+      onClickoutside
+    };
   },
 });
 
@@ -116,5 +180,5 @@ export const ButtonType = {
 </script>
 
 <style scoped>
-@import url(../../style/components/button.css);
+@import url(../../assets/style/components/button.css);
 </style>

@@ -1,0 +1,161 @@
+.n-input {
+  --n-border-hover: 1px solid var(--primary-color) !important;
+  --n-border-focus: 1px solid var(--primary-color) !important;
+  --n-font-size: 15px !important;
+  --n-height: 36px !important;
+  --n-caret-color: var(--primary-color) !important;
+}
+
+.m-select .n-base-selection {
+  --n-font-size: 15px !important;
+  --n-height: 36px !important;
+}
+
+.n-base-selection {
+  --n-border-active: 1px solid var(--primary-color) !important;
+  --n-border-focus: 1px solid var(--primary-color) !important;
+  --n-border-hover: 1px solid var(--primary-color) !important;
+  --n-caret-color: var(--primary-color) !important;
+
+  --n-color-disabled: transparent !important;
+  --n-text-color-disabled: rgb(51, 54, 57) !important;
+  --n-arrow-color-disabled: rgba(194, 194, 194, 1) !important;
+}
+
+.m-tabs {
+  --n-bar-color: var(--primary-color) !important;
+  --n-tab-text-color-active: var(--primary-color) !important;
+  --n-tab-text-color-hover: var(--primary-color) !important;
+  --n-tab-font-weight-active: 600 !important;
+  --n-tab-gap: 24px !important;
+}
+
+.n-tabs-tab-wrapper {
+  cursor: pointer;
+}
+
+.n-tabs-tab__label {
+  font-family: "GoogleSans-Regular", Arial, Helvetica, sans-serif !important;
+}
+
+.n-slider {
+  --n-fill-color: var(--primary-color) !important;
+  --n-fill-color-hover: var(--primary-color) !important;
+  --n-dot-border-active: 2px solid var(--primary-color) !important;
+}
+
+.n-tree-select-menu .v-vl {
+  --n-node-text-color-disabled: rgb(51, 54, 57) !important;
+}
+
+/* Collapse */
+
+.n-collapse
+  .n-collapse-item
+  .n-collapse-item__content-wrapper
+  .n-collapse-item__content-inner {
+  padding-top: 8px !important;
+}
+
+.n-collapse .n-collapse-item .n-collapse-item__header {
+  padding: 8px 0 0 0;
+}
+
+.n-collapse .n-collapse-item {
+  margin: 8px 0 0 0;
+}
+
+/* Drag file */
+.n-upload {
+  --n-dragger-border-hover: var(--primary-color) !important;
+  --n-item-text-color-success: var(--primary-color) !important;
+}
+
+/* Button */
+.n-button{
+  --n-color: var(--primary-color) !important;
+    --n-color-hover: var(--border-focus-color) !important;
+    --n-color-pressed: var(--secondary-color) !important;
+    --n-color-focus: var(--border-focus-color) !important;
+    --n-color-disabled: var(--background-hover-color-2) !important;
+    --n-ripple-color: var(--primary-color) !important;
+    --n-text-color: var(--text-color-default) !important;
+    --n-text-color-hover: #FFF !important;
+    --n-text-color-pressed: #FFF !important;
+    --n-text-color-focus: #FFF;
+    --n-text-color-disabled: #FFF;
+    --n-border-hover: 1px solid var(--border-focus-color) !important;
+    --n-border-pressed: 1px solid var(--secondary-color) !important;
+    --n-border-focus: 1px solid var(--border-focus-color) !important;
+}
+
+/* Date */
+.n-date-panel-date{
+  --n-item-color-active: var(--primary-color) !important;
+}
+
+/* Table */
+
+.n-checkbox {
+  --n-color-checked: var(--primary-color) !important;
+  --n-border-checked: var(--primary-color) !important;
+  --n-border-focus: var(--primary-color) !important;
+  --n-color-disabled: rgb(250, 250, 252);
+  --n-color-disabled-checked: var(--primary-color) !important;
+  --n-check-mark-color-disabled: rgba(194, 194, 194, 1);
+  --n-check-mark-color-disabled-checked: rgba(194, 194, 194, 1);
+}
+
+.table-2 {
+  --n-line-height: 20px !important;
+}
+
+.table-2 .n-data-table-th__title,
+.table-2 .n-data-table-th__ellipsis {
+  font-family: "GoogleSans-Bold", Roboto, Helvetica, Arial, sans-serif !important;
+}
+
+.table-2 .n-data-table-td {
+  padding: 6px 12px !important;
+  height: 44px;
+}
+
+/* Progress */
+.n-progress.n-progress--circle {
+  width: 24px !important;
+}
+
+/* Radio */
+.n-radio {
+  --n-box-shadow-active: inset 0 0 0 1px var(--primary-color) !important;
+  --n-box-shadow-focus: inset 0 0 0 1px var(--primary-color),
+    0 0 0 2px rgba(24, 160, 88, 0.2) !important;
+  --n-box-shadow-hover: inset 0 0 0 1px var(--primary-color) !important;
+  --n-dot-color-active: var(--primary-color) !important;
+}
+
+.n-radio .n-radio-input {
+  --n-button-border-color-active: var(--primary-color) !important;
+  --n-button-box-shadow-focus: inset 0 0 0 1px var(--primary-color),
+    0 0 0 2px rgba(24, 160, 88, 0.3) !important;
+  --n-button-text-color-hover: var(--primary-color) !important;
+  --n-button-text-color-active: var(--primary-color) !important;
+}
+
+/* tinyMCE  */
+
+.tox-tinymce .tox-editor-container {
+}
+
+#tinymce p {
+  background-color: aliceblue;
+}
+
+p {
+  margin-block-start: 0;
+  margin-block-end: 0;
+}
+
+.dxc-series {
+  cursor: pointer;
+}
