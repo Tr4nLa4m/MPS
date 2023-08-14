@@ -37,7 +37,7 @@ const getDeadline = computed(() => {
 const isOverDeadline = computed(() => {
   let task = props.task;
   if (!getDeadline.value) return false;
-  let isEndDateOver = new Date(task.EndDate) > new Date();
+  let isEndDateOver = new Date(task.EndDate) < new Date();
   return task.Status == MConstant.TaskStatus.NotDone && isEndDateOver;
 });
 
