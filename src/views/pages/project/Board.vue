@@ -46,6 +46,7 @@
                   :key="itemIndex"
                   :task="item"
                   :item-key="item.TaskID"
+                  @click="(e) => cardTask_click(e, item)"
                 >
                 </TaskCard>
                 <button
@@ -82,6 +83,7 @@ import HeaderLayout from "@/views/layouts/HeaderLayout.vue";
 import TaskCard from "@/components/cards/TaskCard.vue";
 import { useStore } from "vuex";
 import { useModal } from "vue-final-modal";
+import TaskView from "@/components/popup/form/TaskView.vue";
 import {
   ModuleProject,
   ModuleContext,
@@ -269,6 +271,34 @@ const handleSelectDropdownTaskGroup = async (key, option, taskgroup) => {
 
     taskGroupModal.open();
   }
+}
+
+const taskViewModal = useModal({
+  component: TaskView,
+  attrs: {
+    async onCloseModal(isEdited) {
+      if (isEdited) {
+      }
+      taskViewModal.close();
+    },
+
+    async onDeleteTask(isEdited) {
+      taskViewModal.close();
+    },
+
+    TaskID: null,
+  },
+});
+
+const cardTask_click = (e, task) => {
+  debugger
+  taskViewModal.patchOptions({
+    attrs: {
+      TaskID: task.TaskID
+    }
+  });
+
+  taskViewModal.open();
 }
 </script>
 <style scoped>
