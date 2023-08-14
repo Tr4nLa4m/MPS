@@ -73,8 +73,8 @@ const sidebarIssueTab = [
   {
     id: "ConfigIssue",
     name: "Thiết lập",
-    routeName: "watch1Issue",
-    toPath: { name: "watchIssue" },
+    routeName: "issue-config",
+    toPath: { name: "issue-config" },
     icon: "mi-setting m-bg-white",
     permission: MConstant.ProjectPermissions.Issue.Issue_Config
   },

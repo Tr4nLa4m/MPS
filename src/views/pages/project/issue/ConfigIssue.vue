@@ -1,20 +1,25 @@
 <script setup>
-import { ModuleIssue, ModuleContext } from "@/store/moduleConstant";
+import { ModulePost, ModuleContext } from "@/store/moduleConstant";
+import commonFn from "@/utils/helper/commonFn";
 import { useRoutePath } from "@/utils/uses/router/useRoutePath";
 import { onMounted } from "vue";
 import { h, reactive, computed, nextTick, inject, ref } from "vue";
 import { useRoute } from "vue-router";
 import { useStore } from "vuex";
+import CategoryTab from "@/views/pages/project/post/detailTabs/CategoryTab.vue";
+import TagTab from "@/views/pages/project/post/detailTabs/TagTab.vue";
+import IssueTypeTab from "./detailTabs/IssueTypeTab.vue";
 
 const store = useStore();
 const route = useRoute();
-const { goToDetailIssue } = useRoutePath();
+const { goToDetailPost } = useRoutePath();
 const models = inject("Model");
-const masterParam = reactive(models.createGetPagingIssueByProjectParam());
+const masterParam = reactive(models.createGetPagingPostByProjectParam());
 const employee = computed(() => store.state[ModuleContext]?.employee);
 const totalRecord = ref(0);
 const masterData = ref([]);
 const projectID = ref(route.params.ProjectID);
+const categories = computed(() => store.state[ModulePost].categories);
 
 const createColumns = () => [
   {
@@ -106,6 +111,11 @@ const pageSizes = [
   },
 ];
 
+const quickFilter = reactive({
+  text: "Tất cả công việc",
+  value: "",
+});
+
 const statusFilter = reactive({
   text: "Trạng thái hoàn thành Tất cả",
   value: "",
@@ -151,10 +161,21 @@ const menuContextConfig = reactive({
   },
 });
 
+const getCategories = async () => {
+  let param = {
+    data: {
+      ProjectID: projectID.value,
+    },
+  };
+  let res = await store.dispatch(ModulePost + "/getCategoriesByProject", param);
+};
+
 onMounted(async () => {
   getTableHeight();
 
   initMasterParam();
+
+  await getCategories();
 
   await getData();
 });
@@ -166,7 +187,7 @@ const initMasterParam = () => {
   masterParam.PageIndex = 1;
   masterParam.PageSize = 10;
   masterParam.EmployeeID = employee.value.EmployeeID;
-  masterParam.WatcherID = employee.value.EmployeeID;
+  masterParam.AuthorID = employee.value.EmployeeID;
 };
 
 const getData = async () => {
@@ -174,7 +195,7 @@ const getData = async () => {
     data: masterParam,
     onFailure: () => {},
   };
-  let res = await store.dispatch(ModuleIssue + "/getIssuesByProject", param);
+  let res = await store.dispatch(ModulePost + "/getPostsByProject", param);
   masterData.value = res.data;
   totalRecord.value = res.totalRecord;
 };
@@ -198,114 +219,43 @@ const onPageSize_change = async (pageSize) => {
   }
 };
 
+const btnPost_click = (post) => {
+  let postID = post.PostID;
+  goToDetailPost(postID, projectID);
+};
+
 const columns = createColumns();
 </script>
 
 <template>
-  <div class="list-issue m-pl16 m-mr16 m-pb16">
-    <div class="grid-issue-filter flex-row flex-jsp m-pb8">
-      <div class="">
-        <div class="text-large">Vấn đề liên quan</div>
-      </div>
+  <div class="config-issue m-pl16 m-mr16 m-pb16">
+    <n-scrollbar :style="`max-height: 600px`">
+      <div class="flex-row m-pb8">
+        <div class="list-content">
+          <div class="config-issue-header">
+            <div class="">
+              <div class="text-large">Thiết lập</div>
+            </div>
+          </div>
 
-      <div class="flex-row">
-        
-        <div class="m-mr24">
-          <n-dropdown
-            trigger="click"
-            :options="dropdownStatusOptions"
-            :show-arrow="true"
-            @select="handleSelectStatusFilter"
-            size="large"
-          >
-            <MButton
-              :text="statusFilter.text"
-              :title="'Chọn loại trạng thái hoàn thành công việc'"
-              :tag="'TypeStatusTask'"
-              :classCustom="'m-button-m grid-filter-btn'"
-              leftIcon="mi-16 mi-grid-status-done"
-              rightIcon="mi-16 mi-carret-down"
-              :classText="'m-mr8 m-ml8'"
-            />
-          </n-dropdown>
-        </div>
+          <div class="config-issue-content">
+            <div class="tabs m-pl8 m-pr8">
+                <n-tabs type="line" animated class="m-tabs">
+              <n-tab-pane name="IssueType" tab="Loại vấn đề">
+                <IssueTypeTab></IssueTypeTab
+              ></n-tab-pane>
+            </n-tabs>
+            </div>
+          </div>
 
-        <div class="m-mr24">
-          <n-dropdown
-            trigger="click"
-            :options="dropdownSortOptions"
-            :show-arrow="true"
-            @select="handleSelectSortFilter"
-            size="large"
-          >
-            <MButton
-              :text="sortFilter.text"
-              :title="'Chọn loại trạng thái hoàn thành công việc'"
-              :tag="'TypeStatusTask'"
-              :classCustom="'m-button-m grid-filter-btn'"
-              leftIcon="mi-16 mi-grid-status-done"
-              rightIcon="mi-16 mi-carret-down"
-              :classText="'m-mr8 m-ml8'"
-            />
-          </n-dropdown>
-        </div>
-
-        <div class="m-mr16">
-          <MButton
-            :text="'Lấy dữ liệu'"
-            :title="'Lấy lại dữ liệu'"
-            :classCustom="'m-button-m grid-filter-btn'"
-            leftIcon="mi-24 mi-reload"
-            :classText="'m-mr8 m-ml8'"
-            @click="getData"
-          />
         </div>
       </div>
-    </div>
-    <n-data-table
-      :columns="columns"
-      :data="masterData"
-      class="table-issue"
-      :max-height="tableConfig.maxHeight"
-      :min-height="tableConfig.minHeight"
-      :single-line="false"
-      :row-props="menuContextConfig.rowProps"
-    />
-
-    <div class="m-pt8 m-pl16 m-pr16 flex-row flex-align-center">
-      <div class="">
-        Tổng cộng :
-        <span class="text-bold">{{ totalRecord }}</span>
-        bản ghi
-      </div>
-
-      <div class="flex-1"></div>
-
-      <n-pagination
-        v-model:page="masterData.PageIndex"
-        v-model:item-count="totalRecord"
-        :page-sizes="pageSizes"
-        :on-update:page="onPage_change"
-        :on-update:page-size="onPageSize_change"
-        show-size-picker
-      />
-    </div>
-
-    <n-dropdown
-      placement="bottom-start"
-      trigger="manual"
-      :x="menuContextConfig.xRef"
-      :y="menuContextConfig.yRef"
-      :options="menuContextConfig.options"
-      :show="menuContextConfig.showDropdownRef"
-      :on-clickoutside="menuContextConfig.onClickoutside"
-      @select="menuContextConfig.handleSelect"
-    />
+    </n-scrollbar>
   </div>
 </template>
 
 <style>
-.list-issue {
+.config-issue {
   background-color: #fff;
   margin: 16px 8px;
   box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
@@ -314,22 +264,45 @@ const columns = createColumns();
   height: calc(100vh - 90px);
 }
 
-/* Customize */
-.table-issue {
-  --n-th-padding: 8px !important;
-  --n-td-padding: 8px !important;
+.post-title {
+  font-size: 18px;
+  font-family: "GoogleSans-Bold", Roboto, Helvetica, Arial, sans-serif !important;
+  color: #3a3a3a;
 }
 
-.grid-filter-btn {
-  background-color: #fff !important;
-  color: #1f1f1f !important;
-  font-size: 13px !important;
-  font-weight: 400 !important;
-}
-
-.card-issue-avt {
-  display: flex;
-  justify-content: center;
+.post-title:hover {
+  color: var(--primary-color);
+  text-decoration: underline;
   cursor: pointer;
 }
+
+.post-sub-title {
+  font-family: "GoogleSans-Medium", Roboto, Helvetica, Arial, sans-serif !important;
+  font-size: 14px !important;
+  color: #aab2bd;
+  font-weight: 300;
+  padding: 0 8px;
+  border-left: 1px solid #aab2bd;
+}
+
+.post-sub-title.link:hover {
+  color: var(--primary-color);
+  cursor: pointer;
+}
+
+.post-content-preview {
+  font-size: 13px;
+  font-weight: lighter;
+  color: #555555;
+}
+
+.post-content-preview.more {
+  color: var(--primary-color);
+  cursor: pointer;
+}
+
+.list-content {
+  padding: 0 48px;
+}
+
 </style>
