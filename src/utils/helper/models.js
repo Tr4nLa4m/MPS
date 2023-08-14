@@ -9,6 +9,7 @@ import AddPostParam from "@/common/model/params/AddPostParam";
 import AddProjectParam from "@/common/model/params/AddProjectParam";
 import AddResolveIssueParam from "@/common/model/params/AddResolveParam";
 import AddRoleProjectParam from "@/common/model/params/AddRoleProjectParam";
+import AddTaskGroupParam from "@/common/model/params/AddTaskGroupParam";
 import AddTaskToPhaseParam from "@/common/model/params/AddTasksToPhaseParam";
 import GetFilePagingByProjectParam from "@/common/model/params/GetFilePagingByProjectParam";
 import GetIssuePagingByProjectParam from "@/common/model/params/GetIssuePagingByProjectParam";
@@ -152,5 +153,9 @@ export default {
 
   createAddPostCategoryParam() {
     return new AddPostCategoryParam();
+  },
+
+  createAddTaskGroupParam() {
+    return new AddTaskGroupParam();
   },
 };

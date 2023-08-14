@@ -315,6 +315,22 @@ const actions = {
 
     return res.Data;
   },
+  
+  async updateStatus({ commit, state }, payload) {
+    let res = await Issue.updateStatus(payload?.data);
+    if (res?.Success) {
+      if (payload?.onSuccess) {
+        payload.onSuccess();
+      }
+
+    } else {
+      if (payload?.onFailure) {
+        payload.onFailure();
+      }
+    }
+
+    return res.Data;
+  },
 
   async deleteIssue({ commit, state }, payload) {
     let res = await Issue.deleteIssue(payload?.data?.IssueID);
@@ -349,6 +365,24 @@ const actions = {
 
     return res.Data;
   },
+
+  async getActivities({ commit, state }, payload) {
+    let res = await Issue.getActivities(payload?.data?.IssueID);
+    if (res?.Success) {
+      if (payload?.onSuccess) {
+        payload.onSuccess();
+      }
+
+      commit('SET_ACTIVITIES', res.Data);
+
+    } else {
+      if (payload?.onFailure) {
+        payload.onFailure();
+      }
+    }
+
+    return res.Data;
+  },
 };
 
 // mutations
@@ -363,6 +397,10 @@ const mutations = {
 
   SET_COMMENTS(state, data){
     state.comments = data;
+  },
+
+  SET_ACTIVITIES(state, data){
+    state.activities = data;
   },
 
   SET_SOLUTIONS(state, data){

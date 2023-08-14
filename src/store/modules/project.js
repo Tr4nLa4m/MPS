@@ -53,7 +53,9 @@ const state = {
 
   roles: [],
 
-  permissions: []
+  permissions: [],
+
+  taskGroups: []
 };
 
 // getters
@@ -78,6 +80,23 @@ const actions = {
     let res = await Project.getByEmployee(payload?.EmployeeID);
     if (res?.Success) {
       commit("SET_PROJECTS", res.Data);
+    }
+
+    return res.Data;
+  },
+
+  async getTaskGroups({ commit, state }, payload) {
+    let res = await Project.getTaskGroups(payload.data?.ProjectID);
+    if (res?.Success) {
+      if (payload?.onSuccess) {
+        payload.onSuccess();
+      }
+
+      commit('SET_TASK_GROUPS', res.Data);
+    } else {
+      if (payload?.onFailure) {
+        payload.onFailure();
+      }
     }
 
     return res.Data;
@@ -428,6 +447,10 @@ const mutations = {
 
   SET_PERMISSIONS(state, data){
     state.permissions = data;
+  },
+
+  SET_TASK_GROUPS(state, data){
+    state.taskGroups = data;
   }
 };
 

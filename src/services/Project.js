@@ -18,6 +18,17 @@ class ProjectRepository extends BaseRepository {
     return this.getAsync(config, onSuccess, onFailure);
   }
 
+  async getTaskGroups(projectID, onSuccess, onFailure) {
+    let config = {
+      url: [
+        this._controller,
+        MConfig.APIEndPoint.PROJECT.GET_TASK_GROUPS,
+        projectID,
+      ].join("/"),
+    };
+    return this.getAsync(config, onSuccess, onFailure);
+  }
+
   async getEmployees(projectID, onSuccess, onFailure) {
     let config = {
       url: [

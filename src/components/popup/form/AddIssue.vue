@@ -64,6 +64,7 @@ const timestamps = reactive({
 });
 
 const {
+  UPLOAD_DOMAIN,
   fileList,
   initFileList,
   beforeUploadFile,
@@ -92,6 +93,7 @@ const departmentProjects = computed(() => {
 
 let master = reactive({
   Data: models.createAddIssueParam(),
+  OriginalData: {}
 });
 
 const chooseAssigneeModal = useModal({
@@ -132,10 +134,20 @@ const selectProject_change = async (value, option) => {
 };
 
 const btnChooseAssignee_click = () => {
+  chooseAssigneeModal.patchOptions({
+    attrs: {
+      project: master.Data.Project
+    }
+  })
   chooseAssigneeModal.open();
 };
 
 const btnChooseRelate_click = () => {
+  chooseRelateEmployeeModal.patchOptions({
+    attrs: {
+      project: master.Data.Project
+    }
+  })
   chooseRelateEmployeeModal.open();
 };
 
@@ -204,7 +216,10 @@ const isEditMode = () => {
 
 const collectData = () => {
   let data = _.cloneDeep(master.Data);
+  let orignalData = _.cloneDeep(master.OriginalData)
   data.Files = fileList.value;
+  let arrDataFields = ['IssueName', 'CustomerInfo', 'Assignee', 'IssueTypeID', 'Description', 'ReceptionDate', 'DesiredDate', 'PreliminarySolution', 'Priority' ];
+  data.FieldChanges = commonFn.getObjectChanges(data,orignalData, arrDataFields);
   return data;
 };
 
@@ -241,6 +256,7 @@ const bindInitMasterData = async () => {
 
 const bindCurrentIssueData = () => {
   let issue = _.cloneDeep(currentIssue.value);
+  
   flagIsBindingData = true;
   master.Data = issue;
 
@@ -261,6 +277,8 @@ const bindCurrentIssueData = () => {
     Email: issue.CustomerEmail,
     ContactInfo: issue.CustomerContactInfo,
   };
+
+  master.OriginalData = _.cloneDeep(master.Data);
 
   bindAttachments();
 };
@@ -543,7 +561,7 @@ watch(
                       Email khách hàng: <span class="danger">*</span>
                     </div>
                     <MInput
-                      :placeholder="'Số điện thoại'"
+                      :placeholder="'Email'"
                       :customClass="'m-m0 input-l'"
                       inputClass="m-pl16 m-pr16"
                       v-model="master.Data.CustomerInfo.Email"
@@ -570,7 +588,7 @@ watch(
               <div class="form-label m-pb8">Tệp đính kèm</div>
               <n-upload
                 directory-dnd
-                action="http://localhost:5228/api/v1/File"
+                :action="UPLOAD_DOMAIN"
                 list-type="image"
                 show-download-button
                 :default-file-list="initFileList"
