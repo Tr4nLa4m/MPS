@@ -116,6 +116,21 @@ class IssueRepository extends BaseRepository {
     return this.deleteAsync(config, onSuccess, onFailure);
   }
 
+  async updateStatus(data, onSuccess, onFailure){
+    let config = {
+      url: [this._controller, MConfig.APIEndPoint.ISSUE.UPDATE_STATUS].join('/'),
+      data
+    }
+    return this.putAsync(config, onSuccess, onFailure);
+  }
+
+  async getActivities(issueID, onSuccess, onFailure){
+    let config = {
+      url: [this._controller, MConfig.APIEndPoint.ISSUE.GET_ACTIVITIES, issueID].join('/'),
+    }
+    return this.getAsync(config, onSuccess, onFailure);
+  }
+
 }
 
     export default new IssueRepository();

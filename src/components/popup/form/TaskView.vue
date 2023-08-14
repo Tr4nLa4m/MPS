@@ -57,6 +57,9 @@ const loading = reactive({
 
 const employee = computed(() => store.state[ModuleContext]?.employee);
 
+// TASK GROUP SELECT
+const taskGroups = computed(() => store.state[ModuleProject].taskGroups);
+
 const btnChooseProgress = ref(null);
 
 const userPermissions = computed(() =>
@@ -131,8 +134,7 @@ const checkUserDisableItem = computed(() => (permission) => {
   );
 });
 
-// TASK GROUP SELECT
-const taskGroups = computed(() => store.state[ModuleTask]?.taskGroups);
+
 
 const filterEmployeeModal = useModal({
   component: FilterEmployeeForm,
@@ -267,7 +269,12 @@ const getTaskData = async () => {
 };
 
 const getTaskGroups = async () => {
-  return await store.dispatch(ModuleTask + "/getTaskGroups");
+  let param = {
+    data: {
+      ProjectID: master.Data.Project.ProjectID
+    }
+  }
+  return await store.dispatch(ModuleProject + "/getTaskGroups", param);
 };
 
 const getProjects = async () => {

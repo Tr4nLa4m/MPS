@@ -6,6 +6,7 @@ import MConstant, {
 import { keyStore } from "@/store/store";
 import { cloneDeep } from "lodash";
 import { useMessage } from "naive-ui";
+import _ from "lodash";
 
 export default {
   getObjectValueByProps(object, propname, value, findProp) {
@@ -130,6 +131,32 @@ export default {
           ProjectName: DepartmentName,
           disabled: true,
           Projects: projects,
+        });
+      }
+    });
+
+    return outputArray;
+  },
+
+  getTaskGroupTask(tasks) {
+    const outputArray = [];
+    tasks.forEach((obj) => {
+      const { TaskGroupID, TaskGroupName, ...task } = obj;
+      const existingObj = outputArray.find(
+        (item) => item.TaskGroupID === TaskGroupID
+      );
+
+      if (existingObj) {
+        existingObj.Tasks.push(obj);
+      } else {
+        let Tasks = [];
+        if (obj.TaskID != null && obj.TaskID != GUID_EMPTY) {
+          Tasks.push(obj);
+        }
+        outputArray.push({
+          TaskGroupID,
+          TaskGroupName,
+          Tasks,
         });
       }
     });
@@ -357,6 +384,22 @@ export default {
     return '<b>' + activity[field] + '</b>'
   },
 
+  getIssuekActivityValueText(activity, isOldText){
+    let arr = [MConstant.IssueField.IssueFile, MConstant.IssueField.IssueComment];
+    let field;
+    if(arr.includes(activity.Column)){
+      field = isOldText ? 'OldContent' : 'NewContent';
+    }
+    else{
+      field = isOldText ? 'OldValue' : 'NewValue';
+    }
+
+    if(!activity[field]){
+      return '';
+    }
+    return '<b>' + activity[field] + '</b>'
+  },
+
   checkIsImageLink(type){
     let listImage = ['image', 'png', 'jpeg', 'jpg', 'gif'];
     let res = false;
@@ -376,5 +419,29 @@ export default {
   convertToMB(byte){
     var megabytes  = byte / 1024;
     return megabytes.toFixed(1) + 'KB';
+  },
+
+  getColorTitleBoards(index){
+    let colors = ['#21E5F3', '#2196F3', '#4CD964', '#65B496', '#65B432', '#EEC300', '#FF9500', '#FF6566'];
+    if(index > -1){
+      let val = index % colors.length;
+      return colors[val];
+    }
+
+    return '#000000';
+  },
+
+  getObjectChanges(object, newObject, propertiesToCheck) {
+    const changedProperties = [];
+  
+    for (const property of propertiesToCheck) {
+      if (_.has(object, property) && _.has(newObject, property)) {
+        if (!_.isEqual(object[property], newObject[property])) {
+          changedProperties.push(property);
+        }
+      }
+    }
+  
+    return changedProperties;
   }
 };

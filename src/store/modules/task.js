@@ -312,6 +312,86 @@ const actions = {
     }
 
     return res.Data;
+  },
+
+  async getTaskByTaskGroups({commit}, payload){
+    let res = await Task.getTaskByTaskGroups(payload.data?.ProjectID);
+    if (res?.Success) {
+      if(payload?.onSuccess){
+        payload.onSuccess(res);
+      }
+    }
+    else{
+      if(payload?.onFailure){
+        payload.onFailure();
+      }
+    }
+
+    return res.Data;
+  },
+
+  async updateTaskGroupTask({commit}, payload){
+    let res = await Task.updateTaskGroupTask(payload.data);
+    if (res?.Success) {
+      if(payload?.onSuccess){
+        payload.onSuccess(res);
+      }
+    }
+    else{
+      if(payload?.onFailure){
+        payload.onFailure();
+      }
+    }
+
+    return res.Data;
+  },
+
+  async insertTaskGroup({commit}, payload){
+    let res = await Task.insertTaskGroup(payload.data);
+    if (res?.Success) {
+      if(payload?.onSuccess){
+        payload.onSuccess(res);
+      }
+    }
+    else{
+      if(payload?.onFailure){
+        payload.onFailure();
+      }
+    }
+
+    return res.Data;
+  },
+
+  async updateTaskGroup({commit}, payload){
+    let res = await Task.updateTaskGroup(payload.data);
+    if (res?.Success) {
+      if(payload?.onSuccess){
+        payload.onSuccess(res);
+      }
+    }
+    else{
+      if(payload?.onFailure){
+        payload.onFailure();
+      }
+    }
+
+    return res.Data;
+  },
+
+  async deleteTaskGroup({commit}, payload){
+    let res = await Task.deleteTaskGroup(payload.data?.TaskGroupID);
+    if (res?.Success) {
+      if(payload?.onSuccess){
+        payload.onSuccess(res);
+      }
+    }
+    else{
+      if(payload?.onFailure){
+        payload.onFailure();
+      }
+    }
+
+    return res.Data;
   }
 };
 

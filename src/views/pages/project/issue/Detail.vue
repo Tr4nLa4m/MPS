@@ -3,6 +3,7 @@ import { ModuleContext, ModuleIssue } from "@/store/moduleConstant";
 import { useUploadFile } from "@/utils/uses/base/useUploadFile";
 import { useRoutePath } from "@/utils/uses/router/useRoutePath";
 import CommentTab from "@/views/pages/project/issue/detailTabs/CommentTab.vue";
+import ActivityTab from "@/views/pages/project/issue/detailTabs/ActivityTab.vue";
 import { ref, onMounted, reactive, nextTick, computed, inject, h } from "vue";
 import { useRoute } from "vue-router";
 import { useStore } from "vuex";
@@ -50,6 +51,7 @@ const methodsHandleFile = {
 };
 
 const {
+  UPLOAD_DOMAIN,
   fileList,
   initFileList,
   beforeUploadFile,
@@ -58,6 +60,12 @@ const {
   removeFile,
 } = useUploadFile({}, methodsHandleFile);
 const employee = computed(() => store.state[ModuleContext]?.employee);
+const userPermissions = computed(() =>
+  store.getters[ModuleContext + "/getUserProjectPermission"](
+    issue.value.ProjectID
+  )
+);
+
 const issue = computed(() => store.state[ModuleIssue].issue);
 const isWatchingIssue = computed(() => {
   if (!issue.value.Watchers || !issue.value.Watchers.length) {
@@ -76,6 +84,8 @@ const issueIsNotResolve = computed(
     issue.value.SolutionID == GUID_EMPTY ||
     issue.value.IssueStatus == 5
 );
+
+const issueClosed = computed(() => issue.value.IsClosed);
 const getReOpenIssueBtn = computed(() => {
   if (issue.value.IsClosed) {
     return true;
@@ -179,6 +189,97 @@ const deleteConfirmModal = useModal({
   },
 });
 
+const checkDisableItem = computed(() => (component) => {
+  let permissions = userPermissions.value;
+  debugger;
+  let checkHasPermissions = (permission) => {
+    return permissions.find((item) => item.PermissionCode == permission);
+  };
+  switch (component) {
+    case "edit":
+      if (
+        employee.value.EmployeeID != issue.value.CreatorID ||
+        !checkHasPermissions(MConstant.ProjectPermissions.Issue.Issue_Edit_All)
+      ) {
+        return false;
+      }
+
+      if (!issueIsNotResolve) {
+        return false;
+      }
+      return true;
+      break;
+    case "resolve":
+      if (issueClosed.value) return false;
+      if (issue.value.IssueStatus != MConstant.IssueStatus.InProgress)
+        return false;
+
+      if (checkHasPermissions(MConstant.ProjectPermissions.Issue.Issue_Resolve))
+        return true;
+      if (employee.value.EmployeeID == issue.value.AssigneeID) {
+        return true;
+      }
+
+      return false;
+      break;
+    case "start":
+      let arrStatus = [MConstant.IssueStatus.Pending, MConstant.IssueStatus.Imqualified];
+      if (!arrStatus.includes(issue.value.IssueStatus))
+        return false;
+      if (checkHasPermissions(MConstant.ProjectPermissions.Issue.Issue_Resolve))
+        return true;
+      if (employee.value.EmployeeID == issue.value.AssigneeID) {
+        return true;
+      }
+
+      return false;
+      break;
+    case "stop":
+      if (issue.value.IssueStatus != MConstant.IssueStatus.InProgress)
+        return false;
+      if (checkHasPermissions(MConstant.ProjectPermissions.Issue.Issue_Resolve))
+        return true;
+      if (employee.value.EmployeeID == issue.value.AssigneeID) {
+        return true;
+      }
+
+      return false;
+      break;
+    case "assign":
+      if (issueClosed.value) return false;
+      if (
+        checkHasPermissions(MConstant.ProjectPermissions.Issue.Issue_Edit_All)
+      )
+        return true;
+      if (employee.value.EmployeeID == issue.value.CreatorID) {
+        return true;
+      }
+
+      return false;
+      break;
+    case "close":
+      debugger
+      if (issueClosed.value) return false;
+      if (
+        checkHasPermissions(MConstant.ProjectPermissions.Issue.Issue_Open_Close)
+      )
+        return true;
+      return false;
+      break;
+    case "open":
+      if (!issueClosed.value) return false;
+      if(issue.value.IssueStatus != MConstant.IssueStatus.Processed) return false;
+      if (
+        checkHasPermissions(MConstant.ProjectPermissions.Issue.Issue_Open_Close)
+      )
+        return true;
+      return false;
+      break;
+    default:
+      break;
+  }
+});
+
 onMounted(async () => {
   checkIssueValid();
 
@@ -250,6 +351,54 @@ const btnResolve_click = () => {
 
 const btnReOpen_click = () => {
   reOpenIssueModal.open();
+};
+
+const btnStartProgress_click = async () => {
+  let param = {
+    data: {
+      IssueID: issue.value.IssueID,
+      IssueStatus: MConstant.IssueStatus.InProgress,
+    },
+    onSuccess: async () => {
+      await getIssue();
+    },
+    onFailure: () => error("Có lỗi xảy ra"),
+  };
+
+  await store.dispatch(ModuleIssue + "/updateStatus", param);
+};
+
+const btnStopProgress_click = async () => {
+  let param = {
+    data: {
+      IssueID: issue.value.IssueID,
+      IssueStatus: MConstant.IssueStatus.Pending,
+    },
+    onSuccess: async () => {
+      await getIssue();
+    },
+    onFailure: () => error("Có lỗi xảy ra"),
+  };
+
+  await store.dispatch(ModuleIssue + "/updateStatus", param);
+};
+
+const btnCloseIssue_click = async () => {
+  let onSuccess = async () => {
+    success("Đóng vấn đề thành công");
+    await getIssue();
+  };
+
+  let onFailure = () => error("Có lỗi xảy ra khi đóng vấn đề");
+  let param = {
+    data: {
+      IssueID: issue.value.IssueID,
+    },
+    onSuccess,
+    onFailure,
+  };
+
+  await store.dispatch(ModuleIssue + "/closeIssue", param);
 };
 
 const btnAssign_click = () => {
@@ -338,16 +487,16 @@ const assignIssue = async (employee) => {
 
 const deleteIssue = async () => {
   let onSuccess = () => {
-    success('Xoá vấn đề thành công');
-    goToIssueTab(route.params.ProjectID); 
-  }
+    success("Xoá vấn đề thành công");
+    goToIssueTab(route.params.ProjectID);
+  };
   let param = {
     data: {
       IssueID: issue.value.IssueID,
     },
-    onSuccess
+    onSuccess,
   };
-  
+
   let res = await store.dispatch(ModuleIssue + "/deleteIssue", param);
 };
 
@@ -384,7 +533,7 @@ const deleteIssue = async () => {
             />
 
             <MButton
-              v-if="issueIsNotResolve"
+              v-if="checkDisableItem('edit')"
               :text="'Sửa'"
               :title="'Chỉnh sửa vấn đề'"
               :classCustom="'m-button-m detail-issue-btn m-mr8'"
@@ -393,7 +542,7 @@ const deleteIssue = async () => {
             />
 
             <MButton
-              v-if="issueIsNotResolve"
+              v-if="checkDisableItem('assign')"
               :text="'Giao cho'"
               :title="'Giao cho'"
               :classCustom="'m-button-m detail-issue-btn m-mr4'"
@@ -417,7 +566,25 @@ const deleteIssue = async () => {
             </n-dropdown>
 
             <MButton
-              v-if="issueIsNotResolve"
+              v-if="checkDisableItem('start')"
+              :text="'Bắt đầu'"
+              :title="'Bắt đầu thực hiện vấn đề'"
+              :classCustom="'m-button-m detail-issue-btn m-mr4'"
+              :classText="'m-mr8 m-ml8'"
+              @click="btnStartProgress_click"
+            />
+
+            <MButton
+              v-if="checkDisableItem('stop')"
+              :text="'Tạm dừng'"
+              :title="'Tạm dừng thực hiện vấn đề'"
+              :classCustom="'m-button-m detail-issue-btn m-mr4'"
+              :classText="'m-mr8 m-ml8'"
+              @click="btnStopProgress_click"
+            />
+
+            <MButton
+              v-if="checkDisableItem('resolve')"
               :text="'Giải quyết'"
               :title="'Giải quyết'"
               :classCustom="'m-button-m detail-issue-btn m-mr4'"
@@ -426,15 +593,16 @@ const deleteIssue = async () => {
             />
 
             <MButton
-              v-if="!issue.IsClosed"
+              v-if="checkDisableItem('close')"
               :text="'Đóng'"
               :title="'Đóng'"
               :classCustom="'m-button-m detail-issue-btn'"
               :classText="'m-mr8 m-ml8'"
+              @click="btnCloseIssue_click"
             />
 
             <MButton
-              v-if="getReOpenIssueBtn"
+              v-if="checkDisableItem('open')"
               :text="'Mở lại'"
               :title="'Mở lại'"
               :classCustom="'m-button-m detail-issue-btn m-ml8'"
@@ -446,7 +614,6 @@ const deleteIssue = async () => {
           <div class="flex-1"></div>
 
           <div class="tool-bar-right flex-row">
-
             <MButton
               :title="'Lấy lại dữ liệu'"
               :classCustom="'m-button-m detail-issue-btn'"
@@ -515,7 +682,7 @@ const deleteIssue = async () => {
                     <div class="detail-row row-2">
                       <div class="detail-label">Phiên bản cập nhật:</div>
                       <div class="detail-value">
-                        {{ issue.FixVersionID ? issue.FixVersionID : "Không" }}
+                        {{ "Không" }}
                       </div>
                     </div>
                   </div>
@@ -565,7 +732,7 @@ const deleteIssue = async () => {
                 <n-collapse-item title="Tệp đính kèm" name="1">
                   <n-upload
                     directory-dnd
-                    action="http://localhost:5228/api/v1/File"
+                    :action="UPLOAD_DOMAIN"
                     list-type="image"
                     show-download-button
                     :default-file-list="initFileList"
@@ -593,7 +760,7 @@ const deleteIssue = async () => {
                       />
                     </n-tab-pane>
                     <n-tab-pane name="task-tab_Activity" tab="Hoạt động">
-                      Hoạt động
+                      <ActivityTab :issueID="issue.IssueID" />
                     </n-tab-pane>
                   </n-tabs>
                 </n-collapse-item>

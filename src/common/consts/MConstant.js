@@ -163,6 +163,33 @@ export default {
 
     },
 
+    IssueField: {
+        Issue: 'Issue',
+        IssueName: 'IssueName',
+        Checklists: 'Checklists',
+        ReceptionDate: 'ReceptionDate',
+        Assignee: 'Assignee',
+        IssueComment: 'IssueComment',
+        IssueFile: 'IssueFile',
+        DesiredDate: 'DesiredDate',
+        Priority: 'Priority',
+        PreliminarySolution: 'PreliminarySolution'
+    },
+
+    IssueStatus: {
+        All: 0,
+        Pending: 1,
+        InProgress: 2,
+        Processed: 3,
+        Resolved: 4,
+        Imqualified: 5
+    },
+
+    TaskStatus: {
+        NotDone: 2,
+        Done: 3
+    },
+
     FieldTaskType: {
         Add : 1,
         Update: 2,

@@ -5,6 +5,7 @@ export default {
         LOGOUT: 'logout',
         PROJECT: {
             GET_PROJECT_BY_EMPLOYEE: "by-employee",
+            GET_TASK_GROUPS: 'task-groups',
             GET_EMPLOYEES: "employees",
             INSERT_V2: "V2",
             GET_NUMBER_TASK_STATUS_REPORT: 'report/number-task-status',
@@ -29,6 +30,11 @@ export default {
             INSERT_CHECKLIST: 'checklist',
             INSERT_SUBTASKS: 'subtask',
             DELETE_V2: 'delete',
+            GET_TASK_BY_TASKGROUPS: 'task-by-taskgroups',
+            UPDATE_TASKGROUP_TASK: 'task-update-task-group',
+            INSERT_TASK_GROUP: 'taskgroup',
+            UPDATE_TASK_GROUP: 'taskgroup',
+            DELETE_TASK_GROUP: 'taskgroup',
         },
         DEPARTMENT: {
             GET_BY_EMPLOYEE: "employee"
@@ -69,7 +75,9 @@ export default {
             CLOSE: 'close',
             ASSIGN: 'assign',
             RECERIVE: 'receive',
-            DELETE_V2: 'v2'
+            DELETE_V2: 'v2',
+            UPDATE_STATUS: 'status',
+            GET_ACTIVITIES: 'activites'
         },
 
         ISSUECOMMENT: {

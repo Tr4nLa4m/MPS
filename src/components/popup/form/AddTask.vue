@@ -54,7 +54,11 @@ const tfTaskName = ref(null);
 
 const employee = computed(() => store.state[ModuleContext]?.employee);
 
+// TASK GROUP SELECT
+const taskGroups = computed(() => store.state[ModuleProject].taskGroups);
+
 const {
+  UPLOAD_DOMAIN,
   fileList,
   beforeUploadFile,
   finishUploadFile,
@@ -95,12 +99,11 @@ const getDefaultDepartmentProject = () => {
   return "";
 };
 
-// TASK GROUP SELECT
-const taskGroups = computed(() => store.state[ModuleTask]?.taskGroups);
+
 
 const getDefaultTaskGroup = () => {
   let res = "";
-  let rawData = store.state[ModuleTask]?.taskGroups;
+  let rawData = cloneDeep(taskGroups.value);
   let taskGroupInit = rawData.find((item) =>
     item.TaskGroupName.includes("Cần thực hiện")
   );
@@ -113,14 +116,13 @@ const getDefaultTaskGroup = () => {
 
 // MOUNTED HOOK
 onMounted(async () => {
-  // lấy danh sách các nhóm công việc
-  await store.dispatch(ModuleTask + "/getTaskGroups");
-
-  master.TaskGroup.TaskGroupID = getDefaultTaskGroup();
+  
 
   await getProjects();
 
   master.Project.ProjectID = getDefaultDepartmentProject();
+
+  await getTaskGroups();
 });
 
 const getProjects = async () => {
@@ -129,6 +131,18 @@ const getProjects = async () => {
     EmployeeID: employee?.value.EmployeeID,
   };
   await store.dispatch(ModuleProject + "/getProjectByEmployee", param);
+};
+
+const getTaskGroups = async () => {
+  let param = {
+    data: {
+      ProjectID: master.Project.ProjectID
+    }
+  }
+  // lấy danh sách các nhóm công việc
+  await store.dispatch(ModuleProject + "/getTaskGroups", param);
+
+  master.TaskGroup.TaskGroupID = getDefaultTaskGroup();
 }
 
 const renderDropdownChooseDeadline = () => {
@@ -434,8 +448,9 @@ const clickExpandEditor = () => {
   showEl.btnDescription = false;
 };
 
-const handleUpdateVal = () => {
-}
+const selectProject_change = async (value, option) => {
+  await getTaskGroups();
+};
 </script>
 
 <template>
@@ -491,7 +506,8 @@ const handleUpdateVal = () => {
                     key-field="ProjectID"
                     children-field="Projects"
                     v-model="master.Project.ProjectID"
-                    @update:value="handleUpdateVal"
+                    :enableChange="true"
+                    @onChange="selectProject_change"
                   >
                   </MTreeSelect>
                 </div>
@@ -660,7 +676,7 @@ const handleUpdateVal = () => {
 
                 <div class="row" v-if="showEl.attachment">
                   <n-upload
-                    action="http://localhost:5228/api/v1/File"
+                    :action="UPLOAD_DOMAIN"
                     list-type="image"
                     show-download-button
                     :default-file-list="fileList"

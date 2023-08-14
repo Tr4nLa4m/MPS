@@ -71,7 +71,45 @@ class TaskRepository extends BaseRepository {
     }
     return this.postAsync(config, onSuccess, onFailure);
   }
+
+  async getTaskByTaskGroups(projectID, onSuccess, onFailure){
+    let config = {
+      url: [this._controller, MConfig.APIEndPoint.TASK.GET_TASK_BY_TASKGROUPS, projectID].join('/'),
+    }
+    return this.getAsync(config, onSuccess, onFailure);
+  }
   
+  async updateTaskGroupTask(data, onSuccess, onFailure){
+    let config = {
+      url: [this._controller, MConfig.APIEndPoint.TASK.UPDATE_TASKGROUP_TASK].join('/'),
+      data,
+      notLoading: true
+    }
+    return this.postAsync(config, onSuccess, onFailure);
+  }
+
+  async insertTaskGroup(data, onSuccess, onFailure){
+    let config = {
+      url: [this._controller, MConfig.APIEndPoint.TASK.INSERT_TASK_GROUP].join('/'),
+      data,
+    }
+    return this.postAsync(config, onSuccess, onFailure);
+  }
+
+  async updateTaskGroup(data, onSuccess, onFailure){
+    let config = {
+      url: [this._controller, MConfig.APIEndPoint.TASK.UPDATE_TASK_GROUP].join('/'),
+      data,
+    }
+    return this.putAsync(config, onSuccess, onFailure);
+  }
+
+  async deleteTaskGroup(taskgroupID, onSuccess, onFailure){
+    let config = {
+      url: [this._controller, MConfig.APIEndPoint.TASK.DELETE_TASK_GROUP, taskgroupID].join('/'),
+    }
+    return this.deleteAsync(config, onSuccess, onFailure);
+  }
 }
 
 export default new TaskRepository();
