@@ -30,7 +30,7 @@ import ActivityList from "@/components//tabDetail/taskView/ActivityList.vue";
 import { cloneDeep } from "lodash";
 import MConstant, { GUID_EMPTY } from "@/common/consts/MConstant";
 import UpdateTaskFieldParam from "@/common/model/params/UpdateTaskFieldParam";
-import task from "@/store/modules/task";
+import { useUploadFile } from "@/utils/uses/base/useUploadFile";
 
 const emit = defineEmits(["closeModal", "submit", "deleteTask"]);
 const props = defineProps({
@@ -67,6 +67,16 @@ const userPermissions = computed(() =>
     master.Data.Project?.ProjectID
   )
 );
+
+const {
+  UPLOAD_DOMAIN,
+  fileList,
+  initFileList,
+  beforeUploadFile,
+  finishUploadFile,
+  errorUploadFile,
+  removeFile,
+} = useUploadFile({});
 
 // PROJECT SELECT
 const userProjects = computed(() => store.state[ModuleProject].projects);
@@ -239,7 +249,25 @@ onMounted(async () => {
 });
 
 const initDataMaster = () => {
-  // getDefaultTaskGroup();
+  bindAttachments();
+};
+
+const bindAttachments = () => {
+  // bind File
+  let attachments = master.Data.Files;
+  if (attachments && attachments.length > 0) {
+    initFileList.value = attachments.map((file) => {
+      return {
+        id: file.ID,
+        name: file.FileName,
+        status: "finished",
+        url: file.Url,
+        type: file.Type,
+      };
+    });
+
+    fileList.value = cloneDeep(attachments);
+  }
 };
 
 const initConfig = () => {
@@ -271,7 +299,7 @@ const getTaskData = async () => {
 const getTaskGroups = async () => {
   let param = {
     data: {
-      ProjectID: master.Data.Project.ProjectID
+      ProjectID: master.Data.ProjectID
     }
   }
   return await store.dispatch(ModuleProject + "/getTaskGroups", param);
@@ -1034,6 +1062,36 @@ const onDropdownDeadlineAway = () => {
                   classCustom="btn-expand text-link m-button-m m-mt8"
                   @click="btnAddCheckList_click"
                 />
+              </div>
+
+              <!-- TASK ATTACHMENT -->
+              <div class="task-attachment" v-if="master.Data.Files && master.Data.Files.length > 0">
+                <div
+                  class="flex-row flex-align-center m-mb8"
+                >
+                  <div class="mi-24 mi-attachment-v2 m-mr8"></div>
+                  <div class="title-medium">Tệp đính kèm</div>
+                </div>
+
+                <div class="row" >
+                  <n-upload
+                    :action="UPLOAD_DOMAIN"
+                    list-type="image"
+                    show-download-button
+                    :default-file-list="initFileList"
+                    @finish="finishUploadFile"
+                    @beforeUpload="beforeUploadFile"
+                    @error="errorUploadFile"
+                    @remove="removeFile"
+                  >
+                    <MButton
+                      leftIcon="mi-plus-blue"
+                      text="Thêm tệp"
+                      classCustom="btn-expand text-link m-button-m"
+                      ref="btnAddAttachment"
+                    />
+                  </n-upload>
+                </div>
               </div>
 
               <div class="task-subtask m-pb8" v-click-away="onSubtaskAway">

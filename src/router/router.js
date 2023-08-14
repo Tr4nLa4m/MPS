@@ -181,6 +181,16 @@ const routes = [
                 },
                 component: () => import("@/views/pages/project/issue/RelateIssue.vue"),
               },
+
+              {
+                path: 'config',
+                name: 'issue-config', 
+                meta: {
+                  subSystemCode: MConstant.SubSystemCode.M_Project_Issue,
+                  anonymous: true
+                },
+                component: () => import("@/views/pages/project/issue/ConfigIssue.vue"),
+              },
             ]
           },
 

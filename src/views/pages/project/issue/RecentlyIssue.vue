@@ -205,7 +205,7 @@ const columns = createColumns();
   <div class="list-issue m-pl16 m-mr16 m-pb16">
     <div class="grid-issue-filter flex-row flex-jsp m-pb8">
       <div class="">
-        <div class="text-large">Vấn đề của tôi</div>
+        <div class="text-large">Vấn đề gần đây</div>
       </div>
 
       <div class="flex-row">

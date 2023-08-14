@@ -14,6 +14,7 @@ const store = useStore();
 const route = useRoute();
 const {success, error} = useMessages();
 const employee = computed(() => store.state[ModuleContext]?.employee);
+const tags = computed(() => store.state[ModulePost].tags)
 const projectID = route.params.ProjectID;
 const editEmployee = ref({});
 const deleteEmployeeTarget = reactive({
@@ -58,8 +59,8 @@ const deleteEmployeeConfirmModal = useModal({
 
 const categoryColumns = ref([
   {
-    title: "Tên danh mục",
-    key: "PostCategoryName",
+    title: "Tên nhãn",
+    key: "PostTagName",
     width: 200,
   },
   {
@@ -118,20 +119,21 @@ const isCurrentEmployee = (row) => {
 }
 
 onMounted(async () => {
-    await getCategories();
+    await getTags();
 });
 
-const getCategories = async () => {
-  let param = {
-    data: {
-      ProjectID: route.params.ProjectID,
-    },
-  };
-  let res = await store.dispatch(ModulePost + "/getCategoriesByProject", param);
-};
+const getTags = async () => {
+    let param = {
+        data: {
+            ProjectID: route.params.ProjectID
+        }
+    }
+    await store.dispatch(ModulePost + '/getTagsByProject', param);
+}
+
 
 const btnUpdate_click = async () => {
-  await getCategories();
+  await getTags();
 }
 </script>
 
@@ -169,7 +171,7 @@ const btnUpdate_click = async () => {
         striped 
         class="text-medium table-2"
         :columns="categoryColumns"
-        :data="employeeProjects"
+        :data="tags"
         :max-height="430"
         :min-height="400"
         :single-line="false"
