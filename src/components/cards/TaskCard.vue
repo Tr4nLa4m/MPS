@@ -27,7 +27,7 @@ const getTaskStatus = computed(() => {
 const getDeadline = computed(() => {
   let task = props.task;
   let isNotOverDeadline =
-    task.Status == 2 && new Date(task.EndDate) <= new Date();
+    task.Status == 2 && new Date(task.EndDate) > new Date();
   if (isNotOverDeadline) {
     return false;
   }
@@ -37,7 +37,7 @@ const getDeadline = computed(() => {
 const isOverDeadline = computed(() => {
   let task = props.task;
   if (!getDeadline.value) return false;
-  let isEndDateOver = new Date(task.EndDate) > new Date();
+  let isEndDateOver = new Date(task.EndDate) < new Date();
   return task.Status == MConstant.TaskStatus.NotDone && isEndDateOver;
 });
 
@@ -62,7 +62,7 @@ const getTaskStatusText = computed(() => {
     <div
       class="task-card-header flex-row"
       :class="[isOverDeadline ? 'over-deadline' : '', isDone ? 'done' : '']"
-      v-if="getDeadline"
+      v-if="isOverDeadline || isDone"
     >
       <div class="card-header-icon">
         <div class="mi-24 mi-calender-circle-img" v-if="isOverDeadline"></div>
