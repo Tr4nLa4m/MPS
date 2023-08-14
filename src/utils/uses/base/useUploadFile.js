@@ -6,7 +6,7 @@ import { ModuleFile } from "@/store/moduleConstant";
 export function useUploadFile(props = {}, methods = {}) {
   const fileList = ref([]);
   const initFileList = ref([]);
-  const UPLOAD_DOMAIN = `${import.meta.env.VITE_DOMAIN_BE}/api/v1/File`;
+  const UPLOAD_DOMAIN = `https://misaweb07api20230813092251.azurewebsites.net/api/v1/File`;
 
   const callBackOnFinish = methods.onFinish || null;
   const callBackOnRemove = methods.onRemove || null;
